@@ -1,0 +1,17 @@
+{
+    "Email": true,
+    "Contact": true,
+    "Banner": true,
+    "Content": true,
+    "Cart": true,
+    "Coupon": true,
+    "Product": true,
+    "Customer": true,
+    "Shipping": true,
+    "Frenet": true,
+    "Correio": true,
+    "Payment": true,
+    "Pagseguro": true,
+    "Order": true,
+    "Bling": true
+}
