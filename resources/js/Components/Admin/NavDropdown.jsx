@@ -3,11 +3,9 @@ import {
     createContext,
     useContext,
     Fragment,
-    PropsWithChildren,
 } from "react";
-import { Link, InertiaLinkProps } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
 import { Transition } from "@headlessui/react";
-import { NavDropdownLink } from "@/types/admin";
 
 const DropDownContext = createContext({
     open: false,

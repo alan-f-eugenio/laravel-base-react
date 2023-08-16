@@ -11,10 +11,9 @@ use Modules\Product\Database\factories\ProductFactory;
 use Modules\Product\Helpers\ProductHasChildTypes;
 use Modules\Product\Helpers\ProductTypes;
 use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
 
 class Product extends Model {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'id',
@@ -64,12 +63,6 @@ class Product extends Model {
 
     protected static function newFactory() {
         return ProductFactory::new();
-    }
-
-    public function getActivitylogOptions(): LogOptions {
-        return LogOptions::defaults()
-            ->logOnly(['*'])
-            ->logOnlyDirty();
     }
 
     public function category() {
