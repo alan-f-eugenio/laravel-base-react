@@ -3,7 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import React from "react";
 
-export default function Dashboard({ auth, activeModules, flash }) {
+export default function Index({ auth, activeModules, flash }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
