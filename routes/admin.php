@@ -15,22 +15,16 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Nwidart\Modules\Facades\Module;
 
 Route::prefix('admin')->group(function () {
 
     Route::middleware('auth:admin', 'auth.session')->group(function () {
-        // dd(Module::getByStatus(1));
         Route::get(
             '/',
             fn () => Inertia::render(
                 'Admin/Dashboard',
-                // ['adminNotification' => ['type' => 'error', 'text' => 'Error text']]
-                // ['adminNotification' => ['type' => 'warning', 'text' => 'Warning text']]
-                ['adminNotification' => ['type' => 'success', 'text' => 'Success text']]
             )
         )->name('admin');
-        // Route::get('/', fn () => view('admin.dashboard'))->name('admin');
 
         Route::prefix('profile')->group(function () {
             Route::get('/', [AdminProfileController::class, 'edit'])->name('admin.profile.edit');

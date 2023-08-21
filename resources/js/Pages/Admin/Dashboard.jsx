@@ -1,22 +1,13 @@
+import PageTitle from "@/Components/Admin/PageTitle";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 
-export default function Dashboard({
-    auth,
-    activeModules,
-    adminNotification,
-    flash
-}) {
+export default function Dashboard({ auth, activeModules, flash }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={
-                <h1 className="text-xl font-semibold leading-10 text-gray-800">
-                    Painel Administrativo
-                </h1>
-            }
+            header={<PageTitle title="Painel Administrativo" />}
             activeModules={activeModules}
-            adminNotification={adminNotification}
             flash={flash}
         >
             <Head title="Painel Administrativo" />

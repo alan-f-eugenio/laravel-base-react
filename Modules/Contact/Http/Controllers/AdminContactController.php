@@ -8,10 +8,8 @@ use Inertia\Inertia;
 use Modules\Contact\Entities\Contact;
 use Modules\Contact\Helpers\ContactStatus;
 
-class AdminContactController extends Controller
-{
-    public function index(Request $request)
-    {
+class AdminContactController extends Controller {
+    public function index(Request $request) {
         $query = Contact::orderBy('id', 'desc');
 
         $request->whenFilled('name', function ($value) use ($query) {
@@ -29,17 +27,13 @@ class AdminContactController extends Controller
 
         $contactStatus = ContactStatus::array();
 
-        session()->flash('message', 'Post successfully updated.');
-
-        // return view('contact::admin.index', ['collection' => $query->paginate(10), 'contactStatus' => $contactStatus]);
         return Inertia::render(
             'Contact::Admin/Index',
             ['collection' => $query->paginate(10), 'contactStatus' => $contactStatus]
         );
     }
 
-    public function show(Contact $contact)
-    {
+    public function show(Contact $contact) {
         if (!$contact->seen) {
             $contact->update(['seen' => 1, 'update_user_id' => auth('admin')->id()]);
         }
@@ -51,8 +45,7 @@ class AdminContactController extends Controller
         );
     }
 
-    public function destroy(Contact $contact)
-    {
+    public function destroy(Contact $contact) {
         $contact->update(['update_user_id' => auth('admin')->id()]);
         $contact->delete();
 

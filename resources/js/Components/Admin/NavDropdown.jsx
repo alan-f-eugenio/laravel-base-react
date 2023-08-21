@@ -1,9 +1,4 @@
-import {
-    useState,
-    createContext,
-    useContext,
-    Fragment,
-} from "react";
+import { useState, createContext, useContext, Fragment } from "react";
 import { Link } from "@inertiajs/react";
 import { Transition } from "@headlessui/react";
 
@@ -28,14 +23,6 @@ const NavDropdown = ({ children, activeDropdown = false }) => {
             value={{ open, setOpen, toggleOpen, active, setActive }}
         >
             <div
-                // className={`${
-                //     open
-                //         ? "bg-gray-50 border-gray-300 "
-                //         : (active
-                //               ? "text-indigo-700 bg-indigo-50 border-indigo-400 focus:text-indigo-800 focus:bg-indigo-100 focus:border-indigo-700 "
-                //               : "text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 ") +
-                //           "border-white"
-                // } block w-full px-3 border-l-4 text-left text-sm font-medium focus:outline-none transition duration-75 ease-in-out`}
                 className={`${
                     active
                         ? "text-indigo-700 bg-indigo-50 border-indigo-400 focus:text-indigo-800 focus:bg-indigo-100 focus:border-indigo-700 "
@@ -64,18 +51,13 @@ const Trigger = ({ children }) => {
             >
                 {children}
                 <i
-                    className={`ti ms-3 ${
-                        open ? "ti-chevron-up" : "ti-chevron-down"
+                    className={`align-middle ms-3 ${
+                        open
+                            ? "icon-[tabler--chevron-up]"
+                            : "icon-[tabler--chevron-down]"
                     }`}
                 ></i>
             </button>
-
-            {/* {open && (
-                <div
-                    className="fixed inset-0 z-40"
-                    onClick={() => setOpen(false)}
-                ></div>
-            )} */}
         </>
     );
 };

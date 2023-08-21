@@ -20,7 +20,6 @@ class AdminEmailController extends Controller
             $query->where('email', 'LIKE', "%{$value}%");
         });
 
-        // return view('email::admin.index', ['collection' => $query->paginate(10)]);
         return Inertia::render(
             'Email::Admin/Index',
             ['collection' => $query->paginate(10)]
