@@ -1,3 +1,5 @@
+import Pagination from "./Pagination";
+
 function Structure({ children, tableOnly }) {
     if (!tableOnly) {
         return (
@@ -31,10 +33,10 @@ export default function Table({
                 <tfoot>
                     {tfoot ? (
                         { tfoot }
-                    ) : collection.hasPages ? (
+                    ) : collection.last_page <= 2 ? (
                         <tr>
-                            <td className="px-6 py-4" colspan="99">
-                                {collection.links}
+                            <td className="px-6 py-4" colSpan="99">
+                                <Pagination collection={collection} />
                             </td>
                         </tr>
                     ) : (
