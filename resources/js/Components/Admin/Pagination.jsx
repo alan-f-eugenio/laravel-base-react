@@ -1,3 +1,5 @@
+import { Link } from "@inertiajs/react";
+
 export default function Pagination({ collection }) {
     return (
         <nav role="navigation" className="flex items-center justify-between">
@@ -7,21 +9,21 @@ export default function Pagination({ collection }) {
                         &laquo; Anterior
                     </span>
                 ) : (
-                    <a
+                    <Link
                         href={collection.prev_page_url}
                         className="relative inline-flex items-center px-4 py-2 text-sm font-medium leading-5 text-gray-700 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-md hover:text-gray-500 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700"
                     >
                         &laquo; Anterior
-                    </a>
+                    </Link>
                 )}
 
                 {collection.current_page < collection.last_page ? (
-                    <a
+                    <Link
                         href={collection.next_page_url}
                         className="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium leading-5 text-gray-700 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-md hover:text-gray-500 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700"
                     >
                         Próxima &raquo;
-                    </a>
+                    </Link>
                 ) : (
                     <span className="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium leading-5 text-gray-500 bg-white border border-gray-300 rounded-md cursor-default">
                         Próxima &raquo;
@@ -54,7 +56,7 @@ export default function Pagination({ collection }) {
 
                 <div>
                     <span className="relative z-0 inline-flex rounded-md shadow-sm">
-                        {/* {collection.current_page == 1 ? (
+                        {collection.current_page == 1 ? (
                             <span aria-disabled="true">
                                 <span
                                     className="relative inline-flex items-center px-2 py-2 text-sm font-medium leading-5 text-gray-500 bg-white border border-gray-300 cursor-default rounded-l-md"
@@ -74,7 +76,7 @@ export default function Pagination({ collection }) {
                                 </span>
                             </span>
                         ) : (
-                            <a
+                            <Link
                                 href={collection.prev_page_url}
                                 rel="prev"
                                 className="relative inline-flex items-center px-2 py-2 text-sm font-medium leading-5 text-gray-500 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-l-md hover:text-gray-400 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-500"
@@ -90,49 +92,31 @@ export default function Pagination({ collection }) {
                                         clipRule="evenodd"
                                     />
                                 </svg>
-                            </a>
-                        )} */}
+                            </Link>
+                        )}
 
-                        {collection.links.map((element, i1, elements) =>
-                            // typeof element === "string" ||
-                            // element instanceof String ? (
-                            //     <span key={i1} aria-disabled="true">
-                            //         <span className="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium leading-5 text-gray-700 bg-white border border-gray-300 cursor-default">
-                            //             {element}
-                            //         </span>
-                            //     </span>
-                            // ) : (
-                            //     Array.isArray(element) && (
-                            //         <span key={i1}>
-                            //             {element.map((link, i2) =>
-                            //                 link.label ==
-                            //                 elements.current_page ? (
-                            //                     <span
-                            //                         key={i2}
-                            //                         aria-current="page"
-                            //                     >
-                            //                         <span className="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium leading-5 text-gray-500 bg-white border border-gray-300 cursor-default">
-                            //                             {link.label}
-                            //                         </span>
-                            //                     </span>
-                            //                 ) : (
-                            //                     <a
-                            //                         key={i2}
-                            //                         href={link.url}
-                            //                         className="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium leading-5 text-gray-700 transition duration-150 ease-in-out bg-white border border-gray-300 hover:text-gray-500 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700"
-                            //                     >
-                            //                         {link.label}
-                            //                     </a>
-                            //                 )
-                            //             )}
-                            //         </span>
-                            //     )
-                            // )
-                            console.log(element, i1, elements)
-                        )
-                        }
-                        {/* {collection.current_page < collection.last_page ? (
-                            <a
+                        {collection.links.map(
+                            (link, i1) =>
+                                link.label.match(/\d/) !== null &&
+                                (link.label == collection.current_page ? (
+                                    <span key={i1} aria-current="page">
+                                        <span className="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium leading-5 text-gray-500 bg-white border border-gray-300 cursor-default">
+                                            {link.label}
+                                        </span>
+                                    </span>
+                                ) : (
+                                    <Link
+                                        key={i1}
+                                        href={link.url}
+                                        className="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium leading-5 text-gray-700 transition duration-150 ease-in-out bg-white border border-gray-300 hover:text-gray-500 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700"
+                                    >
+                                        {link.label}
+                                    </Link>
+                                ))
+                        )}
+
+                        {collection.current_page < collection.last_page ? (
+                            <Link
                                 href={collection.next_page_url}
                                 rel="next"
                                 className="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium leading-5 text-gray-500 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-r-md hover:text-gray-400 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-500"
@@ -148,7 +132,7 @@ export default function Pagination({ collection }) {
                                         clipRule="evenodd"
                                     />
                                 </svg>
-                            </a>
+                            </Link>
                         ) : (
                             <span aria-disabled="true">
                                 <span
@@ -168,7 +152,7 @@ export default function Pagination({ collection }) {
                                     </svg>
                                 </span>
                             </span>
-                        )} */}
+                        )}
                     </span>
                 </div>
             </div>

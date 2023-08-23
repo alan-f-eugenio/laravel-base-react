@@ -5,7 +5,6 @@ import NavDropdown from "./NavDropdown";
 export default function Navigation({ activeModules }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
-    // console.log(activeModules);
 
     return (
         <aside className="flex-shrink-0 pb-16 xl:pb-0 xl:w-64">

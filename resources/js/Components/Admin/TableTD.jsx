@@ -1,8 +1,8 @@
 export default function TableTD({
     children,
     classes = "px-6 py-4",
-    attributes,
     main,
+    props,
 }) {
     if (main) {
         return (
@@ -15,7 +15,7 @@ export default function TableTD({
         );
     }
     return (
-        <td className={`${classes}`} {...attributes}>
+        <td className={`${classes}`} {...props}>
             {children}
         </td>
     );

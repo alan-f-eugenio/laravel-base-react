@@ -23,7 +23,6 @@ export default function Index({
     contactStatuses,
     collection,
 }) {
-    console.log(collection);
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -107,7 +106,7 @@ export default function Index({
                                             item.id
                                         )}
                                         title="Excluir"
-                                        destroy={true}
+                                        isDestroy={true}
                                     >
                                         <i className="text-base align-middle icon-[tabler--trash]"></i>
                                     </TableAction>

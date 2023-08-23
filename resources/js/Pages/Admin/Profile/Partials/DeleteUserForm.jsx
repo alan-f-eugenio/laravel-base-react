@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import DangerButton from "@/Components/Breeze/DangerButton";
 import InputError from "@/Components/Breeze/InputError";
 import InputLabel from "@/Components/Breeze/InputLabel";
-import Modal from "@/Components/Breeze/Modal";
+import Modal from "@/Components/Admin/Modal";
 import SecondaryButton from "@/Components/Breeze/SecondaryButton";
 import TextInput from "@/Components/Breeze/TextInput";
 import { useForm } from "@inertiajs/react";
