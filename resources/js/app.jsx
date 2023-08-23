@@ -32,11 +32,6 @@ function resolvePage(name) {
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
-    // resolve: (name) =>
-    //     resolvePageComponent(
-    //         `./Pages/${name}.jsx`,
-    //         import.meta.glob("./Pages/**/*.jsx")
-    //     ),
     resolve: (name) => resolvePage(`${name}`),
     setup({ el, App, props }) {
         const root = createRoot(el);

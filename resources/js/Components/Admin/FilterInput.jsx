@@ -1,13 +1,11 @@
-import { useState } from "react";
-
 export default function FilterInput({
     type = "text",
     inpName,
     title,
     placeholder,
+    data,
+    setData,
 }) {
-    const [inpValue, setInpValue] = useState("");
-
     return (
         <div>
             <label
@@ -22,8 +20,8 @@ export default function FilterInput({
                 id={inpName}
                 name={inpName}
                 placeholder={placeholder}
-                value={inpValue}
-                onChange={e => setInpValue(e.target.value)}
+                value={data ?? ""}
+                onChange={(e) => setData(inpName, e.target.value)}
             />
         </div>
     );

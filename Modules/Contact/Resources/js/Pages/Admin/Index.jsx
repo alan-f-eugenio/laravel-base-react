@@ -12,7 +12,7 @@ import TableTD from "@/Components/Admin/TableTD";
 import TableTDActions from "@/Components/Admin/TableTDActions";
 import TableTH from "@/Components/Admin/TableTh";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, useForm, usePage } from "@inertiajs/react";
 import dayjs from "dayjs";
 import React from "react";
 
@@ -23,6 +23,16 @@ export default function Index({
     contactStatuses,
     collection,
 }) {
+    const { url } = usePage();
+    const params = new URLSearchParams(window.location.search);
+    const entries = Object.fromEntries(params.entries());
+    const { data, setData, get } = useForm(entries);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        get(url.substring(0, url.indexOf("?")));
+    };
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -33,8 +43,13 @@ export default function Index({
             <Head title="Contatos" />
 
             <Section>
-                <Filters gridCols="sm:grid-cols-4">
-                    <FilterSelect title="Status" inpName="seen">
+                <Filters gridCols="sm:grid-cols-4" handleSubmit={handleSubmit}>
+                    <FilterSelect
+                        title="Status"
+                        inpName="seen"
+                        data={data.seen}
+                        setData={setData}
+                    >
                         {contactStatuses.map((statusValue, statusKey) => (
                             <FilterSelectOption
                                 key={statusKey}
@@ -47,16 +62,22 @@ export default function Index({
                         inpName="name"
                         title="Nome"
                         placeholder="Nome do contato"
+                        data={data.name}
+                        setData={setData}
                     />
                     <FilterInput
                         inpName="email"
                         title="E-mail"
                         placeholder="contato@email.com.br"
+                        data={data.email}
+                        setData={setData}
                     />
                     <FilterInput
                         inpName="subject"
                         title="Assunto"
                         placeholder="Assunto do contato"
+                        data={data.subject}
+                        setData={setData}
                     />
                 </Filters>
                 <Table
