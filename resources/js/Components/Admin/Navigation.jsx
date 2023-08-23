@@ -89,7 +89,7 @@ export default function Navigation({ activeModules }) {
                                     <NavDropdown.Link
                                         href={route("admin.contacts.index")}
                                         active={route().current(
-                                            "admin.contacts.index"
+                                            "admin.contacts.*"
                                         )}
                                     >
                                         Contatos

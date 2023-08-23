@@ -40,7 +40,12 @@ export default function TableAction({
     }
     return (
         <>
-            <Modal show={isOpen} onClose={() => setIsOpen(false)} maxWidth="md" classes="p-6 text-center">
+            <Modal
+                show={isOpen}
+                onClose={() => setIsOpen(false)}
+                maxWidth="md"
+                classes="p-6 text-center"
+            >
                 <Dialog.Title>
                     <i className="icon-[tabler--info-circle] text-gray-400 text-6xl" />
                 </Dialog.Title>

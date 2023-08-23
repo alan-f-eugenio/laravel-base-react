@@ -38,9 +38,8 @@ class AdminContactController extends Controller {
             $contact->update(['seen' => 1, 'update_user_id' => auth('admin')->id()]);
         }
 
-        // return view('contact::admin.show', ['item' => $contact]);
         return Inertia::render(
-            'Contact::Admin/Index',
+            'Contact::Admin/Show',
             ['item' => $contact]
         );
     }
