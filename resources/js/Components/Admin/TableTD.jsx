@@ -2,7 +2,7 @@ export default function TableTD({
     children,
     classes = "px-6 py-4",
     main,
-    props,
+    ...props
 }) {
     if (main) {
         return (

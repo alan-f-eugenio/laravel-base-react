@@ -34,7 +34,7 @@ class AdminContactController extends Controller {
     }
 
     public function show(Contact $contact) {
-        if (!$contact->seen) {
+        if (!$contact->seen->value) {
             $contact->update(['seen' => 1, 'update_user_id' => auth('admin')->id()]);
         }
 

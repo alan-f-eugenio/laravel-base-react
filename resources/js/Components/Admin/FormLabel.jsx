@@ -5,7 +5,7 @@ export default function FormLabel({
     inpName,
     inpError = null,
     title,
-    props,
+    ...props
 }) {
     return (
         <div {...props}>

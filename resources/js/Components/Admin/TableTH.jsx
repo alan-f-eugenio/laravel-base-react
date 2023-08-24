@@ -2,7 +2,7 @@ export default function TableTH({
     children,
     classes = "px-6 py-3",
     hidden,
-    props,
+    ...props
 }) {
     return (
         <th

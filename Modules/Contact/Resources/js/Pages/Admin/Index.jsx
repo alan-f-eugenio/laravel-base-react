@@ -12,9 +12,9 @@ import TableTD from "@/Components/Admin/TableTD";
 import TableTDActions from "@/Components/Admin/TableTDActions";
 import TableTH from "@/Components/Admin/TableTh";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm, usePage } from "@inertiajs/react";
+import { Head, router, useForm, usePage } from "@inertiajs/react";
 import dayjs from "dayjs";
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function Index({
     auth,
@@ -26,11 +26,32 @@ export default function Index({
     const { url } = usePage();
     const params = new URLSearchParams(window.location.search);
     const entries = Object.fromEntries(params.entries());
-    const { data, setData, get } = useForm(entries);
+    const { data, setData, get, transform } = useForm(entries);
+
+    // transform((data) =>
+    //     Object.keys(data).forEach((key) => {
+    //         if (data[key] === null) {
+    //             delete data[key];
+    //         }
+    //     })
+    // );
+
+    useEffect(() => {
+        // router.visit(url.substring(0, url.indexOf("?")), {
+        //     only: [collection],
+        //     preserveState: true,
+        //     replace: true,
+        // });
+        get(url.substring(0, url.indexOf("?")), {
+            only: [collection],
+            preserveState: true,
+            replace: true,
+        });
+    }, [data]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        get(url.substring(0, url.indexOf("?")));
+        // get(url.substring(0, url.indexOf("?")));
     };
 
     return (

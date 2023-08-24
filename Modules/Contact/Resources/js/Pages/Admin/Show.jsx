@@ -1,23 +1,13 @@
-import FilterInput from "@/Components/Admin/FilterInput";
-import FilterSelect from "@/Components/Admin/FilterSelect";
-import FilterSelectOption from "@/Components/Admin/FilterSelectOption";
-import Filters from "@/Components/Admin/Filters";
 import FormInput from "@/Components/Admin/FormInput";
 import FormLabel from "@/Components/Admin/FormLabel";
+import FormTextArea from "@/Components/Admin/FormTextArea";
 import Grid from "@/Components/Admin/Grid";
+import PageButton from "@/Components/Admin/PageButton";
 import PageSubTitle from "@/Components/Admin/PageSubTitle";
 import PageTitle from "@/Components/Admin/PageTitle";
 import Section from "@/Components/Admin/Section";
-import StatusBadge from "@/Components/Admin/StatusBadge";
-import Table from "@/Components/Admin/Table";
-import TableAction from "@/Components/Admin/TableAction";
-import TableEmpty from "@/Components/Admin/TableEmpty";
-import TableTD from "@/Components/Admin/TableTD";
-import TableTDActions from "@/Components/Admin/TableTDActions";
-import TableTH from "@/Components/Admin/TableTh";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm, usePage } from "@inertiajs/react";
-import dayjs from "dayjs";
+import { Head } from "@inertiajs/react";
 import React from "react";
 
 export default function Index({ auth, activeModules, flash, item }) {
@@ -25,9 +15,15 @@ export default function Index({ auth, activeModules, flash, item }) {
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <PageTitle title="Contatos">
-                    <PageSubTitle subtitle="Visualizar" />
-                </PageTitle>
+                <>
+                    <PageTitle title="Contatos">
+                        <PageSubTitle subtitle="Visualizar" />
+                    </PageTitle>
+                    <PageButton
+                        href={route("admin.contacts.index")}
+                        title="Listar Contatos"
+                    />
+                </>
             }
             activeModules={activeModules}
             flash={flash}
@@ -43,7 +39,40 @@ export default function Index({ auth, activeModules, flash, item }) {
                         <FormInput
                             inpName="name"
                             inpValue={item.name}
-                            readonly={'readonly'}
+                            readOnly
+                        />
+                    </FormLabel>
+                    <FormLabel inpName="email" title="E-mail">
+                        <FormInput
+                            inpName="email"
+                            inpValue={item.email}
+                            readOnly
+                        />
+                    </FormLabel>
+                    <FormLabel inpName="subject" title="Assunto">
+                        <FormInput
+                            inpName="subject"
+                            inpValue={item.subject}
+                            readOnly
+                        />
+                    </FormLabel>
+                    <FormLabel inpName="phone" title="Telefone">
+                        <FormInput
+                            inpName="phone"
+                            inpValue={item.phone}
+                            readOnly
+                        />
+                    </FormLabel>
+                    <FormLabel
+                        inpName="message"
+                        title="Telefone"
+                        className="sm:col-span-2"
+                    >
+                        <FormTextArea
+                            inpName="message"
+                            inpValue={item.message}
+                            rows="10"
+                            readOnly
                         />
                     </FormLabel>
                 </Grid>
