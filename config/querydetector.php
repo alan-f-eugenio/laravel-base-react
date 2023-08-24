@@ -2,7 +2,7 @@
 
 $arrayExcept = [];
 
-$modules = json_decode(file_get_contents('../modules_statuses.json'));
+$modules = json_decode(file_get_contents(base_path() .'/modules_statuses.json'));
 $productModule = isset($modules->Product) && $modules->Product == true;
 
 if ($productModule) {

@@ -2,7 +2,7 @@
 
 use App\Models\User;
 
-$modules = json_decode(file_get_contents('../modules_statuses.json'));
+$modules = json_decode(file_get_contents(base_path() . '/modules_statuses.json'));
 $customerModule = isset($modules->Customer) && $modules->Customer == true;
 
 if (!$customerModule) {
