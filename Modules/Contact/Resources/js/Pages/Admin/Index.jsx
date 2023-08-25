@@ -27,7 +27,7 @@ export default function Index({
     const params = new URLSearchParams(window.location.search);
     const entries = Object.fromEntries(params.entries());
     const { data, setData, get, transform } = useForm(entries);
-    const [formState, setFormState] = useRemember(entries);
+    const [formState] = useRemember(entries);
 
     useEffect(() => {
         if (data != formState) {
@@ -48,11 +48,6 @@ export default function Index({
         )
     );
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // get(url.substring(0, url.indexOf("?")));
-    };
-
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -63,7 +58,7 @@ export default function Index({
             <Head title="Contatos" />
 
             <Section>
-                <Filters gridCols="sm:grid-cols-4" handleSubmit={handleSubmit}>
+                <Filters gridCols="sm:grid-cols-4">
                     <FilterSelect
                         title="Status"
                         inpName="seen"
@@ -113,7 +108,7 @@ export default function Index({
                         </>
                     }
                 >
-                    {collection.data ? (
+                    {collection.data.length ? (
                         collection.data.map((item, index) => (
                             <tr key={index} className="bg-white border-b">
                                 <TableTD main={true} children={item.name} />

@@ -7,10 +7,8 @@ use Illuminate\Routing\Controller;
 use Inertia\Inertia;
 use Modules\Email\Entities\Email;
 
-class AdminEmailController extends Controller
-{
-    public function index(Request $request)
-    {
+class AdminEmailController extends Controller {
+    public function index(Request $request) {
         $query = Email::orderBy('id', 'desc');
 
         $request->whenFilled('name', function ($value) use ($query) {
@@ -22,12 +20,11 @@ class AdminEmailController extends Controller
 
         return Inertia::render(
             'Email::Admin/Index',
-            ['collection' => $query->paginate(10)]
+            ['collection' => $query->paginate(10)->withQueryString()]
         );
     }
 
-    public function destroy(Email $email)
-    {
+    public function destroy(Email $email) {
         //
         $email->update(['update_user_id' => auth('admin')->id()]);
         $email->delete();
