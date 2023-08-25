@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\DefaultStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserAdminRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Modules\Contact\Helpers\ContactStatus;
 
 class UserController extends Controller {
     // public function __construct() {
@@ -29,7 +32,12 @@ class UserController extends Controller {
             $query->where('status', $value);
         });
 
-        return view('admin.users.index', ['collection' => $query->paginate(10)]);
+        $defaultStatuses = DefaultStatus::array();
+
+        return Inertia::render(
+            'Admin/User/Index',
+            ['collection' => $query->paginate(10)->withQueryString(), 'defaultStatuses' =>  $defaultStatuses]
+        );
     }
 
     /**

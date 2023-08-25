@@ -110,10 +110,20 @@ export default function Navigation({ activeModules }) {
                     )}
                 </div>
                 <div className="py-3 border-t border-gray-200">
-                    <NavDropdown>
+                    <NavDropdown
+                        activeDropdown={
+                            route().current("admin.users.*") ||
+                            route().current("admin.defines.*") ||
+                            route().current("admin.integrations.*")
+                        }
+                    >
                         <NavDropdown.Trigger>Configurações</NavDropdown.Trigger>
                         <NavDropdown.Content>
-                            <NavDropdown>
+                            <NavDropdown
+                                activeDropdown={route().current(
+                                    "admin.users.*"
+                                )}
+                            >
                                 <NavDropdown.Trigger>
                                     Usuários
                                 </NavDropdown.Trigger>

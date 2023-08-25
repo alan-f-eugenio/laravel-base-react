@@ -70,6 +70,7 @@ export default function TableAction({
             <Link
                 className="px-3 py-2 text-xs text-gray-900 bg-white hover:bg-gray-100 hover:text-blue-700"
                 title={title}
+                as="button"
                 onClick={(e) => handleClick(e)}
             >
                 {children}

@@ -2,6 +2,7 @@ import FilterInput from "@/Components/Admin/FilterInput";
 import FilterSelect from "@/Components/Admin/FilterSelect";
 import FilterSelectOption from "@/Components/Admin/FilterSelectOption";
 import Filters from "@/Components/Admin/Filters";
+import PageButton from "@/Components/Admin/PageButton";
 import PageTitle from "@/Components/Admin/PageTitle";
 import Section from "@/Components/Admin/Section";
 import StatusBadge from "@/Components/Admin/StatusBadge";
@@ -20,7 +21,8 @@ export default function Index({
     auth,
     activeModules,
     flash,
-    contactStatuses,
+    defaultStatuses,
+    defaultStatuses2,
     collection,
 }) {
     const { url } = usePage();
@@ -48,28 +50,38 @@ export default function Index({
         )
     );
 
+    console.log(auth)
+
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<PageTitle title="Contatos" />}
+            header={
+                <>
+                    <PageTitle title="Usuários" />
+                    <PageButton
+                        href={route("admin.users.create")}
+                        title="Cadastrar Novo"
+                    />
+                </>
+            }
             activeModules={activeModules}
             flash={flash}
         >
-            <Head title="Contatos" />
+            <Head title="Usuários" />
 
             <Section>
-                <Filters gridCols="sm:grid-cols-4">
+                <Filters gridCols="sm:grid-cols-3">
                     <FilterSelect
                         title="Status"
-                        inpName="seen"
-                        data={data.seen}
+                        inpName="status"
+                        data={data.status}
                         setData={setData}
                     >
-                        {Object.keys(contactStatuses).map((statusKey) => (
+                        {Object.keys(defaultStatuses).map((statusKey) => (
                             <FilterSelectOption
                                 key={statusKey}
                                 inpValue={statusKey}
-                                title={contactStatuses[statusKey]}
+                                title={defaultStatuses[statusKey]}
                             />
                         ))}
                     </FilterSelect>
@@ -82,16 +94,9 @@ export default function Index({
                     />
                     <FilterInput
                         inpName="email"
-                        title="E-mail"
-                        placeholder="contato@email.com.br"
+                        title="Login do Usuário"
+                        placeholder="usuario@login.com.br"
                         data={data.email}
-                        setData={setData}
-                    />
-                    <FilterInput
-                        inpName="subject"
-                        title="Assunto"
-                        placeholder="Assunto do contato"
-                        data={data.subject}
                         setData={setData}
                     />
                 </Filters>
@@ -100,9 +105,9 @@ export default function Index({
                     ths={
                         <>
                             <TableTH children="Nome" />
-                            <TableTH children="E-mail" />
-                            <TableTH children="Assunto" />
+                            <TableTH children="Login" />
                             <TableTH children="Cadastrado" />
+                            <TableTH children="Alterado" />
                             <TableTH children="Status" />
                             <TableTH children="Ações" />
                         </>
@@ -113,32 +118,47 @@ export default function Index({
                             <tr key={index} className="bg-white border-b">
                                 <TableTD main={true} children={item.name} />
                                 <TableTD children={item.email} />
-                                <TableTD children={item.subject} />
                                 <TableTD
                                     children={dayjs(item.created_at).format(
                                         "D[/]MM[/]YYYY H[:]m[:]s"
                                     )}
                                 />
+                                <TableTD
+                                    children={
+                                        item.updated_at != item.created_at
+                                            ? dayjs(item.created_at).format(
+                                                  "D[/]MM[/]YYYY H[:]m[:]s"
+                                              )
+                                            : "Nunca"
+                                    }
+                                />
                                 <TableTD>
                                     <StatusBadge
-                                        condition={!item.seen}
-                                        trueTitle="Novo"
-                                        falseTitle="Visto"
+                                        condition={
+                                            item.status ==
+                                            Object.keys(defaultStatuses)[0]
+                                        }
+                                        trueTitle="Ativo"
+                                        falseTitle="Inativo"
                                     />
                                 </TableTD>
                                 <TableTDActions>
                                     <TableAction
-                                        href={route(
-                                            "admin.contacts.show",
-                                            item.id
-                                        )}
-                                        title="Visualizar"
+                                        href={
+                                            auth.user.id == item.id
+                                                ? route("admin.profile.edit")
+                                                : route(
+                                                      "admin.users.edit",
+                                                      item.id
+                                                  )
+                                        }
+                                        title="Editar"
                                     >
-                                        <i className="text-base align-middle icon-[tabler--eye]"></i>
+                                        <i className="text-base align-middle icon-[tabler--edit]"></i>
                                     </TableAction>
                                     <TableAction
                                         href={route(
-                                            "admin.contacts.destroy",
+                                            "admin.users.destroy",
                                             item.id
                                         )}
                                         title="Excluir"

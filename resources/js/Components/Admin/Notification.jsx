@@ -26,8 +26,8 @@ export default function Notification({ type, text }) {
 
     return (
         <div
-            className={`fixed left-0 right-0 z-10 flex items-center w-11/12 sm:w-auto p-4 mx-auto text-gray-900 border rounded-lg shadow-md bottom-2 sm:bottom-4 sm:right-4 sm:left-auto duration-200 transition ease-in-out ${bgClass} ${borderClass}
-            ${!showingNotification ? "opacity-0" : "opacity-100"}`}
+            className={`fixed left-0 right-0  flex items-center w-11/12 sm:w-auto p-4 mx-auto text-gray-900 border rounded-lg shadow-md bottom-2 sm:bottom-4 sm:right-4 sm:left-auto duration-200 transition ease-in-out ${bgClass} ${borderClass}
+            ${!showingNotification ? "opacity-0 -z-10" : "opacity-100 z-10"}`}
         >
             <div
                 className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 bg-white rounded-lg border ${borderClass}`}
