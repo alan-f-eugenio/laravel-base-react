@@ -5,8 +5,14 @@ export default function Filters({ children, gridCols, handleSubmit }) {
 
     return (
         <div className="p-6 space-y-6 text-gray-900 bg-white shadow-sm sm:rounded-lg">
-            <h2 className="text-lg font-semibold leading-tight text-gray-800">
+            <h2 className="flex items-center justify-between text-lg font-semibold leading-tight text-gray-800">
                 Filtros
+                <Link
+                    href={url.substring(0, url.indexOf("?"))}
+                    className="w-auto px-4 py-2 text-sm font-medium text-center border border-gray-300 rounded-lg focus:ring-4 hover:bg-gray-100 focus:outline-none focus:ring-blue-300"
+                >
+                    Limpar
+                </Link>
             </h2>
             <form
                 action=""
@@ -16,20 +22,14 @@ export default function Filters({ children, gridCols, handleSubmit }) {
             >
                 <div className={`grid gap-6 ${gridCols}`}>
                     {children}
-                    <div className="flex items-end justify-between md:space-x-6 md:justify-start">
-                        <button
+                    {/* <div className="flex items-end justify-between md:space-x-6 md:justify-start">
+                        {/* <button
                             type="submit"
-                            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-auto px-5 py-2.5 text-center"
+                            className="w-auto px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
                         >
                             Filtrar
-                        </button>
-                        <Link
-                            href={url.substring(0, url.indexOf("?"))}
-                            className="focus:ring-4 hover:bg-gray-100 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-auto px-5 py-2.5 text-center"
-                        >
-                            Limpar
-                        </Link>
-                    </div>
+                        </button> }
+                    </div> */}
                 </div>
             </form>
         </div>

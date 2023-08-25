@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 export default function Notification({ type, text }) {
     let bgClass = "bg-green-300";
+    let borderClass = "border-green-600";
     let icon = "icon-[tabler--check] text-green-600";
 
     if (type === "error") {
         bgClass = "bg-red-300";
+        borderClass = "border-red-600";
         icon = "icon-[tabler--x] text-red-600";
     } else if (type === "warning") {
         bgClass = "bg-amber-300";
+        borderClass = "border-amber-600";
         icon = "icon-[tabler--alert-triangle] text-amber-600";
     }
 
@@ -23,11 +26,11 @@ export default function Notification({ type, text }) {
 
     return (
         <div
-            className={`fixed left-0 right-0 z-10 flex items-center w-11/12 sm:w-auto p-4 mx-auto text-gray-900 border rounded-lg shadow-md bottom-2 sm:bottom-4 sm:right-4 sm:left-auto duration-200 transition ease-in-out ${bgClass}
+            className={`fixed left-0 right-0 z-10 flex items-center w-11/12 sm:w-auto p-4 mx-auto text-gray-900 border rounded-lg shadow-md bottom-2 sm:bottom-4 sm:right-4 sm:left-auto duration-200 transition ease-in-out ${bgClass} ${borderClass}
             ${!showingNotification ? "opacity-0" : "opacity-100"}`}
         >
             <div
-                className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 bg-white rounded-lg`}
+                className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 bg-white rounded-lg border ${borderClass}`}
             >
                 <i className={`align-midle ${icon}`}></i>
             </div>

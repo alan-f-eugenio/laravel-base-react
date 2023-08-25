@@ -29,7 +29,7 @@ class AdminContactController extends Controller {
 
         return Inertia::render(
             'Contact::Admin/Index',
-            ['collection' => $query->paginate(10), 'contactStatuses' => $contactStatus]
+            ['collection' => $query->paginate(10)->withQueryString(), 'contactStatuses' => $contactStatus]
         );
     }
 

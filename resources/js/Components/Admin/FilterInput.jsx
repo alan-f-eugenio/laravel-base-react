@@ -15,7 +15,7 @@ export default function FilterInput({
                 {title}
             </label>
             <input
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                className="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 type={type}
                 id={inpName}
                 name={inpName}

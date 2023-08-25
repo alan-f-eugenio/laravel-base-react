@@ -12,7 +12,7 @@ import TableTD from "@/Components/Admin/TableTD";
 import TableTDActions from "@/Components/Admin/TableTDActions";
 import TableTH from "@/Components/Admin/TableTh";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, router, useForm, usePage } from "@inertiajs/react";
+import { Head, useForm, usePage, useRemember } from "@inertiajs/react";
 import dayjs from "dayjs";
 import React, { useEffect } from "react";
 
@@ -27,27 +27,26 @@ export default function Index({
     const params = new URLSearchParams(window.location.search);
     const entries = Object.fromEntries(params.entries());
     const { data, setData, get, transform } = useForm(entries);
-
-    // transform((data) =>
-    //     Object.keys(data).forEach((key) => {
-    //         if (data[key] === null) {
-    //             delete data[key];
-    //         }
-    //     })
-    // );
+    const [formState, setFormState] = useRemember(entries);
 
     useEffect(() => {
-        // router.visit(url.substring(0, url.indexOf("?")), {
-        //     only: [collection],
-        //     preserveState: true,
-        //     replace: true,
-        // });
-        get(url.substring(0, url.indexOf("?")), {
-            only: [collection],
-            preserveState: true,
-            replace: true,
-        });
+        if (data != formState) {
+            get(url.substring(0, url.indexOf("?")), {
+                only: ["collection"],
+                preserveScroll: true,
+                preserveState: true,
+                replace: true,
+            });
+        }
     }, [data]);
+
+    transform((data) =>
+        Object.fromEntries(
+            Object.entries(data).filter(
+                ([k, v]) => String(v).length && k != "page"
+            )
+        )
+    );
 
     const handleSubmit = (e) => {
         e.preventDefault();

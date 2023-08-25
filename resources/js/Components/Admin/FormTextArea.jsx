@@ -9,7 +9,7 @@ export default function FormTextArea({
 }) {
     return (
         <textarea
-            className="textEditor bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:bg-gray-300 read-only:bg-gray-300"
+            className="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg textEditor bg-gray-50 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-300 read-only:bg-gray-300"
             rows={rows}
             name={inpName}
             id={inpName}

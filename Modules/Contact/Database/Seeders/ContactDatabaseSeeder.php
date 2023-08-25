@@ -15,6 +15,6 @@ class ContactDatabaseSeeder extends Seeder {
     public function run() {
         Model::unguard();
 
-        Contact::factory(11)->create();
+        Contact::factory(21)->create();
     }
 }

@@ -33,7 +33,7 @@ export default function Table({
                 <tfoot>
                     {tfoot ? (
                         { tfoot }
-                    ) : collection.last_page <= 2 ? (
+                    ) : collection.last_page > 1 ? (
                         <tr>
                             <td className="px-6 py-4" colSpan="99">
                                 <Pagination collection={collection} />
