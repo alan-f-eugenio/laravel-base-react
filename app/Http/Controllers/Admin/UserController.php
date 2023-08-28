@@ -47,7 +47,12 @@ class UserController extends Controller {
         //
         $item = new User;
 
-        return view('admin.users.create_edit', ['item' => $item]);
+        $defaultStatuses = DefaultStatus::array();
+
+        return Inertia::render(
+            'Admin/User/CreateEdit',
+            ['item' => $item, 'defaultStatuses' =>  $defaultStatuses]
+        );
     }
 
     /**
@@ -69,7 +74,12 @@ class UserController extends Controller {
      */
     public function edit(User $user) {
         //
-        return view('admin.users.create_edit', ['item' => $user]);
+        $defaultStatuses = DefaultStatus::array();
+
+        return Inertia::render(
+            'Admin/User/CreateEdit',
+            ['item' => $user, 'defaultStatuses' =>  $defaultStatuses]
+        );
     }
 
     /**
@@ -78,12 +88,12 @@ class UserController extends Controller {
     public function update(UserAdminRequest $request, User $user) {
         //
         $attributes = $request->validated();
+        // dd($attributes);
+        // exit;
         if (isset($attributes['password'])) {
             $attributes['password'] = bcrypt($attributes['password']);
         }
         $attributes['update_user_id'] = auth('admin')->id();
-
-        $user->update($attributes);
 
         return redirect()->route('admin.users.edit', $user)->with('message', ['type' => 'success', 'text' => 'Usuário alterado com sucesso.']);
     }

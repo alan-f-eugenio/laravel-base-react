@@ -21,6 +21,7 @@ export default function Notification({ type, text }) {
             setShowingNotification(false);
         }, 5000);
 
+        console.log(text);
         return () => clearTimeout(timer);
     }, []);
 

@@ -1,6 +1,6 @@
-export default function FormError({ error }) {
-    if (!error) {
+export default function FormError({ inpName, errors }) {
+    if (!errors || !(inpName in errors)) {
         return <></>;
     }
-    return <label class="text-red-500">{error}</label>;
+    return <label className="text-red-500">{errors[inpName]}</label>;
 }

@@ -8,6 +8,7 @@ import Section from "@/Components/Admin/Section";
 import StatusBadge from "@/Components/Admin/StatusBadge";
 import Table from "@/Components/Admin/Table";
 import TableAction from "@/Components/Admin/TableAction";
+import TableActionDisabled from "@/Components/Admin/TableActionDisabled";
 import TableEmpty from "@/Components/Admin/TableEmpty";
 import TableTD from "@/Components/Admin/TableTD";
 import TableTDActions from "@/Components/Admin/TableTDActions";
@@ -22,7 +23,6 @@ export default function Index({
     activeModules,
     flash,
     defaultStatuses,
-    defaultStatuses2,
     collection,
 }) {
     const { url } = usePage();
@@ -49,8 +49,6 @@ export default function Index({
             )
         )
     );
-
-    console.log(auth)
 
     return (
         <AuthenticatedLayout
@@ -126,7 +124,7 @@ export default function Index({
                                 <TableTD
                                     children={
                                         item.updated_at != item.created_at
-                                            ? dayjs(item.created_at).format(
+                                            ? dayjs(item.updated_at).format(
                                                   "D[/]MM[/]YYYY H[:]m[:]s"
                                               )
                                             : "Nunca"
@@ -156,16 +154,22 @@ export default function Index({
                                     >
                                         <i className="text-base align-middle icon-[tabler--edit]"></i>
                                     </TableAction>
-                                    <TableAction
-                                        href={route(
-                                            "admin.users.destroy",
-                                            item.id
-                                        )}
-                                        title="Excluir"
-                                        isDestroy={true}
-                                    >
-                                        <i className="text-base align-middle icon-[tabler--trash]"></i>
-                                    </TableAction>
+                                    {auth.user.id != item.id ? (
+                                        <TableAction
+                                            href={route(
+                                                "admin.users.destroy",
+                                                item.id
+                                            )}
+                                            title="Excluir"
+                                            isDestroy={true}
+                                        >
+                                            <i className="text-base align-middle icon-[tabler--trash]"></i>
+                                        </TableAction>
+                                    ) : (
+                                        <TableActionDisabled>
+                                            <i className="text-base align-middle icon-[tabler--trash]"></i>
+                                        </TableActionDisabled>
+                                    )}
                                 </TableTDActions>
                             </tr>
                         ))

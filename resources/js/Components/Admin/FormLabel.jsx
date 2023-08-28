@@ -3,7 +3,7 @@ import FormError from "./FormError";
 export default function FormLabel({
     children,
     inpName,
-    inpError = null,
+    errors = {},
     title,
     ...props
 }) {
@@ -16,7 +16,7 @@ export default function FormLabel({
                 {title}
             </label>
             {children}
-            {/* <FormError error={inpError} /> */}
+            <FormError inpName={inpName} errors={errors} />
         </div>
     );
 }
