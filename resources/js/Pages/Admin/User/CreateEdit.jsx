@@ -12,9 +12,9 @@ import PageTitle from "@/Components/Admin/PageTitle";
 import Section from "@/Components/Admin/Section";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function Index({
+export default function CreateEdit({
     auth,
     activeModules,
     flash,
@@ -36,7 +36,7 @@ export default function Index({
         if (!data.status) {
             newData = { ...data, status: Object.keys(defaultStatuses)[0] };
         }
-        if (!data.changePass) {
+        if (!data.changePass && item.id) {
             newData = Object.fromEntries(
                 Object.entries(newData).filter(
                     ([k, v]) => k != "password" && k != "password_confirmation"

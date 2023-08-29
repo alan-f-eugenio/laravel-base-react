@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\DefineAdminRequest;
+use Inertia\Inertia;
 
 class DefineController extends Controller {
     /**
@@ -13,7 +14,10 @@ class DefineController extends Controller {
         //
         $define = config('defines');
 
-        return view('admin.defines.edit', ['item' => $define]);
+        return Inertia::render(
+            'Admin/Define/Edit',
+            ['item' => $define]
+        );
     }
 
     /**

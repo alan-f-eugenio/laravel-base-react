@@ -13,7 +13,7 @@ export default function TableAction({
 }) {
     const [isOpen, setIsOpen] = useState(false);
 
-    const { delete: destroy } = useForm({});
+    const { delete: destroy, processing } = useForm({});
     const handleDestroy = (e) => {
         e.preventDefault();
         destroy(href, { preserveScroll: true });
@@ -72,6 +72,7 @@ export default function TableAction({
                 title={title}
                 as="button"
                 onClick={(e) => handleClick(e)}
+                disabled={processing}
             >
                 {children}
             </Link>

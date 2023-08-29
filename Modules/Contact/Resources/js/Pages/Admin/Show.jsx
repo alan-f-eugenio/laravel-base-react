@@ -8,9 +8,8 @@ import PageTitle from "@/Components/Admin/PageTitle";
 import Section from "@/Components/Admin/Section";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import React from "react";
 
-export default function Index({ auth, activeModules, flash, item }) {
+export default function Show({ auth, activeModules, flash, item }) {
     return (
         <AuthenticatedLayout
             user={auth.user}

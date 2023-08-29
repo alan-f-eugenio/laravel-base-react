@@ -11,7 +11,7 @@ import TableTH from "@/Components/Admin/TableTh";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, usePage, useRemember } from "@inertiajs/react";
 import dayjs from "dayjs";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 export default function Index({ auth, activeModules, flash, collection }) {
     const { url } = usePage();

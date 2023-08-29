@@ -5,6 +5,7 @@ export default function FormTextArea({
     inpValue,
     placeholder = "",
     rows = 5,
+    setData,
     ...props
 }) {
     return (
@@ -15,6 +16,7 @@ export default function FormTextArea({
             id={inpName}
             placeholder={placeholder}
             defaultValue={inpValue}
+            onChange={(e) => setData(inpName, e.target.value)}
             {...props}
         ></textarea>
     );

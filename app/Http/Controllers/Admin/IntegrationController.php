@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\DefaultStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Integration;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class IntegrationController extends Controller {
     /**
@@ -13,8 +15,12 @@ class IntegrationController extends Controller {
     public function edit() {
         //
         $integrations = config('integrations') ?: [];
+        $defaultStatuses = DefaultStatus::array();
 
-        return view('admin.integrations.edit', ['itens' => $integrations]);
+        return Inertia::render(
+            'Admin/Integration/Edit',
+            ['item' => $integrations, 'defaultStatuses' => $defaultStatuses]
+        );
     }
 
     /**
@@ -22,6 +28,7 @@ class IntegrationController extends Controller {
      */
     public function update(Request $request) {
         //
+        dd($request, $request->integration, $request->content);
         foreach ($request->integration as $id => $fields) {
             if ($integration = Integration::firstWhere('id', $id)) {
                 $attributes = [
