@@ -51,11 +51,11 @@ const Trigger = ({ children }) => {
             >
                 {children}
                 <i
-                    className={`align-middle ms-3 ${
+                    className={`${
                         open
                             ? "icon-[tabler--chevron-up]"
                             : "icon-[tabler--chevron-down]"
-                    }`}
+                    } align-middle ms-3`}
                 ></i>
             </button>
         </>

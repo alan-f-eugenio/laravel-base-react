@@ -6,9 +6,9 @@ export default function FormToggleStructure({
 }) {
     return (
         <div
-            className={`flex items-center h-10 text-sm border border-gray-300 rounded-lg px-2.5 ${
+            className={`${
                 disabled && "bg-gray-300"
-            }`}
+            } flex items-center h-10 text-sm border border-gray-300 rounded-lg px-2.5`}
             {...props}
         >
             <label className="relative inline-flex items-center cursor-pointer">

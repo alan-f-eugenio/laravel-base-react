@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Notification from "@/Components/Admin/Notification";
 import Navigation from "@/Components/Admin/Navigation";
 
@@ -9,6 +9,12 @@ export default function Authenticated({
     children,
     flash,
 }) {
+    const [flashMessage, setFlashMessage] = useState(flash.message);
+
+    useEffect(() => {
+        setFlashMessage(flash.message);
+    }, [flash]);
+
     return (
         <div className="flex flex-col min-h-screen bg-gray-100 xl:flex-row">
             <Navigation activeModules={activeModules} />
@@ -24,10 +30,11 @@ export default function Authenticated({
 
                 <main className="container px-6">{children}</main>
 
-                {flash?.message && (
+                {flashMessage && (
                     <Notification
-                        type={flash.message.type}
-                        text={flash.message.text}
+                        type={flashMessage.type}
+                        text={flashMessage.text}
+                        setFlashMessage={setFlashMessage}
                     />
                 )}
             </div>

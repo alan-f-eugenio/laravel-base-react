@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-export default function Notification({ type, text }) {
+export default function Notification({ type, text, setFlashMessage }) {
     let bgClass = "bg-green-300";
     let borderClass = "border-green-600";
     let icon = "icon-[tabler--check] text-green-600";
@@ -17,23 +17,34 @@ export default function Notification({ type, text }) {
     const [showingNotification, setShowingNotification] = useState(true);
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setShowingNotification(false);
-        }, 5000);
+        if (showingNotification) {
+            const timer = setTimeout(() => {
+                setShowingNotification(false);
+                setTimeout(() => {
+                    setFlashMessage({ type: null, text: null });
+                }, 200);
+            }, 5000);
 
-        console.log(text);
-        return () => clearTimeout(timer);
-    }, []);
+            return () => clearTimeout(timer);
+        }
+    }, [showingNotification]);
+
+    useEffect(() => {
+        if (text) {
+            setShowingNotification(true);
+        }
+    }, [text]);
 
     return (
         <div
-            className={`fixed left-0 right-0  flex items-center w-11/12 sm:w-auto p-4 mx-auto text-gray-900 border rounded-lg shadow-md bottom-2 sm:bottom-4 sm:right-4 sm:left-auto duration-200 transition ease-in-out ${bgClass} ${borderClass}
-            ${!showingNotification ? "opacity-0 -z-10" : "opacity-100 z-10"}`}
+            className={`${
+                !showingNotification ? "opacity-0 -z-10" : "opacity-100 z-10"
+            } ${bgClass} ${borderClass} fixed left-0 right-0  flex items-center w-11/12 sm:w-auto p-4 mx-auto text-gray-900 border rounded-lg shadow-md bottom-2 sm:bottom-4 sm:right-4 sm:left-auto duration-200 transition-all ease-in-out`}
         >
             <div
-                className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 bg-white rounded-lg border ${borderClass}`}
+                className={`${borderClass} inline-flex items-center justify-center flex-shrink-0 w-8 h-8 bg-white rounded-lg border`}
             >
-                <i className={`align-midle ${icon}`}></i>
+                <i className={`${icon} align-midle`}></i>
             </div>
             <div className={`mx-4 text-sm rounded-lg`}>{text}</div>
             <button

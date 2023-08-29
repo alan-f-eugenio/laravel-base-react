@@ -21,17 +21,7 @@ export default function Index({
     item,
     defaultStatuses,
 }) {
-    const {
-        data,
-        setData,
-        submit,
-        transform,
-        errors,
-        reset,
-        setDefaults,
-        put,
-        post,
-    } = useForm(
+    const { data, setData, submit, transform, errors, reset, processing } = useForm(
         Object.fromEntries(
             Object.entries(item).filter(
                 ([k, v]) => k != "password" && k != "password_confirmation"
@@ -39,33 +29,6 @@ export default function Index({
         )
     );
     const [changePass, setChangePass] = useState(item.id ? false : true);
-
-    // console.log(data.password);
-
-    // console.log(
-    //     Object.fromEntries(
-    //         Object.entries(item).filter(
-    //             ([k, v]) => k != "password" && k != "password_confirmation"
-    //         )
-    //     )
-    // );
-
-    useEffect(() => {
-        // let newData = Object.fromEntries(
-        //     Object.entries(item).filter(
-        //         ([k, v]) => k != "password" && k != "password_confirmation"
-        //     )
-        // );
-        // newData = { ...newData, password: "", password_confirmation: "" };
-        // setData(newData);
-        // reset();
-        // setData("password", "");
-        // setData("password_confirmation", "");
-        // setDefaults("password", "");
-        // setDefaults("password_confirmation", "");
-        // reset();
-        // console.log(data);
-    }, []);
 
     transform((data) => {
         if (!data.status) {
@@ -76,31 +39,15 @@ export default function Index({
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("SUBMIT");
-        console.log(data.password);
-        // submit(
-        //     item.id ? "put" : "post",
-        //     item.id
-        //         ? route("admin.users.update", item.id)
-        //         : route("admin.users.store"),
-        //     {
-        //         preserveState: false,
-        //         onSuccess: () => {
-        //             // reset();
-        //             // setData("password", "");
-        //             // setData("password_confirmation", "");
-        //             // setDefaults("password", "");
-        //             // setDefaults("password_confirmation", "");
-        //             // reset();
-        //             // console.log(data);
-        //         },
-        //     }
-        // );
-        if (item.id) {
-            put(route("admin.users.update", item.id));
-        } else {
-            post(route("admin.users.store"));
-        }
+        submit(
+            item.id ? "put" : "post",
+            item.id
+                ? route("admin.users.update", item.id)
+                : route("admin.users.store"),
+            {
+                onSuccess: () => reset(),
+            }
+        );
     };
 
     useEffect(() => {
@@ -131,7 +78,7 @@ export default function Index({
             <Head title="Usuários" />
 
             <Section>
-                <Form editing={Boolean(item.id)} handleSubmit={handleSubmit}>
+                <Form processing={processing} editing={Boolean(item.id)} handleSubmit={handleSubmit}>
                     <Grid gridCols="sm:grid-cols-3">
                         <FormLabel
                             inpName="status"
@@ -157,7 +104,7 @@ export default function Index({
                         <FormLabel inpName="name" title="Nome" errors={errors}>
                             <FormInput
                                 inpName="name"
-                                inpValue={item.name}
+                                inpValue={data.name}
                                 placeholder="Nome do usuário"
                                 setData={setData}
                                 required
@@ -170,7 +117,7 @@ export default function Index({
                         >
                             <FormInput
                                 inpName="email"
-                                inpValue={item.email}
+                                inpValue={data.email}
                                 placeholder="usuario@login.com.br"
                                 setData={setData}
                                 required
@@ -196,7 +143,7 @@ export default function Index({
                                 inpName="password"
                                 placeholder="••••••••"
                                 inpValue={data.password}
-                                // type="password"
+                                type="password"
                                 setData={setData}
                                 disabled={!changePass}
                                 required
@@ -211,7 +158,7 @@ export default function Index({
                                 inpName="password_confirmation"
                                 placeholder="••••••••"
                                 inpValue={data.password_confirmation}
-                                // type="password"
+                                type="password"
                                 setData={setData}
                                 disabled={!changePass}
                                 required

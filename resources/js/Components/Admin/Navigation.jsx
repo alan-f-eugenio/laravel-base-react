@@ -9,9 +9,9 @@ export default function Navigation({ activeModules }) {
     return (
         <aside className="flex-shrink-0 pb-16 xl:pb-0 xl:w-64">
             <div
-                className={`fixed z-10 w-screen h-screen bg-gray-400 opacity-50 xl:hidden ${
+                className={`${
                     !showingNavigationDropdown ? "hidden" : "block"
-                }`}
+                } fixed z-10 w-screen h-screen bg-gray-400 opacity-50 xl:hidden`}
             ></div>
             <nav className="fixed z-20 flex items-center justify-between w-full h-16 px-6 bg-white border-b border-gray-200 xl:hidden">
                 <h2 className="font-medium">Painel Administrativo</h2>

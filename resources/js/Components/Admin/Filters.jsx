@@ -8,12 +8,8 @@ export default function Filters({ children, gridCols }) {
             <h2 className="text-lg font-semibold leading-tight text-gray-800">
                 Filtros
             </h2>
-            <form
-                action=""
-                method="get"
-                className="space-y-6"
-            >
-                <div className={`grid gap-6 ${gridCols}`}>
+            <form action="" method="get" className="space-y-6">
+                <div className={`${gridCols} grid gap-6`}>
                     {children}
                     <div className="flex items-end justify-between md:space-x-6 md:justify-start">
                         <Link

@@ -19,7 +19,7 @@ export default function FormInput({
             id={id ?? inpName}
             name={inpName}
             placeholder={placeholder}
-            defaultValue={inpValue}
+            value={inpValue}
             onChange={(e) => setData(inpName, e.target.value)}
             {...props}
         />
