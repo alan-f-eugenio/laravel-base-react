@@ -9,9 +9,6 @@ export default function FormInput({
     setData,
     ...props
 }) {
-    // if (inpName == "password") {
-    //     console.log(inpValue);
-    // }
     return (
         <input
             className={classes}

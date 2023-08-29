@@ -21,20 +21,29 @@ export default function Index({
     item,
     defaultStatuses,
 }) {
-    const { data, setData, submit, transform, errors, reset, processing } = useForm(
-        Object.fromEntries(
-            Object.entries(item).filter(
-                ([k, v]) => k != "password" && k != "password_confirmation"
+    const { data, setData, submit, transform, errors, reset, processing } =
+        useForm(
+            Object.fromEntries(
+                Object.entries(item).filter(
+                    ([k, v]) => k != "password" && k != "password_confirmation"
+                )
             )
-        )
-    );
+        );
     const [changePass, setChangePass] = useState(item.id ? false : true);
 
     transform((data) => {
+        let newData = data;
         if (!data.status) {
-            return { ...data, status: Object.keys(defaultStatuses)[0] };
+            newData = { ...data, status: Object.keys(defaultStatuses)[0] };
         }
-        return data;
+        if (!data.changePass) {
+            newData = Object.fromEntries(
+                Object.entries(newData).filter(
+                    ([k, v]) => k != "password" && k != "password_confirmation"
+                )
+            );
+        }
+        return newData;
     });
 
     const handleSubmit = (e) => {
@@ -78,7 +87,11 @@ export default function Index({
             <Head title="Usuários" />
 
             <Section>
-                <Form processing={processing} editing={Boolean(item.id)} handleSubmit={handleSubmit}>
+                <Form
+                    processing={processing}
+                    editing={Boolean(item.id)}
+                    handleSubmit={handleSubmit}
+                >
                     <Grid gridCols="sm:grid-cols-3">
                         <FormLabel
                             inpName="status"
