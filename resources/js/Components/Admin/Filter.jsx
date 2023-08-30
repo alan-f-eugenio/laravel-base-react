@@ -1,6 +1,6 @@
 import { Link, usePage } from "@inertiajs/react";
 
-export default function Filters({ children, gridCols }) {
+export default function Filter({ children, gridCols }) {
     const { url } = usePage();
 
     return (

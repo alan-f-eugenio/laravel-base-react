@@ -26,10 +26,9 @@ const NavDropdown = ({ children, activeDropdown = false }) => {
                 className={`${
                     active
                         ? "text-indigo-700 bg-indigo-50 border-indigo-400 focus:text-indigo-800 focus:bg-indigo-100 focus:border-indigo-700 "
-                        : (open
-                              ? "bg-gray-50 border-gray-300 "
-                              : "text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 ") +
-                          "border-white"
+                        : open
+                        ? "bg-gray-50 border-gray-300 "
+                        : "text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 border-white"
                 } block w-full px-3 border-l-4 text-left text-sm font-medium focus:outline-none transition duration-75 ease-in-out`}
             >
                 {children}

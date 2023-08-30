@@ -108,6 +108,55 @@ export default function Navigation({ activeModules }) {
                             </NavDropdown.Content>
                         </NavDropdown>
                     )}
+                    {(activeModules.includes("Banner") ||
+                        activeModules.includes("Content")) && (
+                        <NavDropdown
+                            activeDropdown={
+                                route().current("admin.banners.*") ||
+                                route().current("admin.contentNavs.*") ||
+                                route().current("admin.contents.*")
+                            }
+                        >
+                            <NavDropdown.Trigger>
+                                Institucional
+                            </NavDropdown.Trigger>
+                            <NavDropdown.Content>
+                                {activeModules.includes("Banner") && (
+                                    <NavDropdown
+                                        activeDropdown={route().current(
+                                            "admin.banners.*"
+                                        )}
+                                    >
+                                        <NavDropdown.Trigger>
+                                            Banners
+                                        </NavDropdown.Trigger>
+                                        <NavDropdown.Content>
+                                            <NavDropdown.Link
+                                                href={route(
+                                                    "admin.banners.create"
+                                                )}
+                                                active={route().current(
+                                                    "admin.banners.create"
+                                                )}
+                                            >
+                                                Cadastrar
+                                            </NavDropdown.Link>
+                                            <NavDropdown.Link
+                                                href={route(
+                                                    "admin.banners.index"
+                                                )}
+                                                active={route().current(
+                                                    "admin.banners.index"
+                                                )}
+                                            >
+                                                Listar
+                                            </NavDropdown.Link>
+                                        </NavDropdown.Content>
+                                    </NavDropdown>
+                                )}
+                            </NavDropdown.Content>
+                        </NavDropdown>
+                    )}
                 </div>
                 <div className="py-3 border-t border-gray-200">
                     <NavDropdown

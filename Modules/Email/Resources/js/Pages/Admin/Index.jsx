@@ -1,5 +1,5 @@
 import FilterInput from "@/Components/Admin/FilterInput";
-import Filters from "@/Components/Admin/Filters";
+import Filter from "@/Components/Admin/Filter";
 import PageTitle from "@/Components/Admin/PageTitle";
 import Section from "@/Components/Admin/Section";
 import Table from "@/Components/Admin/Table";
@@ -49,7 +49,7 @@ export default function Index({ auth, activeModules, flash, collection }) {
             <Head title="Lista de E-mails" />
 
             <Section>
-                <Filters gridCols="sm:grid-cols-2">
+                <Filter gridCols="sm:grid-cols-2">
                     <FilterInput
                         inpName="name"
                         title="Nome"
@@ -64,7 +64,7 @@ export default function Index({ auth, activeModules, flash, collection }) {
                         data={data.email}
                         setData={setData}
                     />
-                </Filters>
+                </Filter>
                 <Table
                     collection={collection}
                     ths={

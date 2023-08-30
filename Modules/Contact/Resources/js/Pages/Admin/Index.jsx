@@ -1,7 +1,7 @@
 import FilterInput from "@/Components/Admin/FilterInput";
 import FilterSelect from "@/Components/Admin/FilterSelect";
 import FilterSelectOption from "@/Components/Admin/FilterSelectOption";
-import Filters from "@/Components/Admin/Filters";
+import Filter from "@/Components/Admin/Filter";
 import PageTitle from "@/Components/Admin/PageTitle";
 import Section from "@/Components/Admin/Section";
 import StatusBadge from "@/Components/Admin/StatusBadge";
@@ -58,7 +58,7 @@ export default function Index({
             <Head title="Contatos" />
 
             <Section>
-                <Filters gridCols="sm:grid-cols-4">
+                <Filter gridCols="sm:grid-cols-4">
                     <FilterSelect
                         title="Status"
                         inpName="seen"
@@ -94,7 +94,7 @@ export default function Index({
                         data={data.subject}
                         setData={setData}
                     />
-                </Filters>
+                </Filter>
                 <Table
                     collection={collection}
                     ths={

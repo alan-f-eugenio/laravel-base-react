@@ -2,9 +2,11 @@
 
 namespace Modules\Banner\Http\Controllers;
 
+use App\Helpers\DefaultStatus;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 use Modules\Banner\Entities\Banner;
 use Modules\Banner\Entities\BannerLocal;
 use Modules\Banner\Http\Requests\AdminBannerRequest;
@@ -34,7 +36,12 @@ class AdminBannerController extends Controller {
         $item = new Banner;
         $bannerLocals = BannerLocal::all();
 
-        return view('banner::admin.create_edit', ['item' => $item, 'bannerLocals' => $bannerLocals]);
+        $defaultStatuses = DefaultStatus::array();
+
+        return Inertia::render(
+            'Banner::Admin/CreateEdit',
+            ['item' => $item, 'bannerLocals' => $bannerLocals, 'defaultStatuses' =>  $defaultStatuses]
+        );
     }
 
     public function store(AdminBannerRequest $request) {

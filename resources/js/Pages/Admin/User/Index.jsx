@@ -1,7 +1,7 @@
 import FilterInput from "@/Components/Admin/FilterInput";
 import FilterSelect from "@/Components/Admin/FilterSelect";
 import FilterSelectOption from "@/Components/Admin/FilterSelectOption";
-import Filters from "@/Components/Admin/Filters";
+import Filter from "@/Components/Admin/Filter";
 import PageButton from "@/Components/Admin/PageButton";
 import PageTitle from "@/Components/Admin/PageTitle";
 import Section from "@/Components/Admin/Section";
@@ -68,7 +68,7 @@ export default function Index({
             <Head title="Usuários" />
 
             <Section>
-                <Filters gridCols="sm:grid-cols-3">
+                <Filter gridCols="sm:grid-cols-3">
                     <FilterSelect
                         title="Status"
                         inpName="status"
@@ -97,7 +97,7 @@ export default function Index({
                         data={data.email}
                         setData={setData}
                     />
-                </Filters>
+                </Filter>
                 <Table
                     collection={collection}
                     ths={
