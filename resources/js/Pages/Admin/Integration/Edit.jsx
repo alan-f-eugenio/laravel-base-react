@@ -84,6 +84,7 @@ export default function Edit({
                                                 inpName={`{"integration":{"${integration[1].id}":{"status":"inpValue"}}}`}
                                                 data={integration[1].status}
                                                 setData={setData}
+                                                required
                                             >
                                                 {Object.keys(
                                                     defaultStatuses

@@ -8,9 +8,8 @@ export default function Form({
 }) {
     return (
         <form
-            method="post"
             className="p-6 space-y-5 bg-white shadow-sm sm:rounded-lg"
-            encType={hasFiles && 'multipart/form-data'}
+            encType={hasFiles ? 'multipart/form-data' : ''}
             {...props}
             onSubmit={(e) => handleSubmit(e)}
         >

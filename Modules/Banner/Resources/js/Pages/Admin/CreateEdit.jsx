@@ -1,6 +1,7 @@
 import FilterSelectOption from "@/Components/Admin/FilterSelectOption";
 import Form from "@/Components/Admin/Form";
 import FormInput from "@/Components/Admin/FormInput";
+import FormInputFile from "@/Components/Admin/FormInputFile";
 import FormLabel from "@/Components/Admin/FormLabel";
 import FormSelect from "@/Components/Admin/FormSelect";
 import FormToggleInput from "@/Components/Admin/FormToggleInput";
@@ -22,12 +23,38 @@ export default function CreateEdit({
     bannerLocals,
     defaultStatuses,
 }) {
-    const { data, setData, submit, transform, errors, reset, processing } =
-        useForm(item);
+    const { data, setData, post, transform, errors, reset, processing } =
+        useForm(
+            Object.fromEntries(
+                Object.entries(item).filter(([k, v]) => k != "filename")
+            )
+        );
+
+    transform((data) => {
+        let newData = data;
+        if (!newData.status) {
+            newData = { ...newData, status: Object.keys(defaultStatuses)[0] };
+        }
+        if (!newData.local_id) {
+            newData = { ...newData, local_id: bannerLocals[0].id };
+        }
+        if (item.id) {
+            newData = { ...newData, _method: "put" };
+        }
+        console.log(newData);
+        return newData;
+    });
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(data)
+        post(
+            item.id
+                ? route("admin.banners.update", item.id)
+                : route("admin.banners.store"),
+            {
+                onSuccess: () => reset(),
+            }
+        );
     };
 
     return (
@@ -79,6 +106,61 @@ export default function CreateEdit({
                                     )
                                 )}
                             </FormSelect>
+                        </FormLabel>
+                        <FormLabel
+                            inpName="title"
+                            title="Título"
+                            errors={errors}
+                        >
+                            <FormInput
+                                inpName="title"
+                                inpValue={data.title}
+                                placeholder="Título do banner"
+                                setData={setData}
+                                required
+                            />
+                        </FormLabel>
+                        <FormLabel inpName="link" title="Link" errors={errors}>
+                            <FormInput
+                                inpName="link"
+                                inpValue={data.link}
+                                placeholder="Link do banner"
+                                setData={setData}
+                            />
+                        </FormLabel>
+                        <FormLabel
+                            inpName="local_id"
+                            title="Local"
+                            errors={errors}
+                        >
+                            <FormSelect
+                                inpName="local_id"
+                                data={data.local_id}
+                                setData={setData}
+                                required
+                            >
+                                {bannerLocals.map((bannerLocal) => (
+                                    <FilterSelectOption
+                                        key={bannerLocal.id}
+                                        inpValue={bannerLocal.id}
+                                        title={bannerLocal.title}
+                                    />
+                                ))}
+                            </FormSelect>
+                        </FormLabel>
+                        <FormLabel
+                            inpName="filename"
+                            title={`${
+                                item.id ? "Alterar" : "Cadastrar"
+                            } Imagem`}
+                            errors={errors}
+                        >
+                            <FormInputFile
+                                inpName="filename"
+                                inpValue={data.filename?.name ?? ""}
+                                setData={setData}
+                                required={!item.id}
+                            />
                         </FormLabel>
                     </Grid>
                 </Form>

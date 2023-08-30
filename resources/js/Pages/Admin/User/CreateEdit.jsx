@@ -133,6 +133,7 @@ export default function CreateEdit({
                                 inpValue={data.email}
                                 placeholder="usuario@login.com.br"
                                 setData={setData}
+                                autoComplete="username"
                                 required
                             />
                         </FormLabel>
@@ -159,6 +160,7 @@ export default function CreateEdit({
                                 type="password"
                                 setData={setData}
                                 disabled={!changePass}
+                                autoComplete="new-password"
                                 required
                             />
                         </FormLabel>
@@ -174,6 +176,7 @@ export default function CreateEdit({
                                 type="password"
                                 setData={setData}
                                 disabled={!changePass}
+                                autoComplete="new-password"
                                 required
                             />
                         </FormLabel>

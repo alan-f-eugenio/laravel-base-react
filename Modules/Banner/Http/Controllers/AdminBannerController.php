@@ -58,8 +58,12 @@ class AdminBannerController extends Controller {
 
     public function edit(Banner $banner) {
         $bannerLocals = BannerLocal::all();
+        $defaultStatuses = DefaultStatus::array();
 
-        return view('banner::admin.create_edit', ['item' => $banner, 'bannerLocals' => $bannerLocals]);
+        return Inertia::render(
+            'Banner::Admin/CreateEdit',
+            ['item' => $banner, 'bannerLocals' => $bannerLocals, 'defaultStatuses' =>  $defaultStatuses]
+        );
     }
 
     public function update(AdminBannerRequest $request, Banner $banner) {

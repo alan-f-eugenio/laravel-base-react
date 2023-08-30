@@ -5,7 +5,6 @@ export default function FormInput({
     placeholder = "",
     inpValue = "",
     classes = "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 disabled:bg-gray-300 read-only:bg-gray-300",
-    data,
     setData,
     ...props
 }) {
@@ -16,7 +15,7 @@ export default function FormInput({
             id={id ?? inpName}
             name={inpName}
             placeholder={placeholder}
-            value={inpValue}
+            value={inpValue ?? ''}
             onChange={(e) => setData(inpName, e.target.value)}
             {...props}
         />
