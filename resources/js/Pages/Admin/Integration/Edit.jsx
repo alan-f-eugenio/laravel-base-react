@@ -4,14 +4,13 @@ import FormInput from "@/Components/Admin/FormInput";
 import FormLabel from "@/Components/Admin/FormLabel";
 import FormSelect from "@/Components/Admin/FormSelect";
 import FormSubtitle from "@/Components/Admin/FormSubtitle";
-import FormTextArea from "@/Components/Admin/FormTextArea";
 import Grid from "@/Components/Admin/Grid";
 import PageSubTitle from "@/Components/Admin/PageSubTitle";
 import PageTitle from "@/Components/Admin/PageTitle";
 import Section from "@/Components/Admin/Section";
+import { capitalize, deepMerge } from "@/Helpers/utils";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
-import { useEffect } from "react";
 
 export default function Edit({
     auth,
@@ -20,68 +19,29 @@ export default function Edit({
     item,
     defaultStatuses,
 }) {
-    const {
-        data,
-        setData,
-        put,
-        errors,
-        processing,
-        setDefaults,
-        reset,
-        transform,
-    } = useForm({});
+    const { data, setData, put, errors, processing, transform } = useForm({});
 
-    // console.log(item);
-
-    transform((data) => {
-        let newData = data;
-        document.querySelectorAll("input").forEach((el1) => {
-            // newData[el1.name] = el1.value;
-            // console.log({ ...el1.name });
+    transform(() => {
+        let newData = {};
+        document.querySelectorAll("select").forEach((el1) => {
+            newData = deepMerge(
+                newData,
+                JSON.parse(String(el1.name).replace("inpValue", el1.value))
+            );
         });
-        // document.querySelectorAll("select").forEach((el1) => {
-        //     newData[el1.name] = el1.value;
-        // });
-        // newData = {
-        //     ...data,
-        //     // Object.entries(),
-        //     integration: {
-        //         99: {
-        //             defines: {
-        //                 token: "test",
-        //             },
-        //         },
-        //     },
-        // };
+        document.querySelectorAll("input").forEach((el2) => {
+            newData = deepMerge(
+                newData,
+                JSON.parse(String(el2.name).replace("inpValue", el2.value))
+            );
+        });
         return newData;
     });
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // console.log(data);
         put(route("admin.integrations.update"));
     };
-
-    const capitalize = (text) => {
-        return text.charAt(0).toUpperCase() + text.slice(1);
-    };
-
-    // useEffect(() => {
-    //     document.querySelectorAll("input").forEach((el1) => {
-    //         console.log([el1.name, el1.value]);
-    //         setData(el1.name, el1.value);
-    //         console.log(data);
-    //     });
-    //     // document.querySelectorAll("select").forEach((el1) => {
-    //     //     console.log([el1.name, el1.value]);
-    //     //     setData(el1.name, el1.value);
-    //     //     console.log(data);
-    //     // });
-    //     console.log(data);
-    //     // reset();
-    //     // setDefaults();
-    //     // reset();
-    // }, []);
 
     return (
         <AuthenticatedLayout
@@ -116,12 +76,12 @@ export default function Edit({
                                             )} - ${capitalize(integration[0])}`}
                                         />
                                         <FormLabel
-                                            inpName={`integration[${integration[1].id}][status]`}
+                                            inpName={`{"integration":{"${integration[1].id}":{"status":"inpValue"}}}`}
                                             title="Status"
                                             errors={errors}
                                         >
                                             <FormSelect
-                                                inpName={`integration[${integration[1].id}][status]`}
+                                                inpName={`{"integration":{"${integration[1].id}":{"status":"inpValue"}}}`}
                                                 data={integration[1].status}
                                                 setData={setData}
                                             >
@@ -146,13 +106,16 @@ export default function Edit({
                                             ).map((define, defineKey) => (
                                                 <FormLabel
                                                     key={defineKey}
-                                                    inpName={`integration[${integration[1].id}][defines][${define}]`}
+                                                    inpName={`{"integration":{"${integration[1].id}":{"defines":{"${define}":"inpValue"}}}}`}
                                                     title={capitalize(define)}
                                                     errors={errors}
                                                 >
                                                     <FormInput
-                                                        inpName={`integration[${integration[1].id}][defines][${define}]`}
+                                                        inpName={`{"integration":{"${integration[1].id}":{"defines":{"${define}":"inpValue"}}}}`}
                                                         inpValue={
+                                                            data[
+                                                                `{"integration":{"${integration[1].id}":{"defines":{"${define}":"inpValue"}}}}`
+                                                            ] ??
                                                             integration[1]
                                                                 .defines[define]
                                                         }

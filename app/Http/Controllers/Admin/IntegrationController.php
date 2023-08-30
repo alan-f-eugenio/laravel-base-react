@@ -28,7 +28,6 @@ class IntegrationController extends Controller {
      */
     public function update(Request $request) {
         //
-        dd($request, $request->integration, $request->content);
         foreach ($request->integration as $id => $fields) {
             if ($integration = Integration::firstWhere('id', $id)) {
                 $attributes = [
