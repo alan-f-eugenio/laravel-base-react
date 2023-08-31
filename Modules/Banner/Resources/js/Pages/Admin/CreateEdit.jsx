@@ -4,8 +4,6 @@ import FormInput from "@/Components/Admin/FormInput";
 import FormInputFile from "@/Components/Admin/FormInputFile";
 import FormLabel from "@/Components/Admin/FormLabel";
 import FormSelect from "@/Components/Admin/FormSelect";
-import FormToggleInput from "@/Components/Admin/FormToggleInput";
-import FormToggleStructure from "@/Components/Admin/FormToggleStructure";
 import Grid from "@/Components/Admin/Grid";
 import PageButton from "@/Components/Admin/PageButton";
 import PageSubTitle from "@/Components/Admin/PageSubTitle";
@@ -13,7 +11,6 @@ import PageTitle from "@/Components/Admin/PageTitle";
 import Section from "@/Components/Admin/Section";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
-import { useEffect, useState } from "react";
 
 export default function CreateEdit({
     auth,
@@ -23,12 +20,11 @@ export default function CreateEdit({
     bannerLocals,
     defaultStatuses,
 }) {
-    const { data, setData, post, transform, errors, reset, processing } =
-        useForm(
-            Object.fromEntries(
-                Object.entries(item).filter(([k, v]) => k != "filename")
-            )
-        );
+    const { data, setData, post, transform, errors, processing } = useForm(
+        Object.fromEntries(
+            Object.entries(item).filter(([k, v]) => k != "filename")
+        )
+    );
 
     transform((data) => {
         let newData = data;
@@ -41,7 +37,6 @@ export default function CreateEdit({
         if (item.id) {
             newData = { ...newData, _method: "put" };
         }
-        console.log(newData);
         return newData;
     });
 
@@ -52,7 +47,16 @@ export default function CreateEdit({
                 ? route("admin.banners.update", item.id)
                 : route("admin.banners.store"),
             {
-                onSuccess: () => reset(),
+                onSuccess: () => {
+                    document.querySelector("input[type=file]").value = "";
+                    setData(
+                        Object.fromEntries(
+                            Object.entries(data).filter(
+                                ([k, v]) => k != "filename"
+                            )
+                        )
+                    );
+                },
             }
         );
     };
@@ -157,7 +161,6 @@ export default function CreateEdit({
                         >
                             <FormInputFile
                                 inpName="filename"
-                                inpValue={data.filename?.name ?? ""}
                                 setData={setData}
                                 required={!item.id}
                             />
