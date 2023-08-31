@@ -1,4 +1,4 @@
-import FilterSelectOption from "@/Components/Admin/FilterSelectOption";
+import FormSelectOption from "@/Components/Admin/FormSelectOption";
 import Form from "@/Components/Admin/Form";
 import FormInput from "@/Components/Admin/FormInput";
 import FormLabel from "@/Components/Admin/FormLabel";
@@ -105,7 +105,7 @@ export default function CreateEdit({
                             >
                                 {Object.keys(defaultStatuses).map(
                                     (statusKey) => (
-                                        <FilterSelectOption
+                                        <FormSelectOption
                                             key={statusKey}
                                             inpValue={statusKey}
                                             title={defaultStatuses[statusKey]}

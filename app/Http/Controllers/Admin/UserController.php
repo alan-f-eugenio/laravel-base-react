@@ -11,10 +11,6 @@ use Inertia\Inertia;
 use Modules\Contact\Helpers\ContactStatus;
 
 class UserController extends Controller {
-    // public function __construct() {
-    //     $this->middleware('stripEmptyParams')->only('index');
-    // }
-
     /**
      * Display a listing of the resource.
      */

@@ -9,6 +9,7 @@ export default function TableAction({
     hasPhoto = false,
     title,
     isDestroy,
+    destroyPreserveState = true,
     ...props
 }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +17,7 @@ export default function TableAction({
     const { delete: destroy, processing } = useForm({});
     const handleDestroy = (e) => {
         e.preventDefault();
-        destroy(href, { preserveScroll: true });
+        destroy(href, { preserveScroll: true, preserveState: destroyPreserveState });
         setIsOpen(false);
     };
     const handleClick = (e) => {

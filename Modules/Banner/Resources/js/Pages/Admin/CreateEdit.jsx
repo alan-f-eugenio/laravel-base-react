@@ -1,4 +1,4 @@
-import FilterSelectOption from "@/Components/Admin/FilterSelectOption";
+import FormSelectOption from "@/Components/Admin/FormSelectOption";
 import Form from "@/Components/Admin/Form";
 import FormInput from "@/Components/Admin/FormInput";
 import FormInputFile from "@/Components/Admin/FormInputFile";
@@ -11,6 +11,7 @@ import PageTitle from "@/Components/Admin/PageTitle";
 import Section from "@/Components/Admin/Section";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
+import FormImage from "@/Components/Admin/FormImage";
 
 export default function CreateEdit({
     auth,
@@ -89,6 +90,7 @@ export default function CreateEdit({
                     hasFiles={true}
                     handleSubmit={handleSubmit}
                 >
+                    <FormImage filename={item.filename} />
                     <Grid gridCols="sm:grid-cols-3">
                         <FormLabel
                             inpName="status"
@@ -102,7 +104,7 @@ export default function CreateEdit({
                             >
                                 {Object.keys(defaultStatuses).map(
                                     (statusKey) => (
-                                        <FilterSelectOption
+                                        <FormSelectOption
                                             key={statusKey}
                                             inpValue={statusKey}
                                             title={defaultStatuses[statusKey]}
@@ -144,7 +146,7 @@ export default function CreateEdit({
                                 required
                             >
                                 {bannerLocals.map((bannerLocal) => (
-                                    <FilterSelectOption
+                                    <FormSelectOption
                                         key={bannerLocal.id}
                                         inpValue={bannerLocal.id}
                                         title={bannerLocal.title}

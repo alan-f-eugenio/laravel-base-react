@@ -26,12 +26,13 @@ class AdminBannerController extends Controller {
         });
 
         $bannerLocals = BannerLocal::all();
+        $defaultStatuses = DefaultStatus::array();
 
         return Inertia::render(
             'Banner::Admin/Index',
-            ['collection' => $query->get()->mapToGroups(function ($item) {
-                return [$item->local->title => $item];
-            }), 'bannerLocals' => $bannerLocals]
+            ['collection' => $query->get()->mapToGroups(
+                fn ($item) => [$item->local->title => $item]
+            ), 'bannerLocals' => $bannerLocals, 'defaultStatuses' =>  $defaultStatuses]
         );
 
         // return view('banner::admin.index', ['collection' => $query->get()->mapToGroups(function ($item) {

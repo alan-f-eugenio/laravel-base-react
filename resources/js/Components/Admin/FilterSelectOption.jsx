@@ -1,3 +1,3 @@
 export default function FilterSelectOption({ title, inpValue }) {
-    return <option value={inpValue}>{title}</option>;
+    return <option className="checked:font-bold" value={inpValue}>{title}</option>;
 }

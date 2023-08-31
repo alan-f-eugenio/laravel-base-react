@@ -32,8 +32,7 @@ Route::prefix('admin')->group(function () {
             Route::delete('/', [AdminProfileController::class, 'destroy'])->name('admin.profile.destroy');
         });
 
-        Route::get('users', [AdminUserController::class, 'index'])->name('admin.users.index')->middleware('stripEmptyParams');
-        Route::resource('users', AdminUserController::class)->except('index', 'show')->names('admin.users');
+        Route::resource('users', AdminUserController::class)->except('show')->names('admin.users');
 
         Route::get('defines', [AdminDefineController::class, 'edit'])->name('admin.defines.edit');
         Route::put('defines', [AdminDefineController::class, 'update'])->name('admin.defines.update');

@@ -1,5 +1,3 @@
-import Pagination from "./Pagination";
-
 function Structure({ children, tableOnly }) {
     if (!tableOnly) {
         return (
@@ -11,11 +9,9 @@ function Structure({ children, tableOnly }) {
     return <>{children}</>;
 }
 
-export default function Table({
+export default function TableSortable({
     children,
-    collection,
     ths = null,
-    tfoot = null,
     tableOnly = false,
 }) {
     return (
@@ -26,20 +22,7 @@ export default function Table({
                         <tr>{ths}</tr>
                     </thead>
                 )}
-                <tbody>{children}</tbody>
-                <tfoot>
-                    {tfoot ? (
-                        { tfoot }
-                    ) : collection.last_page > 1 ? (
-                        <tr>
-                            <td className="px-6 py-4" colSpan="99">
-                                <Pagination collection={collection} />
-                            </td>
-                        </tr>
-                    ) : (
-                        <></>
-                    )}
-                </tfoot>
+                {children}
             </table>
         </Structure>
     );
