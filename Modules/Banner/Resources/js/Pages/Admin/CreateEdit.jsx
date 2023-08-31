@@ -14,162 +14,140 @@ import { Head, useForm } from "@inertiajs/react";
 import FormImage from "@/Components/Admin/FormImage";
 
 export default function CreateEdit({
-    auth,
-    activeModules,
-    flash,
-    item,
-    bannerLocals,
-    defaultStatuses,
+   auth,
+   adminData,
+   item,
+   bannerLocals,
+   defaultStatuses,
 }) {
-    const { data, setData, post, transform, errors, processing } = useForm(
-        Object.fromEntries(
-            Object.entries(item).filter(([k, v]) => k != "filename")
-        )
-    );
+   const { data, setData, post, transform, errors, processing } = useForm(
+      Object.fromEntries(
+         Object.entries(item).filter(([k, v]) => k != "filename")
+      )
+   );
 
-    transform((data) => {
-        let newData = data;
-        if (!newData.status) {
-            newData = { ...newData, status: Object.keys(defaultStatuses)[0] };
-        }
-        if (!newData.local_id) {
-            newData = { ...newData, local_id: bannerLocals[0].id };
-        }
-        if (item.id) {
-            newData = { ...newData, _method: "put" };
-        }
-        return newData;
-    });
+   transform((data) => {
+      let newData = data;
+      if (!newData.status) {
+         newData = { ...newData, status: Object.keys(defaultStatuses)[0] };
+      }
+      if (!newData.local_id) {
+         newData = { ...newData, local_id: bannerLocals[0].id };
+      }
+      if (item.id) {
+         newData = { ...newData, _method: "put" };
+      }
+      return newData;
+   });
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        post(
-            item.id
-                ? route("admin.banners.update", item.id)
-                : route("admin.banners.store"),
-            {
-                onSuccess: () => {
-                    document.querySelector("input[type=file]").value = "";
-                    setData(
-                        Object.fromEntries(
-                            Object.entries(data).filter(
-                                ([k, v]) => k != "filename"
-                            )
-                        )
-                    );
-                },
-            }
-        );
-    };
+   const handleSubmit = (e) => {
+      e.preventDefault();
+      post(
+         item.id
+            ? route("admin.banners.update", item.id)
+            : route("admin.banners.store"),
+         {
+            onSuccess: () => {
+               document.querySelector("input[type=file]").value = "";
+               setData(
+                  Object.fromEntries(
+                     Object.entries(data).filter(([k, v]) => k != "filename")
+                  )
+               );
+            },
+         }
+      );
+   };
 
-    return (
-        <AuthenticatedLayout
-            user={auth.user}
-            header={
-                <>
-                    <PageTitle title="Banners">
-                        <PageSubTitle
-                            subtitle={item.id ? "Alterar" : "Cadastrar"}
-                        />
-                    </PageTitle>
-                    <PageButton
-                        href={route("admin.banners.index")}
-                        title="Listar Banners"
-                    />
-                </>
-            }
-            activeModules={activeModules}
-            flash={flash}
-        >
-            <Head title="Banners" />
+   return (
+      <AuthenticatedLayout
+         user={auth.user}
+         adminData={adminData}
+         header={
+            <>
+               <PageTitle title="Banners">
+                  <PageSubTitle subtitle={item.id ? "Alterar" : "Cadastrar"} />
+               </PageTitle>
+               <PageButton
+                  href={route("admin.banners.index")}
+                  title="Listar Banners"
+               />
+            </>
+         }
+      >
+         <Head title="Banners" />
 
-            <Section>
-                <Form
-                    processing={processing}
-                    editing={Boolean(item.id)}
-                    hasFiles={true}
-                    handleSubmit={handleSubmit}
-                >
-                    <FormImage filename={item.filename} />
-                    <Grid gridCols="sm:grid-cols-3">
-                        <FormLabel
-                            inpName="status"
-                            title="Status"
-                            errors={errors}
-                        >
-                            <FormSelect
-                                inpName="status"
-                                data={data.status}
-                                setData={setData}
-                            >
-                                {Object.keys(defaultStatuses).map(
-                                    (statusKey) => (
-                                        <FormSelectOption
-                                            key={statusKey}
-                                            inpValue={statusKey}
-                                            title={defaultStatuses[statusKey]}
-                                        />
-                                    )
-                                )}
-                            </FormSelect>
-                        </FormLabel>
-                        <FormLabel
-                            inpName="title"
-                            title="Título"
-                            errors={errors}
-                        >
-                            <FormInput
-                                inpName="title"
-                                inpValue={data.title}
-                                placeholder="Título do banner"
-                                setData={setData}
-                                required
-                            />
-                        </FormLabel>
-                        <FormLabel inpName="link" title="Link" errors={errors}>
-                            <FormInput
-                                inpName="link"
-                                inpValue={data.link}
-                                placeholder="Link do banner"
-                                setData={setData}
-                            />
-                        </FormLabel>
-                        <FormLabel
-                            inpName="local_id"
-                            title="Local"
-                            errors={errors}
-                        >
-                            <FormSelect
-                                inpName="local_id"
-                                data={data.local_id}
-                                setData={setData}
-                                required
-                            >
-                                {bannerLocals.map((bannerLocal) => (
-                                    <FormSelectOption
-                                        key={bannerLocal.id}
-                                        inpValue={bannerLocal.id}
-                                        title={bannerLocal.title}
-                                    />
-                                ))}
-                            </FormSelect>
-                        </FormLabel>
-                        <FormLabel
-                            inpName="filename"
-                            title={`${
-                                item.id ? "Alterar" : "Cadastrar"
-                            } Imagem`}
-                            errors={errors}
-                        >
-                            <FormInputFile
-                                inpName="filename"
-                                setData={setData}
-                                required={!item.id}
-                            />
-                        </FormLabel>
-                    </Grid>
-                </Form>
-            </Section>
-        </AuthenticatedLayout>
-    );
+         <Section>
+            <Form
+               processing={processing}
+               editing={Boolean(item.id)}
+               hasFiles={true}
+               handleSubmit={handleSubmit}
+            >
+               <FormImage filename={item.filename} />
+               <Grid gridCols="sm:grid-cols-3">
+                  <FormLabel inpName="status" title="Status" errors={errors}>
+                     <FormSelect
+                        inpName="status"
+                        data={data.status}
+                        setData={setData}
+                     >
+                        {Object.keys(defaultStatuses).map((statusKey) => (
+                           <FormSelectOption
+                              key={statusKey}
+                              inpValue={statusKey}
+                              title={defaultStatuses[statusKey]}
+                           />
+                        ))}
+                     </FormSelect>
+                  </FormLabel>
+                  <FormLabel inpName="title" title="Título" errors={errors}>
+                     <FormInput
+                        inpName="title"
+                        inpValue={data.title}
+                        placeholder="Título do banner"
+                        setData={setData}
+                        required
+                     />
+                  </FormLabel>
+                  <FormLabel inpName="link" title="Link" errors={errors}>
+                     <FormInput
+                        inpName="link"
+                        inpValue={data.link}
+                        placeholder="Link do banner"
+                        setData={setData}
+                     />
+                  </FormLabel>
+                  <FormLabel inpName="local_id" title="Local" errors={errors}>
+                     <FormSelect
+                        inpName="local_id"
+                        data={data.local_id}
+                        setData={setData}
+                        required
+                     >
+                        {bannerLocals.map((bannerLocal) => (
+                           <FormSelectOption
+                              key={bannerLocal.id}
+                              inpValue={bannerLocal.id}
+                              title={bannerLocal.title}
+                           />
+                        ))}
+                     </FormSelect>
+                  </FormLabel>
+                  <FormLabel
+                     inpName="filename"
+                     title={`${item.id ? "Alterar" : "Cadastrar"} Imagem`}
+                     errors={errors}
+                  >
+                     <FormInputFile
+                        inpName="filename"
+                        setData={setData}
+                        required={!item.id}
+                     />
+                  </FormLabel>
+               </Grid>
+            </Form>
+         </Section>
+      </AuthenticatedLayout>
+   );
 }

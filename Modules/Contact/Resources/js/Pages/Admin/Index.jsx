@@ -18,8 +18,7 @@ import { useEffect } from "react";
 
 export default function Index({
     auth,
-    activeModules,
-    flash,
+    adminData,
     contactStatuses,
     collection,
 }) {
@@ -51,9 +50,8 @@ export default function Index({
     return (
         <AuthenticatedLayout
             user={auth.user}
+            adminData={adminData}
             header={<PageTitle title="Contatos" />}
-            activeModules={activeModules}
-            flash={flash}
         >
             <Head title="Contatos" />
 

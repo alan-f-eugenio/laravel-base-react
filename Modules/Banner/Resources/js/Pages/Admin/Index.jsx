@@ -23,8 +23,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 export default function Index({
    auth,
-   activeModules,
-   flash,
+   adminData,
    defaultStatuses,
    bannerLocals,
    collection,
@@ -89,6 +88,7 @@ export default function Index({
    return (
       <AuthenticatedLayout
          user={auth.user}
+         adminData={adminData}
          header={
             <>
                <PageTitle title="Banners" />
@@ -98,8 +98,6 @@ export default function Index({
                />
             </>
          }
-         activeModules={activeModules}
-         flash={flash}
       >
          <Head title="Banners" />
 

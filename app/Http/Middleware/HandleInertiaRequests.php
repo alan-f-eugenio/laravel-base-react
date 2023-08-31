@@ -28,6 +28,16 @@ class HandleInertiaRequests extends Middleware {
      * @return array<string, mixed>
      */
     public function share(Request $request): array {
+
+        $modules = json_decode(file_get_contents('../modules_statuses.json'));
+        $contentModule = isset($modules->Content) && $modules->Content == true;
+
+        if ($contentModule) {
+            $navs = \Modules\Content\Entities\ContentNav::orderBy('type')->get()->mapWithKeys(function ($item) {
+                return [$item['slug'] => $item];
+            });
+        }
+
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user(),
@@ -37,10 +47,13 @@ class HandleInertiaRequests extends Middleware {
                     'location' => $request->url(),
                 ]);
             },
-            'flash' => [
-                'message' => fn () => $request->session()->get('message')
-            ],
-            'activeModules' => array_keys(Module::getByStatus(1)),
+            'adminData' => [
+                'flash' => [
+                    'message' => fn () => $request->session()->get('message')
+                ],
+                'activeModules' => array_keys(Module::getByStatus(1)),
+                'contentNavs' => isset($navs) ? $navs : [],
+            ]
         ]);
     }
 }
