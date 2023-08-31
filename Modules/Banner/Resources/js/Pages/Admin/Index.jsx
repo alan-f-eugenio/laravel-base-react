@@ -33,8 +33,11 @@ export default function Index({
    const { url } = usePage();
    const params = new URLSearchParams(window.location.search);
    const entries = Object.fromEntries(params.entries());
-   const { data, setData, get, transform } = useForm(entries);
+   const { data, setData, get, transform, recentlySuccessful } =
+      useForm(entries);
    const [formState] = useRemember(entries);
+
+   console.log(collection);
 
    useEffect(() => {
       if (data != formState) {
@@ -46,6 +49,10 @@ export default function Index({
          });
       }
    }, [data]);
+
+   useEffect(() => {
+      setCollectionState(collection);
+   }, [recentlySuccessful]);
 
    transform((data) =>
       Object.fromEntries(

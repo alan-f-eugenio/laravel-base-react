@@ -7,6 +7,8 @@ export default function Navigation({ adminData }) {
       useState(false);
 
    console.log(adminData.contentNavs);
+   console.log(adminData.contentNavTypes);
+   console.log(adminData.defaultStatuses);
 
    return (
       <aside className="flex-shrink-0 pb-16 xl:pb-0 xl:w-64">
@@ -27,31 +29,13 @@ export default function Navigation({ adminData }) {
                   className="inline-flex items-center justify-center p-2 text-gray-400 transition duration-150 ease-in-out rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500"
                >
                   <h2 className="mr-1 leading-5 text-gray-500 font-sm">Menu</h2>
-                  <svg
-                     className="w-6 h-6"
-                     stroke="currentColor"
-                     fill="none"
-                     viewBox="0 0 24 24"
-                  >
-                     <path
-                        className={
-                           !showingNavigationDropdown ? "inline-flex" : "hidden"
-                        }
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M4 6h16M4 12h16M4 18h16"
-                     />
-                     <path
-                        className={
-                           showingNavigationDropdown ? "inline-flex" : "hidden"
-                        }
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M6 18L18 6M6 6l12 12"
-                     />
-                  </svg>
+                  <i
+                     className={`align-middle text-xl text-gray-500 ${
+                        !showingNavigationDropdown
+                           ? "icon-[tabler--menu-2]"
+                           : "icon-[tabler--x]"
+                     } `}
+                  />
                </button>
             </div>
          </nav>
@@ -164,39 +148,64 @@ export default function Navigation({ adminData }) {
                               {Object.keys(adminData.contentNavs).length && (
                                  <NavDropdown.SubContent>
                                     {Object.keys(adminData.contentNavs).map(
-                                       (navSlug, navSlugIndex) => (
-                                          <NavDropdown key={navSlugIndex}>
-                                             <NavDropdown.Trigger>
+                                       (navSlug, navSlugIndex) =>
+                                          adminData.contentNavs[navSlug]
+                                             .status ==
+                                             Object.keys(
+                                                adminData.defaultStatuses
+                                             )[0] &&
+                                          (adminData.contentNavs[navSlug]
+                                             .type ==
+                                          Object.keys(
+                                             adminData.contentNavTypes
+                                          )[0] ? (
+                                             <NavDropdown.Link
+                                                href={route(
+                                                   "admin.contents.index",
+                                                   adminData.contentNavs[
+                                                      navSlug
+                                                   ].id
+                                                )}
+                                             >
                                                 {
                                                    adminData.contentNavs[
                                                       navSlug
                                                    ].title
                                                 }
-                                             </NavDropdown.Trigger>
-                                             <NavDropdown.Content>
-                                                <NavDropdown.Link
-                                                   href={route(
-                                                      "admin.banners.create"
-                                                   )}
-                                                   active={route().current(
-                                                      "admin.banners.create"
-                                                   )}
-                                                >
-                                                   Cadastrar
-                                                </NavDropdown.Link>
-                                                <NavDropdown.Link
-                                                   href={route(
-                                                      "admin.banners.index"
-                                                   )}
-                                                   active={route().current(
-                                                      "admin.banners.index"
-                                                   )}
-                                                >
-                                                   Listar
-                                                </NavDropdown.Link>
-                                             </NavDropdown.Content>
-                                          </NavDropdown>
-                                       )
+                                             </NavDropdown.Link>
+                                          ) : (
+                                             <NavDropdown key={navSlugIndex}>
+                                                <NavDropdown.Trigger>
+                                                   {
+                                                      adminData.contentNavs[
+                                                         navSlug
+                                                      ].title
+                                                   }
+                                                </NavDropdown.Trigger>
+                                                <NavDropdown.Content>
+                                                   <NavDropdown.Link
+                                                      href={route(
+                                                         "admin.contents.create",
+                                                         adminData.contentNavs[
+                                                            navSlug
+                                                         ].id
+                                                      )}
+                                                   >
+                                                      Cadastrar
+                                                   </NavDropdown.Link>
+                                                   <NavDropdown.Link
+                                                      href={route(
+                                                         "admin.contents.index",
+                                                         adminData.contentNavs[
+                                                            navSlug
+                                                         ].id
+                                                      )}
+                                                   >
+                                                      Listar
+                                                   </NavDropdown.Link>
+                                                </NavDropdown.Content>
+                                             </NavDropdown>
+                                          ))
                                     )}
                                  </NavDropdown.SubContent>
                               )}

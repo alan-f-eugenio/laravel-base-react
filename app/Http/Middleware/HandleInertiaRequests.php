@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Helpers\DefaultStatus;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Modules\Content\Helpers\ContentNavTypes;
 use Nwidart\Modules\Facades\Module;
 use Tightenco\Ziggy\Ziggy;
 
@@ -53,6 +55,8 @@ class HandleInertiaRequests extends Middleware {
                 ],
                 'activeModules' => array_keys(Module::getByStatus(1)),
                 'contentNavs' => isset($navs) ? $navs : [],
+                'contentNavTypes' => ContentNavTypes::array(),
+                'defaultStatuses' => DefaultStatus::array()
             ]
         ]);
     }
