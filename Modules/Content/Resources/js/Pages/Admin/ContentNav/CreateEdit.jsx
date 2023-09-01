@@ -1,10 +1,8 @@
-import FormSelectOption from "@/Components/Admin/FormSelectOption";
 import Form from "@/Components/Admin/Form";
 import FormInput from "@/Components/Admin/FormInput";
 import FormLabel from "@/Components/Admin/FormLabel";
 import FormSelect from "@/Components/Admin/FormSelect";
-import FormToggleInput from "@/Components/Admin/FormToggleInput";
-import FormToggleStructure from "@/Components/Admin/FormToggleStructure";
+import FormSelectOption from "@/Components/Admin/FormSelectOption";
 import Grid from "@/Components/Admin/Grid";
 import PageButton from "@/Components/Admin/PageButton";
 import PageSubTitle from "@/Components/Admin/PageSubTitle";
@@ -12,18 +10,10 @@ import PageTitle from "@/Components/Admin/PageTitle";
 import Section from "@/Components/Admin/Section";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
-import { useEffect, useState } from "react";
 
 export default function CreateEdit({ auth, commonData, item }) {
    const { data, setData, submit, transform, errors, reset, processing } =
-      useForm(
-         Object.fromEntries(
-            Object.entries(item).filter(
-               ([k, v]) => k != "password" && k != "password_confirmation"
-            )
-         )
-      );
-   const [changePass, setChangePass] = useState(item.id ? false : true);
+      useForm(item);
 
    transform((data) => {
       let newData = data;
@@ -33,13 +23,6 @@ export default function CreateEdit({ auth, commonData, item }) {
             status: Object.keys(commonData.defaultStatuses)[0],
          };
       }
-      if (!data.changePass && item.id) {
-         newData = Object.fromEntries(
-            Object.entries(newData).filter(
-               ([k, v]) => k != "password" && k != "password_confirmation"
-            )
-         );
-      }
       return newData;
    });
 
@@ -48,19 +31,13 @@ export default function CreateEdit({ auth, commonData, item }) {
       submit(
          item.id ? "put" : "post",
          item.id
-            ? route("admin.users.update", item.id)
-            : route("admin.users.store"),
+            ? route("admin.contentNavs.update", item.id)
+            : route("admin.contentNavs.store"),
          {
             onSuccess: () => reset(),
          }
       );
    };
-
-   useEffect(() => {
-      if (item.id) {
-         setChangePass(data.changePass);
-      }
-   }, [data.changePass]);
 
    return (
       <AuthenticatedLayout
@@ -68,17 +45,17 @@ export default function CreateEdit({ auth, commonData, item }) {
          commonData={commonData}
          header={
             <>
-               <PageTitle title="Usuários">
+               <PageTitle title="Páginas de Conteúdo">
                   <PageSubTitle subtitle={item.id ? "Alterar" : "Cadastrar"} />
                </PageTitle>
                <PageButton
-                  href={route("admin.users.index")}
-                  title="Listar Usuários"
+                  href={route("admin.contentNavs.index")}
+                  title="Listar Páginas de Conteúdo"
                />
             </>
          }
       >
-         <Head title="Usuários" />
+         <Head title="Páginas de Conteúdo" />
 
          <Section>
             <Form
@@ -86,7 +63,7 @@ export default function CreateEdit({ auth, commonData, item }) {
                editing={Boolean(item.id)}
                handleSubmit={handleSubmit}
             >
-               <Grid gridCols="sm:grid-cols-3">
+               <Grid gridCols="">
                   <FormLabel inpName="status" title="Status" errors={errors}>
                      <FormSelect
                         inpName="status"
@@ -104,71 +81,35 @@ export default function CreateEdit({ auth, commonData, item }) {
                         )}
                      </FormSelect>
                   </FormLabel>
-                  <FormLabel inpName="name" title="Nome" errors={errors}>
+                  <FormLabel inpName="title" title="Título" errors={errors}>
                      <FormInput
-                        inpName="name"
-                        inpValue={data.name}
-                        placeholder="Nome do usuário"
+                        inpName="title"
+                        inpValue={data.title}
+                        placeholder="Título da página de conteúdo"
                         setData={setData}
                         required
                      />
                   </FormLabel>
                   <FormLabel
-                     inpName="email"
-                     title="Login do Usuário"
+                     inpName="type"
+                     title="Tipo de Conteúdo"
                      errors={errors}
                   >
-                     <FormInput
-                        inpName="email"
-                        inpValue={data.email}
-                        placeholder="usuario@login.com.br"
+                     <FormSelect
+                        inpName="type"
+                        data={data.type}
                         setData={setData}
-                        autoComplete="username"
-                        required
-                     />
-                  </FormLabel>
-                  {item.id && (
-                     <FormLabel title="Alterar Senha?">
-                        <FormToggleStructure title="Alterar senha do usuário">
-                           <FormToggleInput
-                              inpName="changePass"
-                              inpValue={data.changePass}
-                              setData={setData}
-                           />
-                        </FormToggleStructure>
-                     </FormLabel>
-                  )}
-                  <FormLabel
-                     inpName="password"
-                     title="Senha do Usuário"
-                     errors={errors}
-                  >
-                     <FormInput
-                        inpName="password"
-                        placeholder="••••••••"
-                        inpValue={data.password}
-                        type="password"
-                        setData={setData}
-                        disabled={!changePass}
-                        autoComplete="new-password"
-                        required
-                     />
-                  </FormLabel>
-                  <FormLabel
-                     inpName="password_confirmation"
-                     title="Confirme a Senha do Usuário"
-                     errors={errors}
-                  >
-                     <FormInput
-                        inpName="password_confirmation"
-                        placeholder="••••••••"
-                        inpValue={data.password_confirmation}
-                        type="password"
-                        setData={setData}
-                        disabled={!changePass}
-                        autoComplete="new-password"
-                        required
-                     />
+                     >
+                        {Object.keys(commonData.contentNavTypes).map(
+                           (navTypeKey) => (
+                              <FormSelectOption
+                                 key={navTypeKey}
+                                 inpValue={navTypeKey}
+                                 title={commonData.contentNavTypes[navTypeKey]}
+                              />
+                           )
+                        )}
+                     </FormSelect>
                   </FormLabel>
                </Grid>
             </Form>

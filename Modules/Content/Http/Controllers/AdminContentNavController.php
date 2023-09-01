@@ -28,9 +28,11 @@ class AdminContentNavController extends Controller {
 
     public function create() {
         $item = new ContentNav;
-        $contentNavTypes = ContentNavTypes::array();
 
-        return view('content::admin.contentNav.create_edit', ['item' => $item, 'contentNavTypes' => $contentNavTypes]);
+        return Inertia::render(
+            'Content::Admin/ContentNav/CreateEdit',
+            ['item' => $item]
+        );
     }
 
     public function store(AdminContentNavRequest $request) {
@@ -45,9 +47,11 @@ class AdminContentNavController extends Controller {
     }
 
     public function edit(ContentNav $contentNav) {
-        $contentNavTypes = ContentNavTypes::array();
 
-        return view('content::admin.contentNav.create_edit', ['item' => $contentNav, 'contentNavTypes' => $contentNavTypes]);
+        return Inertia::render(
+            'Content::Admin/ContentNav/CreateEdit',
+            ['item' => $contentNav]
+        );
     }
 
     public function update(AdminContentNavRequest $request, ContentNav $contentNav) {
@@ -58,7 +62,7 @@ class AdminContentNavController extends Controller {
 
         $contentNav->update($attributes);
 
-        return redirect()->route('admin.contentNavs.edit', $contentNav)->with('message', ['type' => 'success', 'text' => 'Página de conteúdo alterado com sucesso.']);
+        return redirect()->route('admin.contentNavs.edit', $contentNav)->with('message', ['type' => 'success', 'text' => 'Página de conteúdo alterada com sucesso.']);
     }
 
     public function destroy(ContentNav $contentNav) {
