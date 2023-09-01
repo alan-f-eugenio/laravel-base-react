@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import Notification from "@/Components/Admin/Notification";
 import Navigation from "@/Components/Admin/Navigation";
 
-export default function Authenticated({ user, adminData, header, children }) {
-   const [flashMessage, setFlashMessage] = useState(adminData.flash.message);
+export default function Authenticated({ user, commonData, header, children }) {
+   const [flashMessage, setFlashMessage] = useState(commonData.flash.message);
 
    useEffect(() => {
-      setFlashMessage(adminData.flash.message);
-   }, [adminData.flash]);
+      setFlashMessage(commonData.flash.message);
+   }, [commonData.flash]);
 
    return (
       <div className="flex flex-col min-h-screen bg-gray-100 xl:flex-row">
-         <Navigation adminData={adminData} />
+         <Navigation commonData={commonData} />
 
          <div className="flex-1 py-6 space-y-6">
             {header && (

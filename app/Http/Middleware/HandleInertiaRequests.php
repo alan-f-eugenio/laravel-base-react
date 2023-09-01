@@ -49,7 +49,7 @@ class HandleInertiaRequests extends Middleware {
                     'location' => $request->url(),
                 ]);
             },
-            'adminData' => [
+            'commonData' => [
                 'flash' => [
                     'message' => fn () => $request->session()->get('message')
                 ],

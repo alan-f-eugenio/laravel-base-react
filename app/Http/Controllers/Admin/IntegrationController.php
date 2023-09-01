@@ -15,11 +15,10 @@ class IntegrationController extends Controller {
     public function edit() {
         //
         $integrations = config('integrations') ?: [];
-        $defaultStatuses = DefaultStatus::array();
 
         return Inertia::render(
             'Admin/Integration/Edit',
-            ['item' => $integrations, 'defaultStatuses' => $defaultStatuses]
+            ['item' => $integrations]
         );
     }
 

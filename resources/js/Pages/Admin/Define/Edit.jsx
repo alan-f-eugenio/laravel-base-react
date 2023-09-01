@@ -10,7 +10,7 @@ import Section from "@/Components/Admin/Section";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
 
-export default function Edit({ auth, adminData, item }) {
+export default function Edit({ auth, commonData, item }) {
    const { data, setData, put, errors, processing } = useForm(item);
 
    const handleSubmit = (e) => {
@@ -21,7 +21,7 @@ export default function Edit({ auth, adminData, item }) {
    return (
       <AuthenticatedLayout
          user={auth.user}
-         adminData={adminData}
+         commonData={commonData}
          header={
             <PageTitle title="Definições">
                <PageSubTitle subtitle="Alterar" />

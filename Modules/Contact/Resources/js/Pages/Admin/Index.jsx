@@ -18,7 +18,7 @@ import { useEffect } from "react";
 
 export default function Index({
     auth,
-    adminData,
+    commonData,
     contactStatuses,
     collection,
 }) {
@@ -50,7 +50,7 @@ export default function Index({
     return (
         <AuthenticatedLayout
             user={auth.user}
-            adminData={adminData}
+            commonData={commonData}
             header={<PageTitle title="Contatos" />}
         >
             <Head title="Contatos" />

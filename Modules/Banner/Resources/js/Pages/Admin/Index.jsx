@@ -21,13 +21,7 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
-export default function Index({
-   auth,
-   adminData,
-   defaultStatuses,
-   bannerLocals,
-   collection,
-}) {
+export default function Index({ auth, commonData, bannerLocals, collection }) {
    const [collectionState, setCollectionState] = useState(collection);
 
    const { url } = usePage();
@@ -95,7 +89,7 @@ export default function Index({
    return (
       <AuthenticatedLayout
          user={auth.user}
-         adminData={adminData}
+         commonData={commonData}
          header={
             <>
                <PageTitle title="Banners" />
@@ -116,11 +110,11 @@ export default function Index({
                   data={data.status}
                   setData={setData}
                >
-                  {Object.keys(defaultStatuses).map((statusKey) => (
+                  {Object.keys(commonData.defaultStatuses).map((statusKey) => (
                      <FilterSelectOption
                         key={statusKey}
                         inpValue={statusKey}
-                        title={defaultStatuses[statusKey]}
+                        title={commonData.defaultStatuses[statusKey]}
                      />
                   ))}
                </FilterSelect>
@@ -225,7 +219,7 @@ export default function Index({
                                                          condition={
                                                             item.status ==
                                                             Object.keys(
-                                                               defaultStatuses
+                                                               commonData.defaultStatuses
                                                             )[0]
                                                          }
                                                          trueTitle="Ativo"

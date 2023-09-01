@@ -13,7 +13,7 @@ import { Head, useForm, usePage, useRemember } from "@inertiajs/react";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 
-export default function Index({ auth, adminData, collection }) {
+export default function Index({ auth, commonData, collection }) {
    const { url } = usePage();
    const params = new URLSearchParams(window.location.search);
    const entries = Object.fromEntries(params.entries());
@@ -42,7 +42,7 @@ export default function Index({ auth, adminData, collection }) {
    return (
       <AuthenticatedLayout
          user={auth.user}
-         adminData={adminData}
+         commonData={commonData}
          header={<PageTitle title="Lista de E-mails" />}
       >
          <Head title="Lista de E-mails" />

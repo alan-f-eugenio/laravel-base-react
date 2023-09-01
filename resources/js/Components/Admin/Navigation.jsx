@@ -2,13 +2,9 @@ import { useState } from "react";
 import NavLink from "./NavLink";
 import NavDropdown from "./NavDropdown";
 
-export default function Navigation({ adminData }) {
+export default function Navigation({ commonData }) {
    const [showingNavigationDropdown, setShowingNavigationDropdown] =
       useState(false);
-
-   console.log(adminData.contentNavs);
-   console.log(adminData.contentNavTypes);
-   console.log(adminData.defaultStatuses);
 
    return (
       <aside className="flex-shrink-0 pb-16 xl:pb-0 xl:w-64">
@@ -50,8 +46,8 @@ export default function Navigation({ adminData }) {
                   Home
                </NavLink>
 
-               {(adminData.activeModules.includes("Contact") ||
-                  adminData.activeModules.includes("Email")) && (
+               {(commonData.activeModules.includes("Contact") ||
+                  commonData.activeModules.includes("Email")) && (
                   <NavDropdown
                      activeDropdown={
                         route().current("admin.contacts.*") ||
@@ -60,7 +56,7 @@ export default function Navigation({ adminData }) {
                   >
                      <NavDropdown.Trigger>Comunicação</NavDropdown.Trigger>
                      <NavDropdown.Content>
-                        {adminData.activeModules.includes("Contact") && (
+                        {commonData.activeModules.includes("Contact") && (
                            <NavDropdown.Link
                               href={route("admin.contacts.index")}
                               active={route().current("admin.contacts.*")}
@@ -68,7 +64,7 @@ export default function Navigation({ adminData }) {
                               Contatos
                            </NavDropdown.Link>
                         )}
-                        {adminData.activeModules.includes("Email") && (
+                        {commonData.activeModules.includes("Email") && (
                            <NavDropdown.Link
                               href={route("admin.emails.index")}
                               active={route().current("admin.emails.index")}
@@ -79,8 +75,8 @@ export default function Navigation({ adminData }) {
                      </NavDropdown.Content>
                   </NavDropdown>
                )}
-               {(adminData.activeModules.includes("Banner") ||
-                  adminData.activeModules.includes("Content")) && (
+               {(commonData.activeModules.includes("Banner") ||
+                  commonData.activeModules.includes("Content")) && (
                   <NavDropdown
                      activeDropdown={
                         route().current("admin.banners.*") ||
@@ -90,7 +86,7 @@ export default function Navigation({ adminData }) {
                   >
                      <NavDropdown.Trigger>Institucional</NavDropdown.Trigger>
                      <NavDropdown.Content>
-                        {adminData.activeModules.includes("Banner") && (
+                        {commonData.activeModules.includes("Banner") && (
                            <NavDropdown
                               activeDropdown={route().current(
                                  "admin.banners.*"
@@ -117,7 +113,7 @@ export default function Navigation({ adminData }) {
                               </NavDropdown.Content>
                            </NavDropdown>
                         )}
-                        {adminData.activeModules.includes("Content") && (
+                        {commonData.activeModules.includes("Content") && (
                            <NavDropdown
                               activeDropdown={
                                  route().current("admin.contentNavs.*") ||
@@ -145,39 +141,59 @@ export default function Navigation({ adminData }) {
                                     Listar
                                  </NavDropdown.Link>
                               </NavDropdown.Content>
-                              {Object.keys(adminData.contentNavs).length && (
-                                 <NavDropdown.SubContent>
-                                    {Object.keys(adminData.contentNavs).map(
+                              {Object.keys(commonData.contentNavs).length >
+                                 0 && (
+                                 <NavDropdown.SubContent title="Conteúdos">
+                                    {Object.keys(commonData.contentNavs).map(
                                        (navSlug, navSlugIndex) =>
-                                          adminData.contentNavs[navSlug]
+                                          commonData.contentNavs[navSlug]
                                              .status ==
                                              Object.keys(
-                                                adminData.defaultStatuses
+                                                commonData.defaultStatuses
                                              )[0] &&
-                                          (adminData.contentNavs[navSlug]
+                                          (commonData.contentNavs[navSlug]
                                              .type ==
                                           Object.keys(
-                                             adminData.contentNavTypes
+                                             commonData.contentNavTypes
                                           )[0] ? (
                                              <NavDropdown.Link
+                                                key={navSlugIndex}
                                                 href={route(
                                                    "admin.contents.index",
-                                                   adminData.contentNavs[
+                                                   commonData.contentNavs[
                                                       navSlug
                                                    ].id
                                                 )}
+                                                active={route().current(
+                                                   "admin.contents.index",
+                                                   {
+                                                      nav: commonData
+                                                         .contentNavs[navSlug]
+                                                         .id,
+                                                   }
+                                                )}
                                              >
                                                 {
-                                                   adminData.contentNavs[
+                                                   commonData.contentNavs[
                                                       navSlug
                                                    ].title
                                                 }
                                              </NavDropdown.Link>
                                           ) : (
-                                             <NavDropdown key={navSlugIndex}>
+                                             <NavDropdown
+                                                key={navSlugIndex}
+                                                activeDropdown={route().current(
+                                                   "admin.contents.*",
+                                                   {
+                                                      nav: commonData
+                                                         .contentNavs[navSlug]
+                                                         .id,
+                                                   }
+                                                )}
+                                             >
                                                 <NavDropdown.Trigger>
                                                    {
-                                                      adminData.contentNavs[
+                                                      commonData.contentNavs[
                                                          navSlug
                                                       ].title
                                                    }
@@ -186,9 +202,18 @@ export default function Navigation({ adminData }) {
                                                    <NavDropdown.Link
                                                       href={route(
                                                          "admin.contents.create",
-                                                         adminData.contentNavs[
+                                                         commonData.contentNavs[
                                                             navSlug
                                                          ].id
+                                                      )}
+                                                      active={route().current(
+                                                         "admin.contents.create",
+                                                         {
+                                                            nav: commonData
+                                                               .contentNavs[
+                                                               navSlug
+                                                            ].id,
+                                                         }
                                                       )}
                                                    >
                                                       Cadastrar
@@ -196,9 +221,18 @@ export default function Navigation({ adminData }) {
                                                    <NavDropdown.Link
                                                       href={route(
                                                          "admin.contents.index",
-                                                         adminData.contentNavs[
+                                                         commonData.contentNavs[
                                                             navSlug
                                                          ].id
+                                                      )}
+                                                      active={route().current(
+                                                         "admin.contents.index",
+                                                         {
+                                                            nav: commonData
+                                                               .contentNavs[
+                                                               navSlug
+                                                            ].id,
+                                                         }
                                                       )}
                                                    >
                                                       Listar

@@ -6,11 +6,11 @@ import { Head } from "@inertiajs/react";
 import PageTitle from "@/Components/Admin/PageTitle";
 import Section from "@/Components/Admin/Section";
 
-export default function Edit({ auth, adminData, mustVerifyEmail, status }) {
+export default function Edit({ auth, commonData, mustVerifyEmail, status }) {
    return (
       <AuthenticatedLayout
          user={auth.user}
-         adminData={adminData}
+         commonData={commonData}
          header={<PageTitle title="Perfil" />}
       >
          <Head title="Perfil" />

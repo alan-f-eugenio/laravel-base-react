@@ -26,13 +26,12 @@ class AdminBannerController extends Controller {
         });
 
         $bannerLocals = BannerLocal::all();
-        $defaultStatuses = DefaultStatus::array();
 
         return Inertia::render(
             'Banner::Admin/Index',
             ['collection' => $query->get()->mapToGroups(
                 fn ($item) => [$item->local->title => $item]
-            ), 'bannerLocals' => $bannerLocals, 'defaultStatuses' =>  $defaultStatuses]
+            ), 'bannerLocals' => $bannerLocals]
         );
 
         // return view('banner::admin.index', ['collection' => $query->get()->mapToGroups(function ($item) {
@@ -44,11 +43,9 @@ class AdminBannerController extends Controller {
         $item = new Banner;
         $bannerLocals = BannerLocal::all();
 
-        $defaultStatuses = DefaultStatus::array();
-
         return Inertia::render(
             'Banner::Admin/CreateEdit',
-            ['item' => $item, 'bannerLocals' => $bannerLocals, 'defaultStatuses' =>  $defaultStatuses]
+            ['item' => $item, 'bannerLocals' => $bannerLocals]
         );
     }
 
@@ -66,11 +63,10 @@ class AdminBannerController extends Controller {
 
     public function edit(Banner $banner) {
         $bannerLocals = BannerLocal::all();
-        $defaultStatuses = DefaultStatus::array();
 
         return Inertia::render(
             'Banner::Admin/CreateEdit',
-            ['item' => $banner, 'bannerLocals' => $bannerLocals, 'defaultStatuses' =>  $defaultStatuses]
+            ['item' => $banner, 'bannerLocals' => $bannerLocals]
         );
     }
 

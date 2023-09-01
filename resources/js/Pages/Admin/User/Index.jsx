@@ -18,12 +18,7 @@ import { Head, useForm, usePage, useRemember } from "@inertiajs/react";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 
-export default function Index({
-   auth,
-   adminData,
-   defaultStatuses,
-   collection,
-}) {
+export default function Index({ auth, commonData, collection }) {
    const { url } = usePage();
    const params = new URLSearchParams(window.location.search);
    const entries = Object.fromEntries(params.entries());
@@ -52,7 +47,7 @@ export default function Index({
    return (
       <AuthenticatedLayout
          user={auth.user}
-         adminData={adminData}
+         commonData={commonData}
          header={
             <>
                <PageTitle title="Usuários" />
@@ -73,11 +68,11 @@ export default function Index({
                   data={data.status}
                   setData={setData}
                >
-                  {Object.keys(defaultStatuses).map((statusKey) => (
+                  {Object.keys(commonData.defaultStatuses).map((statusKey) => (
                      <FilterSelectOption
                         key={statusKey}
                         inpValue={statusKey}
-                        title={defaultStatuses[statusKey]}
+                        title={commonData.defaultStatuses[statusKey]}
                      />
                   ))}
                </FilterSelect>
@@ -131,7 +126,8 @@ export default function Index({
                         <TableTD>
                            <StatusBadge
                               condition={
-                                 item.status == Object.keys(defaultStatuses)[0]
+                                 item.status ==
+                                 Object.keys(commonData.defaultStatuses)[0]
                               }
                               trueTitle="Ativo"
                               falseTitle="Inativo"

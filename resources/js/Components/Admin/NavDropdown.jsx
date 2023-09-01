@@ -106,11 +106,11 @@ const SubContent = ({ title, children }) => {
             leaveTo="transform opacity-0 scale-95"
          >
             <div
-               className={`shadow-lg inline-block w-full mb-3 space-y-2 origin-top-left rounded-md`}
+               className={`inline-block w-full mb-3 space-y-2 origin-top-left rounded-md`}
             >
                <h3>{title}</h3>
                <div
-                  className={`py-1 bg-white rounded-md ring-1 ring-black ring-opacity-5`}
+                  className={`shadow-lg py-1 bg-white rounded-md ring-1 ring-black ring-opacity-5`}
                >
                   {children}
                </div>

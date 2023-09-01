@@ -4,6 +4,7 @@ namespace Modules\Content\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Inertia\Inertia;
 use Modules\Content\Entities\ContentNav;
 use Modules\Content\Helpers\ContentNavTypes;
 use Modules\Content\Http\Requests\AdminContentNavRequest;
@@ -19,7 +20,10 @@ class AdminContentNavController extends Controller {
             $query->where('status', $value);
         });
 
-        return view('content::admin.contentNav.index', ['collection' => $query->paginate(10)]);
+        return Inertia::render(
+            'Content::Admin/ContentNav/Index',
+            ['collection' => $query->paginate(10)->withQueryString()]
+        );
     }
 
     public function create() {

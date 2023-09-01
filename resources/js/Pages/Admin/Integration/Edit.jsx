@@ -12,7 +12,7 @@ import { capitalize, deepMerge } from "@/Helpers/utils";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
 
-export default function Edit({ auth, adminData, item, defaultStatuses }) {
+export default function Edit({ auth, commonData, item }) {
    const { data, setData, put, errors, processing, transform } = useForm({});
 
    transform(() => {
@@ -40,7 +40,7 @@ export default function Edit({ auth, adminData, item, defaultStatuses }) {
    return (
       <AuthenticatedLayout
          user={auth.user}
-         adminData={adminData}
+         commonData={commonData}
          header={
             <PageTitle title="Integrações">
                <PageSubTitle subtitle="Alterar" />
@@ -76,15 +76,19 @@ export default function Edit({ auth, adminData, item, defaultStatuses }) {
                                     setData={setData}
                                     required
                                  >
-                                    {Object.keys(defaultStatuses).map(
-                                       (statusKey) => (
-                                          <FormSelectOption
-                                             key={statusKey}
-                                             inpValue={statusKey}
-                                             title={defaultStatuses[statusKey]}
-                                          />
-                                       )
-                                    )}
+                                    {Object.keys(
+                                       commonData.defaultStatuses
+                                    ).map((statusKey) => (
+                                       <FormSelectOption
+                                          key={statusKey}
+                                          inpValue={statusKey}
+                                          title={
+                                             commonData.defaultStatuses[
+                                                statusKey
+                                             ]
+                                          }
+                                       />
+                                    ))}
                                  </FormSelect>
                               </FormLabel>
                               {integration[1].editable == true &&

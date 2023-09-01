@@ -9,11 +9,11 @@ import Section from "@/Components/Admin/Section";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 
-export default function Show({ auth, adminData, item }) {
+export default function Show({ auth, commonData, item }) {
    return (
       <AuthenticatedLayout
          user={auth.user}
-         adminData={adminData}
+         commonData={commonData}
          header={
             <>
                <PageTitle title="Contatos">

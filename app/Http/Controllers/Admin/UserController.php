@@ -28,11 +28,9 @@ class UserController extends Controller {
             $query->where('status', $value);
         });
 
-        $defaultStatuses = DefaultStatus::array();
-
         return Inertia::render(
             'Admin/User/Index',
-            ['collection' => $query->paginate(10)->withQueryString(), 'defaultStatuses' =>  $defaultStatuses]
+            ['collection' => $query->paginate(10)->withQueryString()]
         );
     }
 
@@ -43,11 +41,9 @@ class UserController extends Controller {
         //
         $item = new User;
 
-        $defaultStatuses = DefaultStatus::array();
-
         return Inertia::render(
             'Admin/User/CreateEdit',
-            ['item' => $item, 'defaultStatuses' =>  $defaultStatuses]
+            ['item' => $item]
         );
     }
 
@@ -70,11 +66,9 @@ class UserController extends Controller {
      */
     public function edit(User $user) {
         //
-        $defaultStatuses = DefaultStatus::array();
-
         return Inertia::render(
             'Admin/User/CreateEdit',
-            ['item' => $user, 'defaultStatuses' =>  $defaultStatuses]
+            ['item' => $user]
         );
     }
 
@@ -84,8 +78,6 @@ class UserController extends Controller {
     public function update(UserAdminRequest $request, User $user) {
         //
         $attributes = $request->validated();
-        // dd($attributes);
-        // exit;
         if (isset($attributes['password'])) {
             $attributes['password'] = bcrypt($attributes['password']);
         }

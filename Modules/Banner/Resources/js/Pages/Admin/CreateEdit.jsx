@@ -15,10 +15,9 @@ import FormImage from "@/Components/Admin/FormImage";
 
 export default function CreateEdit({
    auth,
-   adminData,
+   commonData,
    item,
    bannerLocals,
-   defaultStatuses,
 }) {
    const { data, setData, post, transform, errors, processing } = useForm(
       Object.fromEntries(
@@ -29,7 +28,7 @@ export default function CreateEdit({
    transform((data) => {
       let newData = data;
       if (!newData.status) {
-         newData = { ...newData, status: Object.keys(defaultStatuses)[0] };
+         newData = { ...newData, status: Object.keys(commonData.defaultStatuses)[0] };
       }
       if (!newData.local_id) {
          newData = { ...newData, local_id: bannerLocals[0].id };
@@ -62,7 +61,7 @@ export default function CreateEdit({
    return (
       <AuthenticatedLayout
          user={auth.user}
-         adminData={adminData}
+         commonData={commonData}
          header={
             <>
                <PageTitle title="Banners">
@@ -92,11 +91,11 @@ export default function CreateEdit({
                         data={data.status}
                         setData={setData}
                      >
-                        {Object.keys(defaultStatuses).map((statusKey) => (
+                        {Object.keys(commonData.defaultStatuses).map((statusKey) => (
                            <FormSelectOption
                               key={statusKey}
                               inpValue={statusKey}
-                              title={defaultStatuses[statusKey]}
+                              title={commonData.defaultStatuses[statusKey]}
                            />
                         ))}
                      </FormSelect>
