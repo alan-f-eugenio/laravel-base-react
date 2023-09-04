@@ -31,8 +31,6 @@ export default function Index({ auth, commonData, bannerLocals, collection }) {
       useForm(entries);
    const [formState] = useRemember(entries);
 
-   console.log(collection);
-
    useEffect(() => {
       if (data != formState) {
          get(url.substring(0, url.indexOf("?")), {

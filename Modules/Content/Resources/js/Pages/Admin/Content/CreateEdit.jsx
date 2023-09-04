@@ -1,4 +1,5 @@
 import Form from "@/Components/Admin/Form";
+import FormImage from "@/Components/Admin/FormImage";
 import FormInput from "@/Components/Admin/FormInput";
 import FormInputFile from "@/Components/Admin/FormInputFile";
 import FormLabel from "@/Components/Admin/FormLabel";
@@ -106,6 +107,7 @@ export default function CreateEdit({ auth, commonData, item, nav }) {
                handleSubmit={handleSubmit}
                hasFiles={true}
             >
+               <FormImage filename={item.filename} />
                <Grid gridCols="sm:grid-cols-3">
                   <FormLabel inpName="status" title="Status" errors={errors}>
                      <FormSelect

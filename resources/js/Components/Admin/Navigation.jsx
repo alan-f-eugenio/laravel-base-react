@@ -166,14 +166,37 @@ export default function Navigation({ commonData }) {
                                                       navSlug
                                                    ].id
                                                 )}
-                                                active={route().current(
-                                                   "admin.contents.index",
-                                                   {
-                                                      nav: commonData
-                                                         .contentNavs[navSlug]
-                                                         .id,
-                                                   }
-                                                )}
+                                                active={
+                                                   route().current(
+                                                      "admin.contents.index",
+                                                      {
+                                                         nav: commonData
+                                                            .contentNavs[
+                                                            navSlug
+                                                         ].id,
+                                                      }
+                                                   ) ||
+                                                   (route().current(
+                                                      "admin.contents.edit",
+                                                      {
+                                                         content:
+                                                            url.split("/")[3],
+                                                      }
+                                                   ) &&
+                                                      Object.keys(
+                                                         commonData.contentNavs[
+                                                            navSlug
+                                                         ].contents
+                                                      ).filter(
+                                                         (navKey) =>
+                                                            commonData
+                                                               .contentNavs[
+                                                               navSlug
+                                                            ].contents[navKey]
+                                                               .id ==
+                                                            url.split("/")[3]
+                                                      ).length > 0)
+                                                }
                                              >
                                                 {
                                                    commonData.contentNavs[
