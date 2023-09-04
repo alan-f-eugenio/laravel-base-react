@@ -1,66 +1,85 @@
-import FormSelectOption from "@/Components/Admin/FormSelectOption";
 import Form from "@/Components/Admin/Form";
 import FormInput from "@/Components/Admin/FormInput";
+import FormInputFile from "@/Components/Admin/FormInputFile";
 import FormLabel from "@/Components/Admin/FormLabel";
 import FormSelect from "@/Components/Admin/FormSelect";
-import FormToggleInput from "@/Components/Admin/FormToggleInput";
-import FormToggleStructure from "@/Components/Admin/FormToggleStructure";
+import FormSelectOption from "@/Components/Admin/FormSelectOption";
 import Grid from "@/Components/Admin/Grid";
 import PageButton from "@/Components/Admin/PageButton";
 import PageSubTitle from "@/Components/Admin/PageSubTitle";
 import PageTitle from "@/Components/Admin/PageTitle";
 import Section from "@/Components/Admin/Section";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import "@ckeditor/ckeditor5-build-classic/build/translations/pt-br";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { Head, useForm } from "@inertiajs/react";
-import { useEffect, useState } from "react";
+import axios from "axios";
 
-export default function CreateEdit({ auth, commonData, item }) {
-   const { data, setData, submit, transform, errors, reset, processing } =
+export default function CreateEdit({ auth, commonData, item, nav }) {
+   const { data, setData, post, transform, errors, reset, processing } =
       useForm(
          Object.fromEntries(
-            Object.entries(item).filter(
-               ([k, v]) => k != "password" && k != "password_confirmation"
-            )
+            Object.entries(item).filter(([k, v]) => k != "filename")
          )
       );
-   const [changePass, setChangePass] = useState(item.id ? false : true);
 
    transform((data) => {
       let newData = data;
-      if (!data.status) {
+      if (!newData.status) {
          newData = {
-            ...data,
+            ...newData,
             status: Object.keys(commonData.defaultStatuses)[0],
          };
       }
-      if (!data.changePass && item.id) {
-         newData = Object.fromEntries(
-            Object.entries(newData).filter(
-               ([k, v]) => k != "password" && k != "password_confirmation"
-            )
-         );
+      if (item.id) {
+         newData = { ...newData, _method: "put" };
       }
       return newData;
    });
 
    const handleSubmit = (e) => {
       e.preventDefault();
-      submit(
-         item.id ? "put" : "post",
+      post(
          item.id
-            ? route("admin.users.update", item.id)
-            : route("admin.users.store"),
+            ? route("admin.contents.update", item.id)
+            : route("admin.contents.store", nav.id),
          {
-            onSuccess: () => reset(),
+            onSuccess: () => {
+               document.querySelector("input[type=file]").value = "";
+               setData(
+                  Object.fromEntries(
+                     Object.entries(data).filter(([k, v]) => k != "filename")
+                  )
+               );
+            },
          }
       );
    };
 
-   useEffect(() => {
-      if (item.id) {
-         setChangePass(data.changePass);
-      }
-   }, [data.changePass]);
+   function uploadAdapter(loader) {
+      return {
+         upload: () => {
+            return new Promise((resolve, reject) => {
+               const body = new FormData();
+               loader.file.then((file) => {
+                  body.append("upload", file);
+                  axios
+                     .post(route("admin.content_images.store"), body)
+                     .then((res) => resolve({ default: res.url }))
+                     .catch((err) => {
+                        reject(err);
+                     });
+               });
+            });
+         },
+      };
+   }
+   function uploadPlugin(editor) {
+      editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+         return uploadAdapter(loader);
+      };
+   }
 
    return (
       <AuthenticatedLayout
@@ -68,23 +87,24 @@ export default function CreateEdit({ auth, commonData, item }) {
          commonData={commonData}
          header={
             <>
-               <PageTitle title="Usuários">
+               <PageTitle title="Conteúdos">
                   <PageSubTitle subtitle={item.id ? "Alterar" : "Cadastrar"} />
                </PageTitle>
                <PageButton
-                  href={route("admin.users.index")}
-                  title="Listar Usuários"
+                  href={route("admin.contents.index", nav.id)}
+                  title="Listar Conteúdos"
                />
             </>
          }
       >
-         <Head title="Usuários" />
+         <Head title="Conteúdos" />
 
          <Section>
             <Form
                processing={processing}
                editing={Boolean(item.id)}
                handleSubmit={handleSubmit}
+               hasFiles={true}
             >
                <Grid gridCols="sm:grid-cols-3">
                   <FormLabel inpName="status" title="Status" errors={errors}>
@@ -92,6 +112,7 @@ export default function CreateEdit({ auth, commonData, item }) {
                         inpName="status"
                         data={data.status}
                         setData={setData}
+                        required
                      >
                         {Object.keys(commonData.defaultStatuses).map(
                            (statusKey) => (
@@ -104,73 +125,121 @@ export default function CreateEdit({ auth, commonData, item }) {
                         )}
                      </FormSelect>
                   </FormLabel>
-                  <FormLabel inpName="name" title="Nome" errors={errors}>
+                  <FormLabel inpName="title" title="Título" errors={errors}>
                      <FormInput
-                        inpName="name"
-                        inpValue={data.name}
-                        placeholder="Nome do usuário"
+                        inpName="title"
+                        inpValue={data.title}
+                        placeholder="Título do conteúdo"
                         setData={setData}
                         required
                      />
                   </FormLabel>
                   <FormLabel
-                     inpName="email"
-                     title="Login do Usuário"
+                     inpName="subtitle"
+                     title="Subtítulo"
                      errors={errors}
                   >
                      <FormInput
-                        inpName="email"
-                        inpValue={data.email}
-                        placeholder="usuario@login.com.br"
+                        inpName="subtitle"
+                        inpValue={data.subtitle}
+                        placeholder="Subtítulo do conteúdo"
                         setData={setData}
-                        autoComplete="username"
-                        required
                      />
                   </FormLabel>
-                  {item.id && (
-                     <FormLabel title="Alterar Senha?">
-                        <FormToggleStructure title="Alterar senha do usuário">
-                           <FormToggleInput
-                              inpName="changePass"
-                              inpValue={data.changePass}
-                              setData={setData}
-                           />
-                        </FormToggleStructure>
-                     </FormLabel>
-                  )}
-                  <FormLabel
-                     inpName="password"
-                     title="Senha do Usuário"
-                     errors={errors}
-                  >
+                  <FormLabel inpName="author" title="Autor" errors={errors}>
                      <FormInput
-                        inpName="password"
-                        placeholder="••••••••"
-                        inpValue={data.password}
-                        type="password"
+                        inpName="author"
+                        inpValue={data.author}
+                        placeholder="Autor do conteúdo"
                         setData={setData}
-                        disabled={!changePass}
-                        autoComplete="new-password"
-                        required
                      />
                   </FormLabel>
                   <FormLabel
-                     inpName="password_confirmation"
-                     title="Confirme a Senha do Usuário"
+                     inpName="link"
+                     title="Link (conteúdo externo)"
                      errors={errors}
                   >
                      <FormInput
-                        inpName="password_confirmation"
-                        placeholder="••••••••"
-                        inpValue={data.password_confirmation}
-                        type="password"
+                        inpName="link"
+                        inpValue={data.link}
+                        placeholder="Link do conteúdo"
                         setData={setData}
-                        disabled={!changePass}
-                        autoComplete="new-password"
-                        required
                      />
+                  </FormLabel>
+                  <FormLabel
+                     inpName="page_title"
+                     title="Título da Página (SEO)"
+                     errors={errors}
+                  >
+                     <FormInput
+                        inpName="page_title"
+                        inpValue={data.page_title}
+                        placeholder="Page title"
+                        setData={setData}
+                     />
+                  </FormLabel>
+                  <FormLabel
+                     inpName="page_meta_keywords"
+                     title="Palavras Chave (SEO)"
+                     errors={errors}
+                  >
+                     <FormInput
+                        inpName="page_meta_keywords"
+                        inpValue={data.page_meta_keywords}
+                        placeholder="Meta keywords"
+                        setData={setData}
+                     />
+                  </FormLabel>
+                  <FormLabel
+                     inpName="page_meta_description"
+                     title="Meta Descrição (SEO)"
+                     errors={errors}
+                  >
+                     <FormInput
+                        inpName="page_meta_description"
+                        inpValue={data.page_meta_description}
+                        placeholder="Meta description"
+                        setData={setData}
+                     />
+                  </FormLabel>
+                  <FormLabel
+                     inpName="filename"
+                     title={`${item.filename ? "Alterar" : "Cadastrar"} Imagem`}
+                     errors={errors}
+                  >
+                     <FormInputFile inpName="filename" setData={setData} />
                   </FormLabel>
                </Grid>
+               <FormLabel inpName="text" title="Texto" errors={errors}>
+                  <CKEditor
+                     editor={ClassicEditor}
+                     data={data.text}
+                     onChange={(event, editor) => {
+                        const dataCK = editor.getData();
+                        setData("text", dataCK);
+                     }}
+                     config={{
+                        language: "pt-br",
+                        placeholder: "Texto do conteúdo",
+                        extraPlugins: [uploadPlugin],
+                     }}
+                  />
+               </FormLabel>
+               <FormLabel inpName="abstract" title="Resumo" errors={errors}>
+                  <CKEditor
+                     editor={ClassicEditor}
+                     data={data.abstract}
+                     onChange={(event, editor) => {
+                        const dataCK = editor.getData();
+                        setData("abstract", dataCK);
+                     }}
+                     config={{
+                        language: "pt-br",
+                        placeholder: "Resumo do conteúdo",
+                        extraPlugins: [uploadPlugin],
+                     }}
+                  />
+               </FormLabel>
             </Form>
          </Section>
       </AuthenticatedLayout>

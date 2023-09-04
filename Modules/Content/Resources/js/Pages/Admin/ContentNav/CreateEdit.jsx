@@ -69,6 +69,7 @@ export default function CreateEdit({ auth, commonData, item }) {
                         inpName="status"
                         data={data.status}
                         setData={setData}
+                        required
                      >
                         {Object.keys(commonData.defaultStatuses).map(
                            (statusKey) => (

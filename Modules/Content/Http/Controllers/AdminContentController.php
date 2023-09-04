@@ -30,7 +30,10 @@ class AdminContentController extends Controller {
     public function create(ContentNav $nav) {
         $item = new Content;
 
-        return view('content::admin.content.create_edit', ['item' => $item, 'nav' => $nav]);
+        return Inertia::render(
+            'Content::Admin/Content/CreateEdit',
+            ['item' => $item, 'nav' => $nav]
+        );
     }
 
     public function store(AdminContentRequest $request, ContentNav $nav) {
@@ -45,11 +48,14 @@ class AdminContentController extends Controller {
 
         Content::create($attributes);
 
-        return redirect()->route('admin.content.index', $nav->id)->with('message', ['type' => 'success', 'text' => 'Conteúdo cadastrado com sucesso.']);
+        return redirect()->route('admin.contents.index', $nav->id)->with('message', ['type' => 'success', 'text' => 'Conteúdo cadastrado com sucesso.']);
     }
 
     public function edit(Content $content) {
-        return view('content::admin.content.create_edit', ['item' => $content, 'nav' => $content->nav]);
+        return Inertia::render(
+            'Content::Admin/Content/CreateEdit',
+            ['item' => $content, 'nav' => $content->nav]
+        );
     }
 
     public function update(AdminContentRequest $request, Content $content) {

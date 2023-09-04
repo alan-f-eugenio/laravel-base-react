@@ -1,10 +1,12 @@
 import { useState } from "react";
 import NavLink from "./NavLink";
 import NavDropdown from "./NavDropdown";
+import { usePage } from "@inertiajs/react";
 
 export default function Navigation({ commonData }) {
    const [showingNavigationDropdown, setShowingNavigationDropdown] =
       useState(false);
+   const { url } = usePage();
 
    return (
       <aside className="flex-shrink-0 pb-16 xl:pb-0 xl:w-64">
@@ -182,14 +184,37 @@ export default function Navigation({ commonData }) {
                                           ) : (
                                              <NavDropdown
                                                 key={navSlugIndex}
-                                                activeDropdown={route().current(
-                                                   "admin.contents.*",
-                                                   {
-                                                      nav: commonData
-                                                         .contentNavs[navSlug]
-                                                         .id,
-                                                   }
-                                                )}
+                                                activeDropdown={
+                                                   route().current(
+                                                      "admin.contents.*",
+                                                      {
+                                                         nav: commonData
+                                                            .contentNavs[
+                                                            navSlug
+                                                         ].id,
+                                                      }
+                                                   ) ||
+                                                   (route().current(
+                                                      "admin.contents.edit",
+                                                      {
+                                                         content:
+                                                            url.split("/")[3],
+                                                      }
+                                                   ) &&
+                                                      Object.keys(
+                                                         commonData.contentNavs[
+                                                            navSlug
+                                                         ].contents
+                                                      ).filter(
+                                                         (navKey) =>
+                                                            commonData
+                                                               .contentNavs[
+                                                               navSlug
+                                                            ].contents[navKey]
+                                                               .id ==
+                                                            url.split("/")[3]
+                                                      ).length > 0)
+                                                }
                                              >
                                                 <NavDropdown.Trigger>
                                                    {

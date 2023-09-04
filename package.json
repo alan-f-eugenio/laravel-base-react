@@ -23,6 +23,8 @@
         "vite": "^4.4.9"
     },
     "dependencies": {
+        "@ckeditor/ckeditor5-build-classic": "^39.0.1",
+        "@ckeditor/ckeditor5-react": "^6.1.0",
         "dayjs": "^1.11.9",
         "react-beautiful-dnd": "^13.1.1"
     }

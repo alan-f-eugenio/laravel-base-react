@@ -13,12 +13,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
 import FormImage from "@/Components/Admin/FormImage";
 
-export default function CreateEdit({
-   auth,
-   commonData,
-   item,
-   bannerLocals,
-}) {
+export default function CreateEdit({ auth, commonData, item, bannerLocals }) {
    const { data, setData, post, transform, errors, processing } = useForm(
       Object.fromEntries(
          Object.entries(item).filter(([k, v]) => k != "filename")
@@ -28,7 +23,10 @@ export default function CreateEdit({
    transform((data) => {
       let newData = data;
       if (!newData.status) {
-         newData = { ...newData, status: Object.keys(commonData.defaultStatuses)[0] };
+         newData = {
+            ...newData,
+            status: Object.keys(commonData.defaultStatuses)[0],
+         };
       }
       if (!newData.local_id) {
          newData = { ...newData, local_id: bannerLocals[0].id };
@@ -90,14 +88,17 @@ export default function CreateEdit({
                         inpName="status"
                         data={data.status}
                         setData={setData}
+                        required
                      >
-                        {Object.keys(commonData.defaultStatuses).map((statusKey) => (
-                           <FormSelectOption
-                              key={statusKey}
-                              inpValue={statusKey}
-                              title={commonData.defaultStatuses[statusKey]}
-                           />
-                        ))}
+                        {Object.keys(commonData.defaultStatuses).map(
+                           (statusKey) => (
+                              <FormSelectOption
+                                 key={statusKey}
+                                 inpValue={statusKey}
+                                 title={commonData.defaultStatuses[statusKey]}
+                              />
+                           )
+                        )}
                      </FormSelect>
                   </FormLabel>
                   <FormLabel inpName="title" title="Título" errors={errors}>
