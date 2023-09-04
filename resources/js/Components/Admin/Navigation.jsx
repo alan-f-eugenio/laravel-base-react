@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NavLink from "./NavLink";
 import NavDropdown from "./NavDropdown";
 import { usePage } from "@inertiajs/react";
@@ -7,6 +7,14 @@ export default function Navigation({ commonData }) {
    const [showingNavigationDropdown, setShowingNavigationDropdown] =
       useState(false);
    const { url } = usePage();
+
+   useEffect(() => {
+      if (showingNavigationDropdown) {
+         document.querySelector("body").style.overflow = "hidden";
+      } else {
+         document.querySelector("body").style.overflow = "";
+      }
+   }, [showingNavigationDropdown]);
 
    return (
       <aside className="flex-shrink-0 pb-16 xl:pb-0 xl:w-64">
@@ -44,6 +52,13 @@ export default function Navigation({ commonData }) {
             } fixed z-20 w-full h-full overflow-y-auto bg-white border-gray-200 xl:h-screen sm:border-r xl:mt-0 sm:w-64 xl:block`}
          >
             <div className="py-3">
+               <NavLink
+                  as="button"
+                  className="justify-end text-xl md:hidden"
+                  onClick={() => setShowingNavigationDropdown(false)}
+               >
+                  <i className="align-middle icon-[tabler--arrow-left]" />
+               </NavLink>
                <NavLink href={route("admin")} active={route().current("admin")}>
                   Home
                </NavLink>
