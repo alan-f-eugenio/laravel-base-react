@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import NavLink from "./NavLink";
 import NavDropdown from "./NavDropdown";
 import { usePage } from "@inertiajs/react";
+import EmailNavItem from "@modules/Email/Resources/js/Components/Admin/NavItem";
+import ContactNavItem from "@modules/Contact/Resources/js/Components/Admin/NavItem";
 
 export default function Navigation({ commonData }) {
    const [showingNavigationDropdown, setShowingNavigationDropdown] =
@@ -74,20 +76,10 @@ export default function Navigation({ commonData }) {
                      <NavDropdown.Trigger>Comunicação</NavDropdown.Trigger>
                      <NavDropdown.Content>
                         {commonData.activeModules.includes("Contact") && (
-                           <NavDropdown.Link
-                              href={route("admin.contacts.index")}
-                              active={route().current("admin.contacts.*")}
-                           >
-                              Contatos
-                           </NavDropdown.Link>
+                           <ContactNavItem />
                         )}
                         {commonData.activeModules.includes("Email") && (
-                           <NavDropdown.Link
-                              href={route("admin.emails.index")}
-                              active={route().current("admin.emails.index")}
-                           >
-                              Lista de E-mails
-                           </NavDropdown.Link>
+                           <EmailNavItem />
                         )}
                      </NavDropdown.Content>
                   </NavDropdown>
