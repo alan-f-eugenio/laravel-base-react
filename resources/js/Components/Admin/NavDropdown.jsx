@@ -77,7 +77,7 @@ const Content = ({ children }) => {
             leaveTo="transform opacity-0 scale-95"
          >
             <div
-               className={`shadow-lg inline-block w-full mb-3 space-y-2 origin-top-left rounded-md`}
+               className={`shadow-lg inline-block w-full space-y-2 origin-top-left rounded-md mb-3`}
             >
                <div
                   className={`py-1 bg-white rounded-md ring-1 ring-black ring-opacity-5`}
@@ -106,7 +106,9 @@ const SubContent = ({ title, children }) => {
             leaveTo="transform opacity-0 scale-95"
          >
             <div
-               className={`inline-block w-full mb-3 space-y-2 origin-top-left rounded-md`}
+               className={`inline-block w-full mb-3 space-y-2 origin-top-left rounded-md ${
+                  !title && "-mt-3"
+               }`}
             >
                <h3>{title}</h3>
                <div

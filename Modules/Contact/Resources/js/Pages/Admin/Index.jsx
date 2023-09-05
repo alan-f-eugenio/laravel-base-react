@@ -114,7 +114,7 @@ export default function Index({
                                 <TableTD children={item.subject} />
                                 <TableTD
                                     children={dayjs(item.created_at).format(
-                                        "D[/]MM[/]YYYY H[:]m[:]s"
+                                        "D[/]MM[/]YYYY HH[:]mm[:]ss"
                                     )}
                                 />
                                 <TableTD>

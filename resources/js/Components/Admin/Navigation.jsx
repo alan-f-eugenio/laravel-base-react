@@ -311,6 +311,190 @@ export default function Navigation({ commonData }) {
                      </NavDropdown.Content>
                   </NavDropdown>
                )}
+               {(commonData.activeModules.includes("Cart") ||
+                  commonData.activeModules.includes("Coupon") ||
+                  commonData.activeModules.includes("Customer") ||
+                  commonData.activeModules.includes("Product")) && (
+                  <NavDropdown
+                     activeDropdown={
+                        route().current("admin.carts.*") ||
+                        route().current("admin.coupons.*") ||
+                        route().current("admin.customers.*") ||
+                        route().current("admin.product_attributes.*") ||
+                        route().current("admin.product_categories.*") ||
+                        route().current("admin.products.*")
+                     }
+                  >
+                     <NavDropdown.Trigger>Loja</NavDropdown.Trigger>
+                     <NavDropdown.Content>
+                        {commonData.activeModules.includes("Product") && (
+                           <>
+                              <NavDropdown
+                                 activeDropdown={route().current(
+                                    "admin.product_categories.*"
+                                 )}
+                              >
+                                 <NavDropdown.Trigger>
+                                    Categorias
+                                 </NavDropdown.Trigger>
+                                 <NavDropdown.Content>
+                                    <NavDropdown.Link
+                                       href={route(
+                                          "admin.product_categories.create"
+                                       )}
+                                       active={route().current(
+                                          "admin.product_categories.create"
+                                       )}
+                                    >
+                                       Cadastrar
+                                    </NavDropdown.Link>
+                                    <NavDropdown.Link
+                                       href={route(
+                                          "admin.product_categories.index"
+                                       )}
+                                       active={route().current(
+                                          "admin.product_categories.index"
+                                       )}
+                                    >
+                                       Listar
+                                    </NavDropdown.Link>
+                                 </NavDropdown.Content>
+                              </NavDropdown>
+                              <NavDropdown
+                                 activeDropdown={route().current(
+                                    "admin.product_attributes.*"
+                                 )}
+                              >
+                                 <NavDropdown.Trigger>
+                                    Atributos
+                                 </NavDropdown.Trigger>
+                                 <NavDropdown.Content>
+                                    <NavDropdown.Link
+                                       href={route(
+                                          "admin.product_attributes.create"
+                                       )}
+                                       active={route().current(
+                                          "admin.product_attributes.create"
+                                       )}
+                                    >
+                                       Cadastrar
+                                    </NavDropdown.Link>
+                                    <NavDropdown.Link
+                                       href={route(
+                                          "admin.product_attributes.index"
+                                       )}
+                                       active={route().current(
+                                          "admin.product_attributes.index"
+                                       )}
+                                    >
+                                       Listar
+                                    </NavDropdown.Link>
+                                 </NavDropdown.Content>
+                              </NavDropdown>
+                              <NavDropdown
+                                 activeDropdown={route().current(
+                                    "admin.products.*"
+                                 )}
+                              >
+                                 <NavDropdown.Trigger>
+                                    Produtos
+                                 </NavDropdown.Trigger>
+                                 <NavDropdown.Content>
+                                    <NavDropdown.Link
+                                       href={route("admin.products.create")}
+                                       active={route().current(
+                                          "admin.products.create"
+                                       )}
+                                    >
+                                       Cadastrar
+                                    </NavDropdown.Link>
+                                    <NavDropdown.Link
+                                       href={route("admin.products.index")}
+                                       active={route().current(
+                                          "admin.products.index"
+                                       )}
+                                    >
+                                       Listar
+                                    </NavDropdown.Link>
+                                 </NavDropdown.Content>
+                              </NavDropdown>
+                           </>
+                        )}
+                     </NavDropdown.Content>
+                     {(commonData.activeModules.includes("Cart") ||
+                        commonData.activeModules.includes("Coupon") ||
+                        commonData.activeModules.includes("Customer")) && (
+                        <NavDropdown.SubContent>
+                           {commonData.activeModules.includes("Coupon") && (
+                              <NavDropdown
+                                 activeDropdown={route().current(
+                                    "admin.coupons.*"
+                                 )}
+                              >
+                                 <NavDropdown.Trigger>
+                                    Cupons
+                                 </NavDropdown.Trigger>
+                                 <NavDropdown.Content>
+                                    <NavDropdown.Link
+                                       href={route("admin.coupons.create")}
+                                       active={route().current(
+                                          "admin.coupons.create"
+                                       )}
+                                    >
+                                       Cadastrar
+                                    </NavDropdown.Link>
+                                    <NavDropdown.Link
+                                       href={route("admin.coupons.index")}
+                                       active={route().current(
+                                          "admin.coupons.index"
+                                       )}
+                                    >
+                                       Listar
+                                    </NavDropdown.Link>
+                                 </NavDropdown.Content>
+                              </NavDropdown>
+                           )}
+                           {commonData.activeModules.includes("Customer") && (
+                              <NavDropdown
+                                 activeDropdown={route().current(
+                                    "admin.customers.*"
+                                 )}
+                              >
+                                 <NavDropdown.Trigger>
+                                    Clientes
+                                 </NavDropdown.Trigger>
+                                 <NavDropdown.Content>
+                                    <NavDropdown.Link
+                                       href={route("admin.customers.create")}
+                                       active={route().current(
+                                          "admin.customers.create"
+                                       )}
+                                    >
+                                       Cadastrar
+                                    </NavDropdown.Link>
+                                    <NavDropdown.Link
+                                       href={route("admin.customers.index")}
+                                       active={route().current(
+                                          "admin.customers.index"
+                                       )}
+                                    >
+                                       Listar
+                                    </NavDropdown.Link>
+                                 </NavDropdown.Content>
+                              </NavDropdown>
+                           )}
+                           {commonData.activeModules.includes("Cart") && (
+                              <NavDropdown.Link
+                                 href={route("admin.carts.index")}
+                                 active={route().current("admin.carts.index")}
+                              >
+                                 Carrinhos Abandonados
+                              </NavDropdown.Link>
+                           )}
+                        </NavDropdown.SubContent>
+                     )}
+                  </NavDropdown>
+               )}
             </div>
             <div className="py-3 border-t border-gray-200">
                <NavDropdown

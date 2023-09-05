@@ -82,7 +82,7 @@ export default function Index({ auth, commonData, collection }) {
                         <TableTD children={item.email} />
                         <TableTD
                            children={dayjs(item.created_at).format(
-                              "D[/]MM[/]YYYY H[:]m[:]s"
+                              "D[/]MM[/]YYYY HH[:]mm[:]ss"
                            )}
                         />
                         <TableTDActions>

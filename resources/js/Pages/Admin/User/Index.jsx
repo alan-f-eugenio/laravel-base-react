@@ -111,14 +111,14 @@ export default function Index({ auth, commonData, collection }) {
                         <TableTD children={item.email} />
                         <TableTD
                            children={dayjs(item.created_at).format(
-                              "D[/]MM[/]YYYY H[:]m[:]s"
+                              "D[/]MM[/]YYYY HH[:]mm[:]ss"
                            )}
                         />
                         <TableTD
                            children={
                               item.updated_at != item.created_at
                                  ? dayjs(item.updated_at).format(
-                                      "D[/]MM[/]YYYY H[:]m[:]s"
+                                      "D[/]MM[/]YYYY HH[:]mm[:]ss"
                                    )
                                  : "Nunca"
                            }

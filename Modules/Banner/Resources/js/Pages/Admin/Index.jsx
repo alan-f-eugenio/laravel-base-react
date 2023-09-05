@@ -197,7 +197,7 @@ export default function Index({ auth, commonData, bannerLocals, collection }) {
                                                       children={dayjs(
                                                          item.created_at
                                                       ).format(
-                                                         "D[/]MM[/]YYYY H[:]m[:]s"
+                                                         "D[/]MM[/]YYYY HH[:]mm[:]ss"
                                                       )}
                                                    />
                                                    <TableTD
@@ -207,7 +207,7 @@ export default function Index({ auth, commonData, bannerLocals, collection }) {
                                                             ? dayjs(
                                                                  item.updated_at
                                                               ).format(
-                                                                 "D[/]MM[/]YYYY H[:]m[:]s"
+                                                                 "D[/]MM[/]YYYY HH[:]mm[:]ss"
                                                               )
                                                             : "Nunca"
                                                       }
