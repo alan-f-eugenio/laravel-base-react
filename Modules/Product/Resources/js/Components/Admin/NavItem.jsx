@@ -1,0 +1,63 @@
+import NavDropdown from "@/Components/Admin/NavDropdown";
+
+export default function ProductNavItem() {
+   return (
+      <>
+         <NavDropdown
+            activeDropdown={route().current("admin.product_categories.*")}
+         >
+            <NavDropdown.Trigger>Categorias</NavDropdown.Trigger>
+            <NavDropdown.Content>
+               <NavDropdown.Link
+                  href={route("admin.product_categories.create")}
+                  active={route().current("admin.product_categories.create")}
+               >
+                  Cadastrar
+               </NavDropdown.Link>
+               <NavDropdown.Link
+                  href={route("admin.product_categories.index")}
+                  active={route().current("admin.product_categories.index")}
+               >
+                  Listar
+               </NavDropdown.Link>
+            </NavDropdown.Content>
+         </NavDropdown>
+         <NavDropdown
+            activeDropdown={route().current("admin.product_attributes.*")}
+         >
+            <NavDropdown.Trigger>Atributos</NavDropdown.Trigger>
+            <NavDropdown.Content>
+               <NavDropdown.Link
+                  href={route("admin.product_attributes.create")}
+                  active={route().current("admin.product_attributes.create")}
+               >
+                  Cadastrar
+               </NavDropdown.Link>
+               <NavDropdown.Link
+                  href={route("admin.product_attributes.index")}
+                  active={route().current("admin.product_attributes.index")}
+               >
+                  Listar
+               </NavDropdown.Link>
+            </NavDropdown.Content>
+         </NavDropdown>
+         <NavDropdown activeDropdown={route().current("admin.products.*")}>
+            <NavDropdown.Trigger>Produtos</NavDropdown.Trigger>
+            <NavDropdown.Content>
+               <NavDropdown.Link
+                  href={route("admin.products.create")}
+                  active={route().current("admin.products.create")}
+               >
+                  Cadastrar
+               </NavDropdown.Link>
+               <NavDropdown.Link
+                  href={route("admin.products.index")}
+                  active={route().current("admin.products.index")}
+               >
+                  Listar
+               </NavDropdown.Link>
+            </NavDropdown.Content>
+         </NavDropdown>
+      </>
+   );
+}

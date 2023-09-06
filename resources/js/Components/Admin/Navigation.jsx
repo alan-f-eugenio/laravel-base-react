@@ -1,14 +1,20 @@
-import { useState, useEffect } from "react";
 import NavLink from "./NavLink";
 import NavDropdown from "./NavDropdown";
-import { usePage } from "@inertiajs/react";
+import { useEffect, useState } from "react";
+
+import BannerNavItem from "@modules/Banner/Resources/js/Components/Admin/NavItem";
+// import ContactNavItem from "@modules/Contact/Resources/js/Components/Admin/NavItem";
+import ContentNavItem from "@modules/Content/Resources/js/Components/Admin/NavItem";
 import EmailNavItem from "@modules/Email/Resources/js/Components/Admin/NavItem";
-import ContactNavItem from "@modules/Contact/Resources/js/Components/Admin/NavItem";
+import ProductNavItem from "@modules/Product/Resources/js/Components/Admin/NavItem";
+import CouponNavItem from "@modules/Coupon/Resources/js/Components/Admin/NavItem";
+import CustomerNavItem from "@modules/Customer/Resources/js/Components/Admin/NavItem";
+import CartNavItem from "@modules/Cart/Resources/js/Components/Admin/NavItem";
+import NavItem from "./NavItem";
 
 export default function Navigation({ commonData }) {
    const [showingNavigationDropdown, setShowingNavigationDropdown] =
       useState(false);
-   const { url } = usePage();
 
    useEffect(() => {
       if (showingNavigationDropdown) {
@@ -17,6 +23,15 @@ export default function Navigation({ commonData }) {
          document.querySelector("body").style.overflow = "";
       }
    }, [showingNavigationDropdown]);
+
+   // if (commonData.activeModules.includes("Contact")) {
+   //    (async () => {
+   //       let { default: ContactNavItem } = await import(
+   //          "@modules/Contact/Resources/js/Components/Admin/NavItem"
+   //       );
+   //       setContactNavItem(() => ContactNavItem);
+   //    })();
+   // }
 
    return (
       <aside className="flex-shrink-0 pb-16 xl:pb-0 xl:w-64">
@@ -76,7 +91,8 @@ export default function Navigation({ commonData }) {
                      <NavDropdown.Trigger>Comunicação</NavDropdown.Trigger>
                      <NavDropdown.Content>
                         {commonData.activeModules.includes("Contact") && (
-                           <ContactNavItem />
+                           // <ContactNavItem title="Contatos" />
+                           <NavItem placeholder="Contatos" module="Contact" commonData={commonData} />
                         )}
                         {commonData.activeModules.includes("Email") && (
                            <EmailNavItem />
@@ -96,209 +112,10 @@ export default function Navigation({ commonData }) {
                      <NavDropdown.Trigger>Institucional</NavDropdown.Trigger>
                      <NavDropdown.Content>
                         {commonData.activeModules.includes("Banner") && (
-                           <NavDropdown
-                              activeDropdown={route().current(
-                                 "admin.banners.*"
-                              )}
-                           >
-                              <NavDropdown.Trigger>Banners</NavDropdown.Trigger>
-                              <NavDropdown.Content>
-                                 <NavDropdown.Link
-                                    href={route("admin.banners.create")}
-                                    active={route().current(
-                                       "admin.banners.create"
-                                    )}
-                                 >
-                                    Cadastrar
-                                 </NavDropdown.Link>
-                                 <NavDropdown.Link
-                                    href={route("admin.banners.index")}
-                                    active={route().current(
-                                       "admin.banners.index"
-                                    )}
-                                 >
-                                    Listar
-                                 </NavDropdown.Link>
-                              </NavDropdown.Content>
-                           </NavDropdown>
+                           <BannerNavItem />
                         )}
                         {commonData.activeModules.includes("Content") && (
-                           <NavDropdown
-                              activeDropdown={
-                                 route().current("admin.contentNavs.*") ||
-                                 route().current("admin.contents.*")
-                              }
-                           >
-                              <NavDropdown.Trigger>
-                                 Páginas de Conteúdo
-                              </NavDropdown.Trigger>
-                              <NavDropdown.Content>
-                                 <NavDropdown.Link
-                                    href={route("admin.contentNavs.create")}
-                                    active={route().current(
-                                       "admin.contentNavs.create"
-                                    )}
-                                 >
-                                    Cadastrar
-                                 </NavDropdown.Link>
-                                 <NavDropdown.Link
-                                    href={route("admin.contentNavs.index")}
-                                    active={route().current(
-                                       "admin.contentNavs.index"
-                                    )}
-                                 >
-                                    Listar
-                                 </NavDropdown.Link>
-                              </NavDropdown.Content>
-                              {Object.keys(commonData.contentNavs).length >
-                                 0 && (
-                                 <NavDropdown.SubContent title="Conteúdos">
-                                    {Object.keys(commonData.contentNavs).map(
-                                       (navSlug, navSlugIndex) =>
-                                          commonData.contentNavs[navSlug]
-                                             .status ==
-                                             Object.keys(
-                                                commonData.defaultStatuses
-                                             )[0] &&
-                                          (commonData.contentNavs[navSlug]
-                                             .type ==
-                                          Object.keys(
-                                             commonData.contentNavTypes
-                                          )[0] ? (
-                                             <NavDropdown.Link
-                                                key={navSlugIndex}
-                                                href={route(
-                                                   "admin.contents.index",
-                                                   commonData.contentNavs[
-                                                      navSlug
-                                                   ].id
-                                                )}
-                                                active={
-                                                   route().current(
-                                                      "admin.contents.index",
-                                                      {
-                                                         nav: commonData
-                                                            .contentNavs[
-                                                            navSlug
-                                                         ].id,
-                                                      }
-                                                   ) ||
-                                                   (route().current(
-                                                      "admin.contents.edit",
-                                                      {
-                                                         content:
-                                                            url.split("/")[3],
-                                                      }
-                                                   ) &&
-                                                      Object.keys(
-                                                         commonData.contentNavs[
-                                                            navSlug
-                                                         ].contents
-                                                      ).filter(
-                                                         (navKey) =>
-                                                            commonData
-                                                               .contentNavs[
-                                                               navSlug
-                                                            ].contents[navKey]
-                                                               .id ==
-                                                            url.split("/")[3]
-                                                      ).length > 0)
-                                                }
-                                             >
-                                                {
-                                                   commonData.contentNavs[
-                                                      navSlug
-                                                   ].title
-                                                }
-                                             </NavDropdown.Link>
-                                          ) : (
-                                             <NavDropdown
-                                                key={navSlugIndex}
-                                                activeDropdown={
-                                                   route().current(
-                                                      "admin.contents.*",
-                                                      {
-                                                         nav: commonData
-                                                            .contentNavs[
-                                                            navSlug
-                                                         ].id,
-                                                      }
-                                                   ) ||
-                                                   (route().current(
-                                                      "admin.contents.edit",
-                                                      {
-                                                         content:
-                                                            url.split("/")[3],
-                                                      }
-                                                   ) &&
-                                                      Object.keys(
-                                                         commonData.contentNavs[
-                                                            navSlug
-                                                         ].contents
-                                                      ).filter(
-                                                         (navKey) =>
-                                                            commonData
-                                                               .contentNavs[
-                                                               navSlug
-                                                            ].contents[navKey]
-                                                               .id ==
-                                                            url.split("/")[3]
-                                                      ).length > 0)
-                                                }
-                                             >
-                                                <NavDropdown.Trigger>
-                                                   {
-                                                      commonData.contentNavs[
-                                                         navSlug
-                                                      ].title
-                                                   }
-                                                </NavDropdown.Trigger>
-                                                <NavDropdown.Content>
-                                                   <NavDropdown.Link
-                                                      href={route(
-                                                         "admin.contents.create",
-                                                         commonData.contentNavs[
-                                                            navSlug
-                                                         ].id
-                                                      )}
-                                                      active={route().current(
-                                                         "admin.contents.create",
-                                                         {
-                                                            nav: commonData
-                                                               .contentNavs[
-                                                               navSlug
-                                                            ].id,
-                                                         }
-                                                      )}
-                                                   >
-                                                      Cadastrar
-                                                   </NavDropdown.Link>
-                                                   <NavDropdown.Link
-                                                      href={route(
-                                                         "admin.contents.index",
-                                                         commonData.contentNavs[
-                                                            navSlug
-                                                         ].id
-                                                      )}
-                                                      active={route().current(
-                                                         "admin.contents.index",
-                                                         {
-                                                            nav: commonData
-                                                               .contentNavs[
-                                                               navSlug
-                                                            ].id,
-                                                         }
-                                                      )}
-                                                   >
-                                                      Listar
-                                                   </NavDropdown.Link>
-                                                </NavDropdown.Content>
-                                             </NavDropdown>
-                                          ))
-                                    )}
-                                 </NavDropdown.SubContent>
-                              )}
-                           </NavDropdown>
+                           <ContentNavItem commonData={commonData} />
                         )}
                      </NavDropdown.Content>
                   </NavDropdown>
@@ -320,97 +137,7 @@ export default function Navigation({ commonData }) {
                      <NavDropdown.Trigger>Loja</NavDropdown.Trigger>
                      <NavDropdown.Content>
                         {commonData.activeModules.includes("Product") && (
-                           <>
-                              <NavDropdown
-                                 activeDropdown={route().current(
-                                    "admin.product_categories.*"
-                                 )}
-                              >
-                                 <NavDropdown.Trigger>
-                                    Categorias
-                                 </NavDropdown.Trigger>
-                                 <NavDropdown.Content>
-                                    <NavDropdown.Link
-                                       href={route(
-                                          "admin.product_categories.create"
-                                       )}
-                                       active={route().current(
-                                          "admin.product_categories.create"
-                                       )}
-                                    >
-                                       Cadastrar
-                                    </NavDropdown.Link>
-                                    <NavDropdown.Link
-                                       href={route(
-                                          "admin.product_categories.index"
-                                       )}
-                                       active={route().current(
-                                          "admin.product_categories.index"
-                                       )}
-                                    >
-                                       Listar
-                                    </NavDropdown.Link>
-                                 </NavDropdown.Content>
-                              </NavDropdown>
-                              <NavDropdown
-                                 activeDropdown={route().current(
-                                    "admin.product_attributes.*"
-                                 )}
-                              >
-                                 <NavDropdown.Trigger>
-                                    Atributos
-                                 </NavDropdown.Trigger>
-                                 <NavDropdown.Content>
-                                    <NavDropdown.Link
-                                       href={route(
-                                          "admin.product_attributes.create"
-                                       )}
-                                       active={route().current(
-                                          "admin.product_attributes.create"
-                                       )}
-                                    >
-                                       Cadastrar
-                                    </NavDropdown.Link>
-                                    <NavDropdown.Link
-                                       href={route(
-                                          "admin.product_attributes.index"
-                                       )}
-                                       active={route().current(
-                                          "admin.product_attributes.index"
-                                       )}
-                                    >
-                                       Listar
-                                    </NavDropdown.Link>
-                                 </NavDropdown.Content>
-                              </NavDropdown>
-                              <NavDropdown
-                                 activeDropdown={route().current(
-                                    "admin.products.*"
-                                 )}
-                              >
-                                 <NavDropdown.Trigger>
-                                    Produtos
-                                 </NavDropdown.Trigger>
-                                 <NavDropdown.Content>
-                                    <NavDropdown.Link
-                                       href={route("admin.products.create")}
-                                       active={route().current(
-                                          "admin.products.create"
-                                       )}
-                                    >
-                                       Cadastrar
-                                    </NavDropdown.Link>
-                                    <NavDropdown.Link
-                                       href={route("admin.products.index")}
-                                       active={route().current(
-                                          "admin.products.index"
-                                       )}
-                                    >
-                                       Listar
-                                    </NavDropdown.Link>
-                                 </NavDropdown.Content>
-                              </NavDropdown>
-                           </>
+                           <ProductNavItem />
                         )}
                      </NavDropdown.Content>
                      {(commonData.activeModules.includes("Cart") ||
@@ -418,70 +145,13 @@ export default function Navigation({ commonData }) {
                         commonData.activeModules.includes("Customer")) && (
                         <NavDropdown.SubContent>
                            {commonData.activeModules.includes("Coupon") && (
-                              <NavDropdown
-                                 activeDropdown={route().current(
-                                    "admin.coupons.*"
-                                 )}
-                              >
-                                 <NavDropdown.Trigger>
-                                    Cupons
-                                 </NavDropdown.Trigger>
-                                 <NavDropdown.Content>
-                                    <NavDropdown.Link
-                                       href={route("admin.coupons.create")}
-                                       active={route().current(
-                                          "admin.coupons.create"
-                                       )}
-                                    >
-                                       Cadastrar
-                                    </NavDropdown.Link>
-                                    <NavDropdown.Link
-                                       href={route("admin.coupons.index")}
-                                       active={route().current(
-                                          "admin.coupons.index"
-                                       )}
-                                    >
-                                       Listar
-                                    </NavDropdown.Link>
-                                 </NavDropdown.Content>
-                              </NavDropdown>
+                              <CouponNavItem />
                            )}
                            {commonData.activeModules.includes("Customer") && (
-                              <NavDropdown
-                                 activeDropdown={route().current(
-                                    "admin.customers.*"
-                                 )}
-                              >
-                                 <NavDropdown.Trigger>
-                                    Clientes
-                                 </NavDropdown.Trigger>
-                                 <NavDropdown.Content>
-                                    <NavDropdown.Link
-                                       href={route("admin.customers.create")}
-                                       active={route().current(
-                                          "admin.customers.create"
-                                       )}
-                                    >
-                                       Cadastrar
-                                    </NavDropdown.Link>
-                                    <NavDropdown.Link
-                                       href={route("admin.customers.index")}
-                                       active={route().current(
-                                          "admin.customers.index"
-                                       )}
-                                    >
-                                       Listar
-                                    </NavDropdown.Link>
-                                 </NavDropdown.Content>
-                              </NavDropdown>
+                              <CustomerNavItem />
                            )}
                            {commonData.activeModules.includes("Cart") && (
-                              <NavDropdown.Link
-                                 href={route("admin.carts.index")}
-                                 active={route().current("admin.carts.index")}
-                              >
-                                 Carrinhos Abandonados
-                              </NavDropdown.Link>
+                              <CartNavItem />
                            )}
                         </NavDropdown.SubContent>
                      )}
