@@ -2,14 +2,6 @@ import NavLink from "./NavLink";
 import NavDropdown from "./NavDropdown";
 import { useEffect, useState } from "react";
 
-import BannerNavItem from "@modules/Banner/Resources/js/Components/Admin/NavItem";
-// import ContactNavItem from "@modules/Contact/Resources/js/Components/Admin/NavItem";
-import ContentNavItem from "@modules/Content/Resources/js/Components/Admin/NavItem";
-import EmailNavItem from "@modules/Email/Resources/js/Components/Admin/NavItem";
-import ProductNavItem from "@modules/Product/Resources/js/Components/Admin/NavItem";
-import CouponNavItem from "@modules/Coupon/Resources/js/Components/Admin/NavItem";
-import CustomerNavItem from "@modules/Customer/Resources/js/Components/Admin/NavItem";
-import CartNavItem from "@modules/Cart/Resources/js/Components/Admin/NavItem";
 import NavItem from "./NavItem";
 
 export default function Navigation({ commonData }) {
@@ -23,15 +15,6 @@ export default function Navigation({ commonData }) {
          document.querySelector("body").style.overflow = "";
       }
    }, [showingNavigationDropdown]);
-
-   // if (commonData.activeModules.includes("Contact")) {
-   //    (async () => {
-   //       let { default: ContactNavItem } = await import(
-   //          "@modules/Contact/Resources/js/Components/Admin/NavItem"
-   //       );
-   //       setContactNavItem(() => ContactNavItem);
-   //    })();
-   // }
 
    return (
       <aside className="flex-shrink-0 pb-16 xl:pb-0 xl:w-64">
@@ -91,11 +74,13 @@ export default function Navigation({ commonData }) {
                      <NavDropdown.Trigger>Comunicação</NavDropdown.Trigger>
                      <NavDropdown.Content>
                         {commonData.activeModules.includes("Contact") && (
-                           // <ContactNavItem title="Contatos" />
-                           <NavItem placeholder="Contatos" module="Contact" commonData={commonData} />
+                           <NavItem placeholder="Contatos" module="Contact" />
                         )}
                         {commonData.activeModules.includes("Email") && (
-                           <EmailNavItem />
+                           <NavItem
+                              placeholder="Lista de E-mails"
+                              module="Email"
+                           />
                         )}
                      </NavDropdown.Content>
                   </NavDropdown>
@@ -112,10 +97,14 @@ export default function Navigation({ commonData }) {
                      <NavDropdown.Trigger>Institucional</NavDropdown.Trigger>
                      <NavDropdown.Content>
                         {commonData.activeModules.includes("Banner") && (
-                           <BannerNavItem />
+                           <NavItem placeholder="Banners" module="Banner" />
                         )}
                         {commonData.activeModules.includes("Content") && (
-                           <ContentNavItem commonData={commonData} />
+                           <NavItem
+                              placeholder="Páginas de Conteúdo"
+                              module="Content"
+                              commonData={commonData}
+                           />
                         )}
                      </NavDropdown.Content>
                   </NavDropdown>
@@ -137,7 +126,7 @@ export default function Navigation({ commonData }) {
                      <NavDropdown.Trigger>Loja</NavDropdown.Trigger>
                      <NavDropdown.Content>
                         {commonData.activeModules.includes("Product") && (
-                           <ProductNavItem />
+                           <NavItem placeholder="Produtos" module="Product" />
                         )}
                      </NavDropdown.Content>
                      {(commonData.activeModules.includes("Cart") ||
@@ -145,13 +134,19 @@ export default function Navigation({ commonData }) {
                         commonData.activeModules.includes("Customer")) && (
                         <NavDropdown.SubContent>
                            {commonData.activeModules.includes("Coupon") && (
-                              <CouponNavItem />
+                              <NavItem placeholder="Cupons" module="Coupon" />
                            )}
                            {commonData.activeModules.includes("Customer") && (
-                              <CustomerNavItem />
+                              <NavItem
+                                 placeholder="Clientes"
+                                 module="Customer"
+                              />
                            )}
                            {commonData.activeModules.includes("Cart") && (
-                              <CartNavItem />
+                              <NavItem
+                                 placeholder="Carrinhos Abandonados"
+                                 module="CuCartstomer"
+                              />
                            )}
                         </NavDropdown.SubContent>
                      )}
