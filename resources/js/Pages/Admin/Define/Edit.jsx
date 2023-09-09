@@ -9,6 +9,7 @@ import PageTitle from "@/Components/Admin/PageTitle";
 import Section from "@/Components/Admin/Section";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
+import Inputmask from "inputmask";
 
 export default function Edit({ auth, commonData, item }) {
    const { data, setData, put, errors, processing } = useForm(item);
@@ -17,6 +18,20 @@ export default function Edit({ auth, commonData, item }) {
       e.preventDefault();
       put(route("admin.defines.update"));
    };
+
+   Inputmask({
+      mask: "99.999.999/9999-99",
+   }).mask(document.querySelectorAll("#company_cnpj"));
+   Inputmask({
+      mask: "99999-999",
+   }).mask(document.querySelectorAll("#company_cep"));
+   Inputmask({
+      greedy: false,
+      mask: "((99) 9999-9999)|((99) 99999-9999)",
+   }).mask(document.querySelectorAll("#company_phone"));
+   Inputmask({
+      mask: "(99) 99999-9999",
+   }).mask(document.querySelectorAll("#company_whats"));
 
    return (
       <AuthenticatedLayout
