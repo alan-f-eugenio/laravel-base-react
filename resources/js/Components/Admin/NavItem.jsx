@@ -6,7 +6,6 @@ export default function NavItem({ placeholder, module, commonData }) {
 
    (async () => {
       let { default: newModuleNavItem } = await import(
-         /* @vite-ignore */
          `../../../../Modules/${module}/Resources/js/Components/Admin/NavItem.jsx`
       );
       setModuleNavItem(() => newModuleNavItem);
