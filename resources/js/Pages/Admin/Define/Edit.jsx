@@ -7,6 +7,12 @@ import Grid from "@/Components/Admin/Grid";
 import PageSubTitle from "@/Components/Admin/PageSubTitle";
 import PageTitle from "@/Components/Admin/PageTitle";
 import Section from "@/Components/Admin/Section";
+import {
+   cepMaskOptions,
+   cnpjMaskOptions,
+   phoneMaskOptions,
+   whatsMaskOptions,
+} from "@/Helpers/utils";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
 import Inputmask from "inputmask";
@@ -19,19 +25,14 @@ export default function Edit({ auth, commonData, item }) {
       put(route("admin.defines.update"));
    };
 
-   Inputmask({
-      mask: "99.999.999/9999-99",
-   }).mask(document.querySelectorAll("#company_cnpj"));
-   Inputmask({
-      mask: "99999-999",
-   }).mask(document.querySelectorAll("#company_cep"));
-   Inputmask({
-      greedy: false,
-      mask: "((99) 9999-9999)|((99) 99999-9999)",
-   }).mask(document.querySelectorAll("#company_phone"));
-   Inputmask({
-      mask: "(99) 99999-9999",
-   }).mask(document.querySelectorAll("#company_whats"));
+   Inputmask(cnpjMaskOptions).mask(document.querySelectorAll("#company_cnpj"));
+   Inputmask(cepMaskOptions).mask(document.querySelectorAll("#company_cep"));
+   Inputmask(phoneMaskOptions).mask(
+      document.querySelectorAll("#company_phone")
+   );
+   Inputmask(whatsMaskOptions).mask(
+      document.querySelectorAll("#company_whats")
+   );
 
    return (
       <AuthenticatedLayout
