@@ -2,33 +2,32 @@ import Filter from "@/Components/Admin/Filter";
 import FilterInput from "@/Components/Admin/FilterInput";
 import FilterSelect from "@/Components/Admin/FilterSelect";
 import FilterSelectOption from "@/Components/Admin/FilterSelectOption";
-import FormSubtitle from "@/Components/Admin/FormSubtitle";
 import PageButton from "@/Components/Admin/PageButton";
 import PageTitle from "@/Components/Admin/PageTitle";
 import Section from "@/Components/Admin/Section";
 import StatusBadge from "@/Components/Admin/StatusBadge";
+import Table from "@/Components/Admin/Table";
 import TableAction from "@/Components/Admin/TableAction";
-import TableActionVisualize from "@/Components/Admin/TableActionVisualize";
 import TableEmpty from "@/Components/Admin/TableEmpty";
-import TableSortable from "@/Components/Admin/TableSortable";
 import TableTD from "@/Components/Admin/TableTD";
 import TableTDActions from "@/Components/Admin/TableTDActions";
 import TableTH from "@/Components/Admin/TableTH";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, usePage, useRemember } from "@inertiajs/react";
-import axios from "axios";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { useEffect } from "react";
 
-export default function Index({ auth, commonData, bannerLocals, collection }) {
-   const [collectionState, setCollectionState] = useState(collection);
-
+export default function Index({
+   auth,
+   commonData,
+   collection,
+   months,
+   customerPersons,
+}) {
    const { url } = usePage();
    const params = new URLSearchParams(window.location.search);
    const entries = Object.fromEntries(params.entries());
-   const { data, setData, get, transform, recentlySuccessful } =
-      useForm(entries);
+   const { data, setData, get, transform } = useForm(entries);
    const [formState] = useRemember(entries);
 
    useEffect(() => {
@@ -42,10 +41,6 @@ export default function Index({ auth, commonData, bannerLocals, collection }) {
       }
    }, [data]);
 
-   useEffect(() => {
-      setCollectionState(collection);
-   }, [recentlySuccessful]);
-
    transform((data) =>
       Object.fromEntries(
          Object.entries(data).filter(
@@ -54,54 +49,24 @@ export default function Index({ auth, commonData, bannerLocals, collection }) {
       )
    );
 
-   const reorder = (list, startIndex, endIndex) => {
-      const result = Array.from(list);
-      const [removed] = result.splice(startIndex, 1);
-      result.splice(endIndex, 0, removed);
-
-      return result;
-   };
-
-   const onDragEnd = (result) => {
-      if (!result.destination) {
-         return;
-      }
-      if (result.destination.index === result.source.index) {
-         return;
-      }
-
-      let newList = reorder(
-         collectionState[result.destination.droppableId],
-         result.source.index,
-         result.destination.index
-      );
-
-      axios.put(
-         route("admin.banners_order"),
-         newList.map((value, index) => ({ id: value.id, ordem: index + 1 }))
-      );
-
-      collectionState[result.destination.droppableId] = newList;
-   };
-
    return (
       <AuthenticatedLayout
          user={auth.user}
          commonData={commonData}
          header={
             <>
-               <PageTitle title="Banners" />
+               <PageTitle title="Clientes" />
                <PageButton
-                  href={route("admin.banners.create")}
+                  href={route("admin.customers.create")}
                   title="Cadastrar Novo"
                />
             </>
          }
       >
-         <Head title="Banners" />
+         <Head title="Clientes" />
 
          <Section>
-            <Filter gridCols="sm:grid-cols-3" setData={setData}>
+            <Filter gridCols="lg:grid-cols-4 sm:grid-cols-3" setData={setData}>
                <FilterSelect
                   title="Status"
                   inpName="status"
@@ -117,161 +82,140 @@ export default function Index({ auth, commonData, bannerLocals, collection }) {
                   ))}
                </FilterSelect>
                <FilterInput
-                  inpName="title"
-                  title="Título"
-                  placeholder="Título do banner"
-                  data={data.title}
+                  inpName="fullname"
+                  title="Nome"
+                  placeholder="Nome do cliente"
+                  data={data.fullname}
+                  setData={setData}
+               />
+               <FilterInput
+                  inpName="email"
+                  title="E-mail"
+                  placeholder="E-mail do cliente"
+                  data={data.email}
                   setData={setData}
                />
                <FilterSelect
-                  title="Local"
-                  inpName="local_id"
-                  data={data.local_id}
+                  title="Tipo de Pessoa"
+                  inpName="person"
+                  data={data.person}
                   setData={setData}
                >
-                  {bannerLocals.map((bannerLocal) => (
+                  {Object.keys(customerPersons).map((personKey) => (
                      <FilterSelectOption
-                        key={bannerLocal.id}
-                        inpValue={bannerLocal.id}
-                        title={bannerLocal.title}
+                        key={personKey}
+                        inpValue={personKey}
+                        title={customerPersons[personKey]}
                      />
                   ))}
                </FilterSelect>
+               <FilterInput
+                  inpName="cpf"
+                  title="CPF"
+                  placeholder="CPF do cliente"
+                  data={data.cpf}
+                  setData={setData}
+               />
+               <FilterSelect
+                  title="Mês de Aniversário"
+                  inpName="month_birth"
+                  data={data.month_birth}
+                  setData={setData}
+               >
+                  {Object.keys(months).map((monthKey) => (
+                     <FilterSelectOption
+                        key={monthKey}
+                        inpValue={monthKey}
+                        title={months[monthKey]}
+                     />
+                  ))}
+               </FilterSelect>
+               <FilterInput
+                  inpName="cnpj"
+                  title="CNPJ"
+                  placeholder="CNPJ do cliente"
+                  data={data.cnpj}
+                  setData={setData}
+               />
+               <FilterInput
+                  inpName="corporate_name"
+                  title="Razão Social"
+                  placeholder="Razão social do cliente"
+                  data={data.corporate_name}
+                  setData={setData}
+               />
             </Filter>
-            {Object.keys(collectionState).map((local, localIndex) => (
-               <div className="space-y-6" key={localIndex}>
-                  <FormSubtitle title={local} />
-                  <TableSortable
-                     ths={
-                        <>
-                           <TableTH children="Ordem" />
-                           <TableTH children="Título" />
-                           <TableTH children="Local" />
-                           <TableTH children="Cadastrado" />
-                           <TableTH children="Alterado" />
-                           <TableTH children="Status" />
-                           <TableTH children="Ações" />
-                        </>
-                     }
-                  >
-                     <DragDropContext onDragEnd={onDragEnd}>
-                        <Droppable droppableId={local}>
-                           {(provided) => (
-                              <tbody ref={provided.innerRef}>
-                                 {collectionState[local].length ? (
-                                    collectionState[local].map(
-                                       (item, index) => (
-                                          <Draggable
-                                             key={item.id}
-                                             draggableId={`draggable-${item.id}`}
-                                             index={index}
-                                          >
-                                             {(provided) => (
-                                                <tr
-                                                   ref={provided.innerRef}
-                                                   {...provided.draggableProps}
-                                                   {...provided.dragHandleProps}
-                                                   className="bg-white border-b"
-                                                >
-                                                   <TableTD
-                                                      classes="ordemNumber cursor-grab px-6 py-4"
-                                                      children={
-                                                         <>
-                                                            <i className="mr-3 text-base align-middle icon-[tabler--arrows-up-down]"></i>
-                                                            <span className="text-xl">
-                                                               {index + 1}
-                                                            </span>
-                                                         </>
-                                                      }
-                                                   />
-                                                   <TableTD
-                                                      main={true}
-                                                      children={item.title}
-                                                   />
-                                                   <TableTD
-                                                      children={
-                                                         item.local.title
-                                                      }
-                                                   />
-                                                   <TableTD
-                                                      children={dayjs(
-                                                         item.created_at
-                                                      ).format(
-                                                         "D[/]MM[/]YYYY HH[:]mm[:]ss"
-                                                      )}
-                                                   />
-                                                   <TableTD
-                                                      children={
-                                                         item.updated_at !=
-                                                         item.created_at
-                                                            ? dayjs(
-                                                                 item.updated_at
-                                                              ).format(
-                                                                 "D[/]MM[/]YYYY HH[:]mm[:]ss"
-                                                              )
-                                                            : "Nunca"
-                                                      }
-                                                   />
-                                                   <TableTD>
-                                                      <StatusBadge
-                                                         condition={
-                                                            item.status ==
-                                                            Object.keys(
-                                                               commonData.defaultStatuses
-                                                            )[0]
-                                                         }
-                                                         trueTitle="Ativo"
-                                                         falseTitle="Inativo"
-                                                      />
-                                                   </TableTD>
-                                                   <TableTDActions>
-                                                      <TableActionVisualize
-                                                         filename={
-                                                            item.filename
-                                                         }
-                                                         title="Visualizar"
-                                                      >
-                                                         <i className="text-base align-middle icon-[tabler--eye]"></i>
-                                                      </TableActionVisualize>
-                                                      <TableAction
-                                                         href={route(
-                                                            "admin.banners.edit",
-                                                            item.id
-                                                         )}
-                                                         title="Editar"
-                                                      >
-                                                         <i className="text-base align-middle icon-[tabler--edit]"></i>
-                                                      </TableAction>
-                                                      <TableAction
-                                                         href={route(
-                                                            "admin.banners.destroy",
-                                                            item.id
-                                                         )}
-                                                         title="Excluir"
-                                                         isDestroy={true}
-                                                         destroyPreserveState={
-                                                            false
-                                                         }
-                                                      >
-                                                         <i className="text-base align-middle icon-[tabler--trash]"></i>
-                                                      </TableAction>
-                                                   </TableTDActions>
-                                                </tr>
-                                             )}
-                                          </Draggable>
-                                       )
-                                    )
-                                 ) : (
-                                    <TableEmpty />
-                                 )}
-                                 {provided.placeholder}
-                              </tbody>
+            <Table
+               collection={collection}
+               ths={
+                  <>
+                     <TableTH children="Nome" />
+                     <TableTH children="Tipo de Pessoa" />
+                     <TableTH children="Cadastrado" />
+                     <TableTH children="Alterado" />
+                     <TableTH children="Status" />
+                     <TableTH children="Ações" />
+                  </>
+               }
+            >
+               {collection.data.length ? (
+                  collection.data.map((item, index) => (
+                     <tr key={index} className="bg-white border-b">
+                        <TableTD main={true} children={item.fullname} />
+                        <TableTD>
+                           <StatusBadge
+                              condition={
+                                 item.person == Object.keys(customerPersons)[0]
+                              }
+                              trueTitle={Object.values(customerPersons)[0]}
+                              falseTitle={Object.values(customerPersons)[1]}
+                           />
+                        </TableTD>
+                        <TableTD
+                           children={dayjs(item.created_at).format(
+                              "D[/]MM[/]YYYY HH[:]mm[:]ss"
                            )}
-                        </Droppable>
-                     </DragDropContext>
-                  </TableSortable>
-               </div>
-            ))}
+                        />
+                        <TableTD
+                           children={
+                              item.updated_at != item.created_at
+                                 ? dayjs(item.updated_at).format(
+                                      "D[/]MM[/]YYYY HH[:]mm[:]ss"
+                                   )
+                                 : "Nunca"
+                           }
+                        />
+                        <TableTD>
+                           <StatusBadge
+                              condition={
+                                 item.status ==
+                                 Object.keys(commonData.defaultStatuses)[0]
+                              }
+                              trueTitle="Ativo"
+                              falseTitle="Inativo"
+                           />
+                        </TableTD>
+                        <TableTDActions>
+                           <TableAction
+                              href={route("admin.customers.destroy", item.id)}
+                              title="Editar"
+                           >
+                              <i className="text-base align-middle icon-[tabler--edit]"></i>
+                           </TableAction>
+                           <TableAction
+                              href={route("admin.customers.destroy", item.id)}
+                              title="Excluir"
+                              isDestroy={true}
+                           >
+                              <i className="text-base align-middle icon-[tabler--trash]"></i>
+                           </TableAction>
+                        </TableTDActions>
+                     </tr>
+                  ))
+               ) : (
+                  <TableEmpty />
+               )}
+            </Table>
          </Section>
       </AuthenticatedLayout>
    );

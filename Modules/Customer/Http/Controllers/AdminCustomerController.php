@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 use Modules\Customer\Entities\Customer;
 use Modules\Customer\Entities\CustomerAddress;
 use Modules\Customer\Helpers\CustomerAddressTypes;
@@ -53,7 +54,10 @@ class AdminCustomerController extends Controller {
 
         $customerPersons = CustomerPersons::array();
 
-        return view('customer::admin.customer.index', ['collection' => $query->paginate(10), 'months' => $months, 'customerPersons' => $customerPersons]);
+        return Inertia::render(
+            'Customer::Admin/Index',
+            ['collection' => $query->paginate(10)->withQueryString(), 'months' => $months, 'customerPersons' => $customerPersons]
+        );
     }
 
     public function create() {
