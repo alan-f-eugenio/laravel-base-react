@@ -11,6 +11,6 @@ Route::prefix('carrinho')->group(function () {
 Route::resource('cart_product', CartProductController::class)->only('update', 'destroy');
 
 Route::prefix('admin')->middleware('auth:admin', 'auth.session')->group(function () {
-    Route::get('carts', [AdminCartController::class, 'index'])->name('admin.carts.index')->middleware('stripEmptyParams');
+    Route::get('carts', [AdminCartController::class, 'index'])->name('admin.carts.index');
     Route::delete('carts/{cart}', [AdminCartController::class, 'destroy'])->name('admin.carts.destroy');
 });

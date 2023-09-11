@@ -60,7 +60,7 @@ export default function Index({ auth, commonData, collection }) {
          <Head title="Páginas de Conteúdo" />
 
          <Section>
-            <Filter gridCols="sm:grid-cols-2">
+            <Filter gridCols="sm:grid-cols-2" setData={setData}>
                <FilterSelect
                   title="Status"
                   inpName="status"

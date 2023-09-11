@@ -63,7 +63,7 @@ export default function Index({ auth, commonData, collection, nav }) {
          <Head title={nav.title} />
 
          <Section>
-            <Filter gridCols="sm:grid-cols-2">
+            <Filter gridCols="sm:grid-cols-2" setData={setData}>
                <FilterSelect
                   title="Status"
                   inpName="status"

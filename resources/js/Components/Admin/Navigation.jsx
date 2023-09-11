@@ -145,7 +145,7 @@ export default function Navigation({ commonData }) {
                            {commonData.activeModules.includes("Cart") && (
                               <NavItem
                                  placeholder="Carrinhos Abandonados"
-                                 module="CuCartstomer"
+                                 module="Cart"
                               />
                            )}
                         </NavDropdown.SubContent>

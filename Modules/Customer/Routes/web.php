@@ -35,8 +35,7 @@ Route::middleware('auth:web', 'auth.session')->prefix('minha-conta')->group(func
 });
 
 Route::prefix('admin')->middleware('auth:admin', 'auth.session')->group(function () {
-    Route::get('customers', [AdminCustomerController::class, 'index'])->name('admin.customers.index')->middleware('stripEmptyParams');
-    Route::resource('customers', AdminCustomerController::class)->except('index', 'show')->names('admin.customers');
+    Route::resource('customers', AdminCustomerController::class)->except('show')->names('admin.customers');
 });
 
 Route::middleware('guest:web')->group(function () {

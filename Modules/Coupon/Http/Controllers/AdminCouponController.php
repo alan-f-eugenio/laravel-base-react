@@ -4,6 +4,7 @@ namespace Modules\Coupon\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Inertia\Inertia;
 use Modules\Coupon\Entities\Coupon;
 use Modules\Coupon\Helpers\CouponDiscountTypes;
 use Modules\Coupon\Http\Requests\AdminCouponRequest;
@@ -24,7 +25,10 @@ class AdminCouponController extends Controller {
 
         $couponDiscountTypes = CouponDiscountTypes::array();
 
-        return view('coupon::admin.index', ['collection' => $query->paginate(10), 'couponDiscountTypes' => $couponDiscountTypes]);
+        return Inertia::render(
+            'Coupon::Admin/Index',
+            ['collection' => $query->paginate(10)->withQueryString(), 'couponDiscountTypes' => $couponDiscountTypes]
+        );
     }
 
     public function create() {

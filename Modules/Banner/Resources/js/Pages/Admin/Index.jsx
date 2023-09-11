@@ -101,7 +101,7 @@ export default function Index({ auth, commonData, bannerLocals, collection }) {
          <Head title="Banners" />
 
          <Section>
-            <Filter gridCols="sm:grid-cols-3">
+            <Filter  gridCols="sm:grid-cols-3" setData={setData}>
                <FilterSelect
                   title="Status"
                   inpName="status"

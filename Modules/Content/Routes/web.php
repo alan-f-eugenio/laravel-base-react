@@ -13,12 +13,10 @@ Route::prefix('conteudo')->group(function () {
 });
 
 Route::prefix('admin')->middleware('auth:admin', 'auth.session')->group(function () {
-    Route::get('contents/{nav}', [AdminContentController::class, 'index'])->name('admin.contents.index')->middleware('stripEmptyParams');
-    Route::resource('contents/{nav}', AdminContentController::class)->only('create', 'store')->names('admin.contents');
+    Route::resource('contents/{nav}', AdminContentController::class)->only('index', 'create', 'store')->names('admin.contents');
     Route::resource('contents', AdminContentController::class)->only('edit', 'update', 'destroy')->names('admin.contents');
 
-    Route::get('contentNavs', [AdminContentNavController::class, 'index'])->name('admin.contentNavs.index')->middleware('stripEmptyParams');
-    Route::resource('contentNavs', AdminContentNavController::class)->except('index', 'show')->names('admin.contentNavs');
+    Route::resource('contentNavs', AdminContentNavController::class)->except('show')->names('admin.contentNavs');
 
     Route::resource('content_images', AdminContentImageController::class)->only('index', 'store')->names('admin.content_images');
     Route::delete('content_images', [AdminContentImageController::class, 'destroy'])->name('admin.content_images.destroy');

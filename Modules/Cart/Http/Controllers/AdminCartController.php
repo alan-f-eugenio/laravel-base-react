@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Inertia\Inertia;
 use Modules\Cart\Entities\Cart;
 
 class AdminCartController extends Controller {
@@ -32,7 +33,13 @@ class AdminCartController extends Controller {
             }
         });
 
-        return view('cart::admin.index', ['collection' => $query->with(['cartProducts', 'customer'])->paginate(10)]);
+        return Inertia::render(
+            'Cart::Admin/Index',
+            ['collection' => $query->with([
+                'cartProducts',
+                'customer'
+            ])->paginate(10)->withQueryString()]
+        );
     }
 
     public function destroy(Cart $cart) {

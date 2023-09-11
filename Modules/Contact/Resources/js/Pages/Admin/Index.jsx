@@ -56,7 +56,7 @@ export default function Index({
             <Head title="Contatos" />
 
             <Section>
-                <Filter gridCols="sm:grid-cols-4">
+                <Filter gridCols="sm:grid-cols-4" setData={setData}>
                     <FilterSelect
                         title="Status"
                         inpName="seen"

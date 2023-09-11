@@ -18,6 +18,5 @@ use Modules\Coupon\Http\Controllers\CouponController;
 Route::get('coupon_calc', CouponController::class)->name('coupon_calc');
 
 Route::prefix('admin')->middleware('auth:admin', 'auth.session')->group(function () {
-    Route::get('coupons', [AdminCouponController::class, 'index'])->name('admin.coupons.index')->middleware('stripEmptyParams');
-    Route::resource('coupons', AdminCouponController::class)->except('index', 'show')->names('admin.coupons');
+    Route::resource('coupons', AdminCouponController::class)->except('show')->names('admin.coupons');
 });
