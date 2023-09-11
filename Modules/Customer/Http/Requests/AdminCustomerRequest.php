@@ -11,6 +11,11 @@ use Modules\Customer\Entities\Customer;
 use Modules\Customer\Helpers\CustomerPersons;
 
 class AdminCustomerRequest extends FormRequest {
+
+    protected function prepareForValidation(): void {
+        dd($this);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -23,7 +28,7 @@ class AdminCustomerRequest extends FormRequest {
             'fullname' => 'required|string|max:255',
             'cpf' => ['required', 'formato_cpf', 'cpf', Rule::unique(Customer::class, 'cpf')->ignore($this->customer?->id)->withoutTrashed()],
             'rg' => ['nullable', 'string', 'max:255', Rule::unique(Customer::class, 'rg')->ignore($this->customer?->id)->withoutTrashed()],
-            'date_birth' => ['required', 'date',  'before:-18 years'],
+            'date_birth' => ['required', 'date'],
             'cnpj' => ['sometimes', 'formato_cnpj', 'cnpj', Rule::unique(Customer::class, 'cnpj')->ignore($this->customer?->id)->withoutTrashed()],
             'corporate_name' => ['sometimes', 'string', 'max:255', Rule::unique(Customer::class, 'corporate_name')->ignore($this->customer?->id)->withoutTrashed()],
             'state_registration' => ['sometimes', 'string', 'max:255', Rule::unique(Customer::class, 'state_registration')->ignore($this->customer?->id)->withoutTrashed()],

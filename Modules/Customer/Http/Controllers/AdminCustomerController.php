@@ -64,12 +64,14 @@ class AdminCustomerController extends Controller {
         $item = new Customer;
         $customerPersons = CustomerPersons::array();
 
-        return view('customer::admin.customer.create_edit', [
-            'item' => $item,
-            'personFisica' => (old('person') ?: $item->person?->value) == CustomerPersons::PESSOA_FISICA->value || !$item->id,
-            'address' => new CustomerAddress,
-            'customerPersons' => $customerPersons,
-        ]);
+        return Inertia::render(
+            'Customer::Admin/CreateEdit',
+            [
+                'item' => $item,
+                'personFisica' => (old('person') ?: $item->person?->value) == CustomerPersons::PESSOA_FISICA->value || !$item->id,
+                'customerPersons' => $customerPersons,
+            ]
+        );
     }
 
     public function store(AdminCustomerRequest $request, AdminCustomerAddressRequest $addressRequest) {
@@ -91,12 +93,14 @@ class AdminCustomerController extends Controller {
     public function edit(Customer $customer) {
         $customerPersons = CustomerPersons::array();
 
-        return view('customer::admin.customer.create_edit', [
-            'item' => $customer,
-            'personFisica' => (old('person') ?: $customer->person?->value) == CustomerPersons::PESSOA_FISICA->value || !$customer->id,
-            'address' => $customer->mainAddress,
-            'customerPersons' => $customerPersons,
-        ]);
+        return Inertia::render(
+            'Customer::Admin/CreateEdit',
+            [
+                'item' => $customer->load('mainAddress'),
+                'personFisica' => (old('person') ?: $customer->person?->value) == CustomerPersons::PESSOA_FISICA->value || !$customer->id,
+                'customerPersons' => $customerPersons,
+            ]
+        );
     }
 
     public function update(AdminCustomerRequest $request, AdminCustomerAddressRequest $addressRequest, Customer $customer) {

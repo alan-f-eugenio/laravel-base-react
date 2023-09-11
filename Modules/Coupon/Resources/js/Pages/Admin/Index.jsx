@@ -157,7 +157,7 @@ export default function Index({
                         </TableTD>
                         <TableTDActions>
                            <TableAction
-                              href={route("admin.coupons.destroy", item.id)}
+                              href={route("admin.coupons.edit", item.id)}
                               title="Editar"
                            >
                               <i className="text-base align-middle icon-[tabler--edit]"></i>

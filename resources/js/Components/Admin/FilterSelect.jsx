@@ -5,8 +5,6 @@ export default function FilterSelect({
    data,
    setData,
 }) {
-   console.log(data);
-
    return (
       <div>
          <label

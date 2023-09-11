@@ -21,13 +21,16 @@ class CustomerFactory extends Factory {
     public function definition() {
         $bool = fake()->boolean(75);
 
+        $brFaker = \Faker\Factory::create('pt_BR');
+
+
         return [
             'person' => $bool ? 1 : 2,
             'fullname' => $bool ? fake()->name() : str(fake()->words(2, true))->title(),
-            'cpf' => $bool ? fake()->numerify('###.###.###-##') : null,
-            'rg' => $bool ? fake()->numerify(fake()->boolean() ? '#.###.###-#' : '##.###.###-##') : null,
-            'date_birth' => $bool ? fake()->dateTimeBetween('-100 years', '-18 years') : null,
-            'cnpj' => !$bool ? fake()->numerify('##.###.###/0001-##') : null,
+            'cpf' => $brFaker->cpf,
+            'rg' => $brFaker->rg,
+            'date_birth' => fake()->dateTimeBetween('-100 years', '-18 years'),
+            'cnpj' => !$bool ? $brFaker->cnpj : null,
             'corporate_name' => !$bool ? str(fake()->words(2, true))->title() : null,
             'state_registration' => !$bool ? fake()->numerify('###.#####-##') : null,
             'phone' => fake()->numerify('(##) 9####-####'),

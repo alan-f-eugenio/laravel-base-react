@@ -16,16 +16,16 @@ class CustomerDatabaseSeeder extends Seeder {
     public function run() {
         Model::unguard();
 
-        foreach (Customer::factory(10)->create() as $customer) {
+        foreach (Customer::factory(11)->create() as $customer) {
             CustomerAddress::factory()->create([
                 'customer_id' => $customer->id,
             ]);
         }
 
-        CustomerAddress::factory()->create([
-            'customer_id' => Customer::factory()->create([
-                'email' => 'alan@cgdw.com.br',
-            ]),
-        ]);
+        // CustomerAddress::factory()->create([
+        //     'customer_id' => Customer::factory()->create([
+        //         'email' => 'alan@cgdw.com.br',
+        //     ]),
+        // ]);
     }
 }
