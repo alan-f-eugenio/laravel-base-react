@@ -19,11 +19,12 @@ export default function CreateEdit({
    auth,
    commonData,
    item,
+   address,
    personFisica,
    customerPersons,
 }) {
-   const { data, setData, submit, transform, errors, processing } =
-      useForm(item);
+   const { data, setData, submit, transform, errors, processing, reset } =
+      useForm({ ...item, ...address });
 
    const [isPersonFisica, setIsPersonFisica] = useState(personFisica);
 
@@ -46,7 +47,6 @@ export default function CreateEdit({
             person: Object.keys(customerPersons)[0],
          };
       }
-      console.log(newData);
       return newData;
    });
 
@@ -58,7 +58,7 @@ export default function CreateEdit({
             ? route("admin.customers.update", item.id)
             : route("admin.customers.store"),
          {
-            onSuccess: () => reset(),
+            onSuccess: () => setData("recoverPass", false),
          }
       );
    };
@@ -218,7 +218,7 @@ export default function CreateEdit({
                   <FormLabel inpName="cep" title="CEP" errors={errors}>
                      <FormInput
                         inpName="cep"
-                        inpValue={data.main_address.cep}
+                        inpValue={data.cep}
                         placeholder="00000-000"
                         setData={setData}
                         required
@@ -229,7 +229,7 @@ export default function CreateEdit({
                   <FormLabel inpName="street" title="Endereço" errors={errors}>
                      <FormInput
                         inpName="street"
-                        inpValue={data.main_address.street}
+                        inpValue={data.street}
                         placeholder="Endereço"
                         setData={setData}
                         required
@@ -242,7 +242,7 @@ export default function CreateEdit({
                   >
                      <FormInput
                         inpName="neighborhood"
-                        inpValue={data.main_address.neighborhood}
+                        inpValue={data.neighborhood}
                         placeholder="Bairro"
                         setData={setData}
                         required
@@ -255,7 +255,7 @@ export default function CreateEdit({
                   >
                      <FormInput
                         inpName="complement"
-                        inpValue={data.main_address.complement}
+                        inpValue={data.complement}
                         placeholder="Complemento"
                         setData={setData}
                      />
@@ -263,7 +263,7 @@ export default function CreateEdit({
                   <FormLabel inpName="city" title="Cidade" errors={errors}>
                      <FormInput
                         inpName="city"
-                        inpValue={data.main_address.city}
+                        inpValue={data.city}
                         placeholder="Cidade"
                         setData={setData}
                         required
@@ -272,7 +272,7 @@ export default function CreateEdit({
                   <FormLabel inpName="state" title="Estado" errors={errors}>
                      <FormInput
                         inpName="state"
-                        inpValue={data.main_address.state}
+                        inpValue={data.state}
                         placeholder="Estado"
                         setData={setData}
                         maxLength="2"

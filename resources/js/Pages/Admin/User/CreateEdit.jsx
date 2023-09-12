@@ -51,7 +51,7 @@ export default function CreateEdit({ auth, commonData, item }) {
             ? route("admin.users.update", item.id)
             : route("admin.users.store"),
          {
-            onSuccess: () => reset(),
+            onSuccess: () => setData("changePass", false),
          }
       );
    };

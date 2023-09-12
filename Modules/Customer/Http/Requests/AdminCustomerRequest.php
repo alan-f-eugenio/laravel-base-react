@@ -13,7 +13,11 @@ use Modules\Customer\Helpers\CustomerPersons;
 class AdminCustomerRequest extends FormRequest {
 
     protected function prepareForValidation(): void {
-        dd($this);
+        $this->merge([
+            'cnpj' => $this->person == CustomerPersons::PESSOA_JURIDICA ? $this->cnpj : null,
+            'corporate_name' => $this->person == CustomerPersons::PESSOA_JURIDICA ? $this->corporate_name : null,
+            'state_registration' => $this->person == CustomerPersons::PESSOA_JURIDICA ? $this->state_registration : null,
+        ]);
     }
 
     /**
@@ -29,9 +33,9 @@ class AdminCustomerRequest extends FormRequest {
             'cpf' => ['required', 'formato_cpf', 'cpf', Rule::unique(Customer::class, 'cpf')->ignore($this->customer?->id)->withoutTrashed()],
             'rg' => ['nullable', 'string', 'max:255', Rule::unique(Customer::class, 'rg')->ignore($this->customer?->id)->withoutTrashed()],
             'date_birth' => ['required', 'date'],
-            'cnpj' => ['sometimes', 'formato_cnpj', 'cnpj', Rule::unique(Customer::class, 'cnpj')->ignore($this->customer?->id)->withoutTrashed()],
-            'corporate_name' => ['sometimes', 'string', 'max:255', Rule::unique(Customer::class, 'corporate_name')->ignore($this->customer?->id)->withoutTrashed()],
-            'state_registration' => ['sometimes', 'string', 'max:255', Rule::unique(Customer::class, 'state_registration')->ignore($this->customer?->id)->withoutTrashed()],
+            'cnpj' => [Rule::when($this->person == CustomerPersons::PESSOA_JURIDICA, 'required', 'nullable'), 'formato_cnpj', 'cnpj', Rule::unique(Customer::class, 'cnpj')->ignore($this->customer?->id)->withoutTrashed()],
+            'corporate_name' => [Rule::when($this->person == CustomerPersons::PESSOA_JURIDICA, 'required', 'nullable'), 'string', 'max:255', Rule::unique(Customer::class, 'corporate_name')->ignore($this->customer?->id)->withoutTrashed()],
+            'state_registration' => [Rule::when($this->person == CustomerPersons::PESSOA_JURIDICA, 'required', 'nullable'), 'string', 'max:255', Rule::unique(Customer::class, 'state_registration')->ignore($this->customer?->id)->withoutTrashed()],
             'email' => ['required', 'email', Rule::unique(Customer::class, 'email')->ignore($this->customer?->id)->withoutTrashed()],
             'phone' => 'required|celular_com_ddd',
             'password' => ['sometimes', 'confirmed', Password::min(8)],

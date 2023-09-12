@@ -93,10 +93,13 @@ class AdminCustomerController extends Controller {
     public function edit(Customer $customer) {
         $customerPersons = CustomerPersons::array();
 
+        $address = CustomerAddress::where('customer_id', $customer->id)->where('type', CustomerAddressTypes::TYPE_PRINCIPAL->value)->first();
+
         return Inertia::render(
             'Customer::Admin/CreateEdit',
             [
-                'item' => $customer->load('mainAddress'),
+                'item' => $customer,
+                'address' => $address,
                 'personFisica' => (old('person') ?: $customer->person?->value) == CustomerPersons::PESSOA_FISICA->value || !$customer->id,
                 'customerPersons' => $customerPersons,
             ]
@@ -111,7 +114,7 @@ class AdminCustomerController extends Controller {
 
         DB::transaction(function () use ($customer, $attributes, $mainAddAttributes) {
             $customer->update($attributes);
-            $customer->addresses->firstWhere('type', CustomerAddressTypes::TYPE_PRINCIPAL->value)->update($mainAddAttributes);
+            $customer->mainAddress->update($mainAddAttributes);
         });
 
         if ($request->has('recoverPass')) {
