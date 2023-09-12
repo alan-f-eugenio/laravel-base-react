@@ -14,9 +14,9 @@ class AdminCustomerRequest extends FormRequest {
 
     protected function prepareForValidation(): void {
         $this->merge([
-            'cnpj' => $this->person == CustomerPersons::PESSOA_JURIDICA ? $this->cnpj : null,
-            'corporate_name' => $this->person == CustomerPersons::PESSOA_JURIDICA ? $this->corporate_name : null,
-            'state_registration' => $this->person == CustomerPersons::PESSOA_JURIDICA ? $this->state_registration : null,
+            'cnpj' => $this->person == CustomerPersons::PESSOA_JURIDICA->value ? $this->cnpj : null,
+            'corporate_name' => $this->person == CustomerPersons::PESSOA_JURIDICA->value ? $this->corporate_name : null,
+            'state_registration' => $this->person == CustomerPersons::PESSOA_JURIDICA->value ? $this->state_registration : null,
         ]);
     }
 

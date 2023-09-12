@@ -1,3 +1,5 @@
+import cep from "cep-promise";
+
 export function capitalize(text) {
    return text.charAt(0).toUpperCase() + text.slice(1);
 }
@@ -31,6 +33,10 @@ export function deepMerge(target, ...sources) {
 
 export const cepMaskOptions = {
    mask: "99999-999",
+};
+
+export const cpfMaskOptions = {
+   mask: "999.999.999-99",
 };
 
 export const cnpjMaskOptions = {
@@ -90,3 +96,43 @@ export const percentMaskOptions = {
    autoUnmask: true,
    removeMaskOnSubmit: true,
 };
+
+let oldCepValueApp = null;
+export function fetchAddressByCep(
+   cepInp,
+   oldCepValue = null,
+   data,
+   setData,
+   streetInp = "street",
+   neighborhoodInp = "neighborhood",
+   cityInp = "city",
+   stateInp = "state"
+) {
+   let cepValue = cepInp.value.replace(/[^\d.-]+/g, "");
+
+   if (oldCepValue && oldCepValue != oldCepValueApp && oldCepValueApp == null) {
+      oldCepValueApp = oldCepValue;
+   }
+
+   if (cepValue != oldCepValueApp && cepValue.length == 9) {
+      oldCepValueApp = cepValue;
+      let newAddress = {};
+      cep(cepValue)
+         .then((cepData) => {
+            newAddress["cep"] = cepInp.value;
+            newAddress[streetInp] = cepData.street;
+            newAddress[neighborhoodInp] = cepData.neighborhood;
+            newAddress[cityInp] = cepData.city;
+            newAddress[stateInp] = cepData.state;
+            setData({ ...data, ...newAddress, number: "", complement: "" });
+         })
+         .catch(() => {
+            newAddress["cep"] = "";
+            newAddress[streetInp] = "";
+            newAddress[neighborhoodInp] = "";
+            newAddress[cityInp] = "";
+            newAddress[stateInp] = "";
+            setData({ ...data, ...newAddress, number: "", complement: "" });
+         });
+   }
+}

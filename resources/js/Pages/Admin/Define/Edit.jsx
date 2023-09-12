@@ -7,14 +7,14 @@ import Grid from "@/Components/Admin/Grid";
 import PageSubTitle from "@/Components/Admin/PageSubTitle";
 import PageTitle from "@/Components/Admin/PageTitle";
 import Section from "@/Components/Admin/Section";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head, useForm } from "@inertiajs/react";
 import {
    cepMaskOptions,
    cnpjMaskOptions,
    phoneMaskOptions,
    whatsMaskOptions,
 } from "@/Helpers/utils";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm } from "@inertiajs/react";
 import Inputmask from "inputmask";
 
 export default function Edit({ auth, commonData, item }) {

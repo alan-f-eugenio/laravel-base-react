@@ -11,8 +11,16 @@ import PageButton from "@/Components/Admin/PageButton";
 import PageSubTitle from "@/Components/Admin/PageSubTitle";
 import PageTitle from "@/Components/Admin/PageTitle";
 import Section from "@/Components/Admin/Section";
+import {
+   cepMaskOptions,
+   cnpjMaskOptions,
+   cpfMaskOptions,
+   fetchAddressByCep,
+   phoneMaskOptions,
+} from "@/Helpers/utils";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
+import Inputmask from "inputmask";
 import { useState } from "react";
 
 export default function CreateEdit({
@@ -20,17 +28,26 @@ export default function CreateEdit({
    commonData,
    item,
    address,
-   personFisica,
    customerPersons,
 }) {
-   const { data, setData, submit, transform, errors, processing, reset } =
-      useForm({ ...item, ...address });
+   const { data, setData, submit, transform, errors, processing } = useForm({
+      ...item,
+      ...address,
+   });
 
-   const [isPersonFisica, setIsPersonFisica] = useState(personFisica);
+   const [isPersonFisica, setIsPersonFisica] = useState(
+      data.person == Object.keys(customerPersons)[0]
+   );
 
    const handlePersonChange = (e) => {
       setData("person", e.target.value);
       setIsPersonFisica(e.target.value == Object.keys(customerPersons)[0]);
+   };
+
+   const handleCepChange = (e) => {
+      let oldCepValue = data.cep;
+      setData("cep", e.target.value);
+      fetchAddressByCep(e.target, oldCepValue, data, setData);
    };
 
    transform((data) => {
@@ -62,6 +79,11 @@ export default function CreateEdit({
          }
       );
    };
+
+   Inputmask(cpfMaskOptions).mask(document.querySelectorAll("#cpf"));
+   Inputmask(cnpjMaskOptions).mask(document.querySelectorAll("#cnpj"));
+   Inputmask(cepMaskOptions).mask(document.querySelectorAll("#cep"));
+   Inputmask(phoneMaskOptions).mask(document.querySelectorAll("#phone"));
 
    return (
       <AuthenticatedLayout
@@ -221,6 +243,7 @@ export default function CreateEdit({
                         inpValue={data.cep}
                         placeholder="00000-000"
                         setData={setData}
+                        onChange={(e) => handleCepChange(e)}
                         required
                      />
                   </FormLabel>
@@ -235,17 +258,12 @@ export default function CreateEdit({
                         required
                      />
                   </FormLabel>
-                  <FormLabel
-                     inpName="neighborhood"
-                     title="Bairro"
-                     errors={errors}
-                  >
+                  <FormLabel inpName="number" title="Número" errors={errors}>
                      <FormInput
-                        inpName="neighborhood"
-                        inpValue={data.neighborhood}
-                        placeholder="Bairro"
+                        inpName="number"
+                        inpValue={data.number}
+                        placeholder="Número"
                         setData={setData}
-                        required
                      />
                   </FormLabel>
                   <FormLabel
@@ -258,6 +276,19 @@ export default function CreateEdit({
                         inpValue={data.complement}
                         placeholder="Complemento"
                         setData={setData}
+                     />
+                  </FormLabel>
+                  <FormLabel
+                     inpName="neighborhood"
+                     title="Bairro"
+                     errors={errors}
+                  >
+                     <FormInput
+                        inpName="neighborhood"
+                        inpValue={data.neighborhood}
+                        placeholder="Bairro"
+                        setData={setData}
+                        required
                      />
                   </FormLabel>
                   <FormLabel inpName="city" title="Cidade" errors={errors}>
@@ -328,7 +359,7 @@ export default function CreateEdit({
                         </FormLabel>
                         <FormLabel
                            inpName="password_confirmation"
-                           title="Confirme aSenha do Cliente"
+                           title="Confirme a Senha do Cliente"
                            errors={errors}
                         >
                            <FormInput

@@ -68,7 +68,6 @@ class AdminCustomerController extends Controller {
             'Customer::Admin/CreateEdit',
             [
                 'item' => $item,
-                'personFisica' => (old('person') ?: $item->person?->value) == CustomerPersons::PESSOA_FISICA->value || !$item->id,
                 'customerPersons' => $customerPersons,
             ]
         );
@@ -100,7 +99,6 @@ class AdminCustomerController extends Controller {
             [
                 'item' => $customer,
                 'address' => $address,
-                'personFisica' => (old('person') ?: $customer->person?->value) == CustomerPersons::PESSOA_FISICA->value || !$customer->id,
                 'customerPersons' => $customerPersons,
             ]
         );

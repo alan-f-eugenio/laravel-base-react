@@ -34,18 +34,14 @@ class AdminCouponController extends Controller {
     public function create() {
         $item = new Coupon;
         $couponDiscountTypes = CouponDiscountTypes::array();
-        $typePercentValue = CouponDiscountTypes::TYPE_PERCENT->value;
 
-        return view('coupon::admin.create_edit', [
-            'item' => $item,
-            'hasDateStartLimit' => (!old('hasDateStartLimit') && old('date_start')) || $item->date_start,
-            'hasDateEndLimit' => (!old('hasDateEndLimit') && old('date_end')) || $item->date_end,
-            'hasQtdLimit' => (!old('hasQtdLimit') && old('qtd') !== '' && old('qtd') !== null) || $item->qtd !== null,
-            'hasValueMinLimit' => (!old('hasValueMinLimit') && old('value_min')) || $item->value_min,
-            'hasValueMaxLimit' => (!old('hasValueMaxLimit') && old('value_max')) || $item->value_max,
-            'couponDiscountTypes' => $couponDiscountTypes,
-            'typePercentValue' => $typePercentValue,
-        ]);
+        return Inertia::render(
+            'Coupon::Admin/CreateEdit',
+            [
+                'item' => $item,
+                'couponDiscountTypes' => $couponDiscountTypes,
+            ]
+        );
     }
 
     public function store(AdminCouponRequest $request) {
@@ -60,18 +56,14 @@ class AdminCouponController extends Controller {
 
     public function edit(Coupon $coupon) {
         $couponDiscountTypes = CouponDiscountTypes::array();
-        $typePercentValue = CouponDiscountTypes::TYPE_PERCENT->value;
 
-        return view('coupon::admin.create_edit', [
-            'item' => $coupon,
-            'hasDateStartLimit' => (!old('hasDateStartLimit') && old('date_start')) || $coupon->date_start,
-            'hasDateEndLimit' => (!old('hasDateEndLimit') && old('date_end')) || $coupon->date_end,
-            'hasQtdLimit' => (!old('hasQtdLimit') && old('qtd') !== '' && old('qtd') !== null) || $coupon->qtd !== null,
-            'hasValueMinLimit' => (!old('hasValueMinLimit') && old('value_min')) || $coupon->value_min,
-            'hasValueMaxLimit' => (!old('hasValueMaxLimit') && old('value_max')) || $coupon->value_max,
-            'couponDiscountTypes' => $couponDiscountTypes,
-            'typePercentValue' => $typePercentValue,
-        ]);
+        return Inertia::render(
+            'Coupon::Admin/CreateEdit',
+            [
+                'item' => $coupon,
+                'couponDiscountTypes' => $couponDiscountTypes,
+            ]
+        );
     }
 
     public function update(AdminCouponRequest $request, Coupon $coupon) {

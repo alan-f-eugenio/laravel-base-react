@@ -83,6 +83,8 @@ class UserController extends Controller {
         }
         $attributes['update_user_id'] = auth('admin')->id();
 
+        $user->update($attributes);
+
         return redirect()->route('admin.users.edit', $user)->with('message', ['type' => 'success', 'text' => 'Usuário alterado com sucesso.']);
     }
 
