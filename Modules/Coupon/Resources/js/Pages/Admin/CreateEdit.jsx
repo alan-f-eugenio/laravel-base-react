@@ -32,7 +32,9 @@ export default function CreateEdit({
       noValueMaxLimit: !Boolean(item.value_max),
    });
 
-   console.log({ errors: errors });
+   console.log(errors);
+
+   // console.log(data);
 
    transform((data) => {
       let newData = data;

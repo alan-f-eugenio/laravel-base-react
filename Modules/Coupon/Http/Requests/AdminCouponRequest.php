@@ -54,7 +54,7 @@ class AdminCouponRequest extends FormRequest {
             'value_max' => $this->has('value_max') ? str_replace(',', '.', $this->value_max) : null,
             'date_start' => $this->has('date_start') ? $this->date_start : null,
             'date_end' => $this->has('date_end') ? $this->date_end : null,
-            'first_buy' => $this->has('first_buy') ? 1 : 0,
+            'first_buy' => $this->has('first_buy') && $this->first_buy ? 1 : 0,
         ]);
     }
 }
