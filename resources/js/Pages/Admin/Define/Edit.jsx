@@ -81,7 +81,7 @@ export default function Edit({ auth, commonData, item }) {
                   </FormLabel>
                   <FormLabel
                      inpName="page_meta_description"
-                     title="Meta Descrição (SEO)"
+                     title="Descrição (SEO)"
                      errors={errors}
                   >
                      <FormInput

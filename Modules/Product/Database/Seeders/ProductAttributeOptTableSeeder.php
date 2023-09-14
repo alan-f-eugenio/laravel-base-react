@@ -2,7 +2,7 @@
 
 namespace Modules\Product\Database\Seeders;
 
-use DragonCode\Support\Facades\Filesystem\File;
+use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Modules\Product\Entities\ProductAttribute;

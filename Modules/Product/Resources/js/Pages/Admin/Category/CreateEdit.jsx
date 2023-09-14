@@ -1,29 +1,35 @@
+import FormSelectOption from "@/Components/Admin/FormSelectOption";
 import Form from "@/Components/Admin/Form";
-import FormImage from "@/Components/Admin/FormImage";
 import FormInput from "@/Components/Admin/FormInput";
 import FormInputFile from "@/Components/Admin/FormInputFile";
 import FormLabel from "@/Components/Admin/FormLabel";
 import FormSelect from "@/Components/Admin/FormSelect";
-import FormSelectOption from "@/Components/Admin/FormSelectOption";
 import Grid from "@/Components/Admin/Grid";
 import PageButton from "@/Components/Admin/PageButton";
 import PageSubTitle from "@/Components/Admin/PageSubTitle";
 import PageTitle from "@/Components/Admin/PageTitle";
 import Section from "@/Components/Admin/Section";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import "@ckeditor/ckeditor5-build-classic/build/translations/pt-br";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { Head, useForm } from "@inertiajs/react";
-import axios from "axios";
+import FormImage from "@/Components/Admin/FormImage";
+import FormTextArea from "@/Components/Admin/FormTextArea";
+import FormSelectCategoryOption from "../../../Components/Admin/FormSelectCategoryOption";
 
-export default function CreateEdit({ auth, commonData, item, nav }) {
-   const { data, setData, post, transform, errors, reset, processing } =
-      useForm(
-         Object.fromEntries(
-            Object.entries(item).filter(([k, v]) => k != "filename")
-         )
-      );
+export default function CreateEdit({
+   auth,
+   commonData,
+   item,
+   categories,
+   treeList,
+}) {
+   const { data, setData, post, transform, errors, processing } = useForm(
+      Object.fromEntries(
+         Object.entries(item).filter(([k, v]) => k != "filename")
+      )
+   );
+
+   // console.log(categories);
+   // console.log(treeList);
 
    transform((data) => {
       let newData = data;
@@ -33,6 +39,7 @@ export default function CreateEdit({ auth, commonData, item, nav }) {
             status: Object.keys(commonData.defaultStatuses)[0],
          };
       }
+
       if (item.id) {
          newData = { ...newData, _method: "put" };
       }
@@ -43,8 +50,8 @@ export default function CreateEdit({ auth, commonData, item, nav }) {
       e.preventDefault();
       post(
          item.id
-            ? route("admin.contents.update", item.id)
-            : route("admin.contents.store", nav.id),
+            ? route("admin.product_categories.update", item.id)
+            : route("admin.product_categories.store"),
          {
             onSuccess: () => {
                document.querySelector("input[type=file]").value = "";
@@ -58,57 +65,33 @@ export default function CreateEdit({ auth, commonData, item, nav }) {
       );
    };
 
-   function uploadAdapter(loader) {
-      return {
-         upload: () => {
-            return new Promise((resolve, reject) => {
-               const body = new FormData();
-               loader.file.then((file) => {
-                  body.append("upload", file);
-                  axios
-                     .post(route("admin.content_images.store"), body)
-                     .then((res) => resolve({ default: res.url }))
-                     .catch((err) => {
-                        reject(err);
-                     });
-               });
-            });
-         },
-      };
-   }
-   function uploadPlugin(editor) {
-      editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
-         return uploadAdapter(loader);
-      };
-   }
-
    return (
       <AuthenticatedLayout
          user={auth.user}
          commonData={commonData}
          header={
             <>
-               <PageTitle title="Conteúdos">
+               <PageTitle title="Categorias">
                   <PageSubTitle subtitle={item.id ? "Alterar" : "Cadastrar"} />
                </PageTitle>
                <PageButton
-                  href={route("admin.contents.index", nav.id)}
-                  title="Listar Conteúdos"
+                  href={route("admin.product_categories.index")}
+                  title="Listar Categorias"
                />
             </>
          }
       >
-         <Head title="Conteúdos" />
+         <Head title="Categorias" />
 
          <Section>
             <Form
                processing={processing}
                editing={Boolean(item.id)}
-               handleSubmit={handleSubmit}
                hasFiles={true}
+               handleSubmit={handleSubmit}
             >
                <FormImage filename={item.filename} />
-               <Grid gridCols="sm:grid-cols-3">
+               <Grid gridCols="sm:grid-cols-2">
                   <FormLabel inpName="status" title="Status" errors={errors}>
                      <FormSelect
                         inpName="status"
@@ -127,45 +110,34 @@ export default function CreateEdit({ auth, commonData, item, nav }) {
                         )}
                      </FormSelect>
                   </FormLabel>
-                  <FormLabel inpName="title" title="Título" errors={errors}>
-                     <FormInput
-                        inpName="title"
-                        inpValue={data.title}
-                        placeholder="Título do conteúdo"
+                  <FormLabel
+                     inpName="id_parent"
+                     title="Categoria Pai"
+                     errors={errors}
+                  >
+                     <FormSelect
+                        inpName="id_parent"
+                        data={data.id_parent}
                         setData={setData}
                         required
-                     />
+                     >
+                        <FormSelectOption inpValue="0" title="Principal" />
+                        {Object.keys(categories).map((categoryKey) => (
+                           <FormSelectCategoryOption
+                              key={categoryKey}
+                              category={categories[categoryKey]}
+                              treeList={treeList}
+                           />
+                        ))}
+                     </FormSelect>
                   </FormLabel>
-                  <FormLabel
-                     inpName="subtitle"
-                     title="Subtítulo"
-                     errors={errors}
-                  >
+                  <FormLabel inpName="name" title="Nome" errors={errors}>
                      <FormInput
-                        inpName="subtitle"
-                        inpValue={data.subtitle}
-                        placeholder="Subtítulo do conteúdo"
+                        inpName="name"
+                        inpValue={data.name}
+                        placeholder="Nome da categoria"
                         setData={setData}
-                     />
-                  </FormLabel>
-                  <FormLabel inpName="author" title="Autor" errors={errors}>
-                     <FormInput
-                        inpName="author"
-                        inpValue={data.author}
-                        placeholder="Autor do conteúdo"
-                        setData={setData}
-                     />
-                  </FormLabel>
-                  <FormLabel
-                     inpName="link"
-                     title="Link (conteúdo externo)"
-                     errors={errors}
-                  >
-                     <FormInput
-                        inpName="link"
-                        inpValue={data.link}
-                        placeholder="Link do conteúdo"
-                        setData={setData}
+                        required
                      />
                   </FormLabel>
                   <FormLabel
@@ -204,44 +176,26 @@ export default function CreateEdit({ auth, commonData, item, nav }) {
                         setData={setData}
                      />
                   </FormLabel>
+                  <FormLabel inpName="text" title="Descrição" errors={errors}>
+                     <FormTextArea
+                        inpName="text"
+                        inpValue={data.text}
+                        placeholder="Descrição da categoria"
+                        setData={setData}
+                     />
+                  </FormLabel>
                   <FormLabel
                      inpName="filename"
-                     title={`${item.filename ? "Alterar" : "Cadastrar"} Imagem`}
+                     title={`${item.id ? "Alterar" : "Cadastrar"} Imagem`}
                      errors={errors}
                   >
-                     <FormInputFile inpName="filename" setData={setData} />
+                     <FormInputFile
+                        inpName="filename"
+                        setData={setData}
+                        required={!item.id}
+                     />
                   </FormLabel>
                </Grid>
-               <FormLabel inpName="text" title="Texto" errors={errors}>
-                  <CKEditor
-                     editor={ClassicEditor}
-                     data={data.text}
-                     onChange={(event, editor) => {
-                        const dataCK = editor.getData();
-                        setData("text", dataCK);
-                     }}
-                     config={{
-                        language: "pt-br",
-                        placeholder: "Texto do conteúdo",
-                        extraPlugins: [uploadPlugin],
-                     }}
-                  />
-               </FormLabel>
-               <FormLabel inpName="abstract" title="Resumo" errors={errors}>
-                  <CKEditor
-                     editor={ClassicEditor}
-                     data={data.abstract}
-                     onChange={(event, editor) => {
-                        const dataCK = editor.getData();
-                        setData("abstract", dataCK);
-                     }}
-                     config={{
-                        language: "pt-br",
-                        placeholder: "Resumo do conteúdo",
-                        extraPlugins: [uploadPlugin],
-                     }}
-                  />
-               </FormLabel>
             </Form>
          </Section>
       </AuthenticatedLayout>
