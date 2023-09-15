@@ -44,6 +44,7 @@ class AdminProductCategoryController extends Controller {
             $attributes['filename'] = request()->file('filename')->store('product_categories', 'public');
         }
         $attributes['create_user_id'] = auth('admin')->id();
+        $attributes['slug'] = str($attributes['name'])->slug()->value;
 
         ProductCategory::create($attributes);
 
@@ -70,6 +71,7 @@ class AdminProductCategoryController extends Controller {
             $attributes['filename'] = request()->file('filename')->store('product_categories', 'public');
         }
         $attributes['update_user_id'] = auth('admin')->id();
+        $attributes['slug'] = str($attributes['name'])->slug()->value;
 
         $product_category->update($attributes);
 

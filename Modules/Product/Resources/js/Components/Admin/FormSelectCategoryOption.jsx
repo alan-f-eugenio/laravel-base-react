@@ -3,19 +3,19 @@ import FormSelectOption from "@/Components/Admin/FormSelectOption";
 export default function FormSelectCategoryOption({
    category,
    treeList,
-   count = 1,
+   level,
 }) {
-   let levelStr = "";
-   for (let x = 0; x < count; x++) {
-      levelStr += "-";
+   let levelSpace = "";
+   let countSpace = level.split(".");
+   for (let x = 0; x < countSpace.length; x++) {
+      levelSpace += "\u00a0";
    }
-   count++;
 
    return (
       <>
          <FormSelectOption
             inpValue={category.id}
-            title={`${levelStr} ${category.name}`}
+            title={`${levelSpace}${level} - ${category.name}`}
             disabled={treeList.includes(category.id)}
          />
          {Object.keys(category.all_childs).map((subCategoryKey) => (
@@ -23,7 +23,7 @@ export default function FormSelectCategoryOption({
                key={subCategoryKey}
                category={category.all_childs[subCategoryKey]}
                treeList={treeList}
-               count={count}
+               level={`${level}.${parseInt(subCategoryKey) + 1}`}
             />
          ))}
       </>

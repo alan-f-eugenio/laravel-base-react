@@ -6,6 +6,7 @@ use App\Helpers\DefaultStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
+use Modules\Product\Entities\ProductCategory;
 use Modules\Product\Http\Controllers\AdminProductCategoryController;
 
 class AdminProductCategoryRequest extends FormRequest {
@@ -25,6 +26,7 @@ class AdminProductCategoryRequest extends FormRequest {
             'meta_description' => 'nullable|string|max:255',
             'text' => 'nullable|string',
             'filename' => 'sometimes|image|max:5120',
+            'ordem' => 'required|integer',
         ];
     }
 
@@ -44,8 +46,10 @@ class AdminProductCategoryRequest extends FormRequest {
     }
 
     protected function prepareForValidation(): void {
+        $lastProductCategory = ProductCategory::where('id_parent', $this->id_parent ?: null)->orderBy('ordem', 'desc')->first();
         $this->merge([
             'id_parent' => $this->id_parent ?: null,
+            'ordem' => $this->product_category?->ordem ?: ($lastProductCategory ? $lastProductCategory->ordem + 1 : 1)
         ]);
     }
 }

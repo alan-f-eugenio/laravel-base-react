@@ -121,12 +121,13 @@ export default function CreateEdit({
                         setData={setData}
                         required
                      >
-                        <FormSelectOption inpValue="0" title="Principal" />
+                        <FormSelectOption inpValue="0" title="1 - Principal" />
                         {Object.keys(categories).map((categoryKey) => (
                            <FormSelectCategoryOption
                               key={categoryKey}
                               category={categories[categoryKey]}
                               treeList={treeList}
+                              level={`1.${parseInt(categoryKey) + 1}`}
                            />
                         ))}
                      </FormSelect>

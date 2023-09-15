@@ -27,6 +27,7 @@ class ProductCategory extends Model {
         'meta_description',
         'filename',
         'ordem',
+        'slug',
     ];
 
     protected $casts = [
