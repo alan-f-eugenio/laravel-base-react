@@ -1,19 +1,26 @@
 export default function TableTH({
-    children,
-    classes = "px-6 py-3",
-    hidden,
-    ...props
+   children,
+   classes = "",
+   hidden = false,
+   ...props
 }) {
-    return (
-        <th
-            scope="col"
-            className={`${classes}`}
-            {...props}
-            {...(hidden
-                ? "style='padding-top: 0 !important;padding-bottom: 0 !important;line-height: 0;visibility: hidden;'"
-                : "")}
-        >
-            {children}
-        </th>
-    );
+   return (
+      <th
+         scope="col"
+         className={`${classes} px-6 py-3`}
+         style={
+            hidden
+               ? {
+                    paddingTop: 0,
+                    paddingBottom: 0,
+                    lineHeight: 0,
+                    visibility: "hidden",
+                 }
+               : {}
+         }
+         {...props}
+      >
+         {children}
+      </th>
+   );
 }

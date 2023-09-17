@@ -7,11 +7,11 @@ function Structure({ children, justifyEnd }) {
 
 export default function TableTDActions({
     children,
-    classes = "px-6 py-4",
+    classes = "",
     justifyEnd = false,
 }) {
     return (
-        <td className={`${classes}`}>
+        <td className={`${classes} px-6 py-4`}>
             <Structure children={children} justifyEnd={justifyEnd}>
                 <div className="inline-flex overflow-hidden border border-gray-200 divide-x rounded-md shadow-sm">
                     {children}

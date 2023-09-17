@@ -25,6 +25,8 @@ export default function Index({ auth, commonData, collection }) {
       useForm(entries);
    const [formState] = useRemember(entries);
 
+   // console.log(collection);
+
    useEffect(() => {
       if (data != formState) {
          get(url.substring(0, url.indexOf("?")), {
@@ -100,18 +102,19 @@ export default function Index({ auth, commonData, collection }) {
             <TableSortable
                ths={
                   <>
-                     <TableTH children="Ordem" />
-                     <TableTH children="Título" />
-                     <TableTH children="Cadastrado" />
-                     <TableTH children="Alterado" />
-                     <TableTH children="Status" />
-                     <TableTH children="Ações" />
+                     <TableTH children="Ordem" width="10%" />
+                     <TableTH children="Título" width="20%" />
+                     <TableTH children="Cadastrado" width="20%" />
+                     <TableTH children="Alterado" width="20%" />
+                     <TableTH children="Status" width="10%" />
+                     <TableTH children="Ações" width="20%" />
                   </>
                }
             >
-               {collection.data.length ? (
-                  collection.data.map((item, index) => (
+               {collection.length ? (
+                  collection.map((item, index) => (
                      <TableProductCategory
+                        key={index}
                         item={item}
                         index={index}
                         onDragEnd={onDragEnd}
