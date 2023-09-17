@@ -22,7 +22,10 @@ class AdminProductCategoryController extends Controller {
     public function index() {
         $collection = ProductCategory::whereNull('id_parent')->with('allChilds')->orderBy('ordem', 'asc')->get();
 
-        return view('product::admin.product_category.index', ['collection' => $collection]);
+        return Inertia::render(
+            'Product::Admin/Category/Index',
+            ['collection' => $collection]
+        );
     }
 
     public function create() {
@@ -30,7 +33,6 @@ class AdminProductCategoryController extends Controller {
 
         $categories = ProductCategory::whereNull('id_parent')->with('allChilds')->get();
 
-        // return view('product::admin.product_category.create_edit', ['item' => $item, 'categories' => $categories, 'treeList' => []]);
         return Inertia::render(
             'Product::Admin/Category/CreateEdit',
             ['item' => $item, 'categories' => $categories, 'treeList' => []]
@@ -56,7 +58,6 @@ class AdminProductCategoryController extends Controller {
 
         $treeList = self::recursiveCategoryChild($product_category, []);
 
-        // return view('product::admin.product_category.create_edit', ['item' => $product_category, 'categories' => $categories, 'treeList' => $treeList]);
         return Inertia::render(
             'Product::Admin/Category/CreateEdit',
             ['item' => $product_category, 'categories' => $categories, 'treeList' => $treeList]
