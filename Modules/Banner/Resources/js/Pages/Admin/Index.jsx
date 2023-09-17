@@ -63,6 +63,7 @@ export default function Index({ auth, commonData, bannerLocals, collection }) {
    };
 
    const onDragEnd = (result) => {
+      console.log(result)
       if (!result.destination) {
          return;
       }
@@ -70,18 +71,20 @@ export default function Index({ auth, commonData, bannerLocals, collection }) {
          return;
       }
 
-      let newList = reorder(
-         collectionState[result.destination.droppableId],
-         result.source.index,
-         result.destination.index
-      );
+      console.log(collectionState)
 
-      axios.put(
-         route("admin.banners_order"),
-         newList.map((value, index) => ({ id: value.id, ordem: index + 1 }))
-      );
+      // let newList = reorder(
+      //    collectionState[result.destination.droppableId],
+      //    result.source.index,
+      //    result.destination.index
+      // );
 
-      collectionState[result.destination.droppableId] = newList;
+      // axios.put(
+      //    route("admin.banners_order"),
+      //    newList.map((value, index) => ({ id: value.id, ordem: index + 1 }))
+      // );
+
+      // collectionState[result.destination.droppableId] = newList;
    };
 
    return (

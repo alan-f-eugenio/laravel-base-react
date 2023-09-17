@@ -14,6 +14,7 @@ import { Head, useForm, usePage, useRemember } from "@inertiajs/react";
 import axios from "axios";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 export default function Index({ auth, commonData, collection }) {
    const [collectionState, setCollectionState] = useState(collection);
@@ -66,10 +67,10 @@ export default function Index({ auth, commonData, collection }) {
          return;
       }
 
-      console.log(result);
+      console.log(result)
 
       // let newList = reorder(
-      //    collectionState[result.destination.droppableId],
+      //    collectionState,
       //    result.source.index,
       //    result.destination.index
       // );
@@ -79,7 +80,7 @@ export default function Index({ auth, commonData, collection }) {
       //    newList.map((value, index) => ({ id: value.id, ordem: index + 1 }))
       // );
 
-      // collectionState[result.destination.droppableId] = newList;
+      // setCollectionState(newList);
    };
 
    return (
@@ -111,16 +112,25 @@ export default function Index({ auth, commonData, collection }) {
                   </>
                }
             >
-               {collection.length ? (
-                  collection.map((item, index) => (
-                     <TableProductCategory
-                        key={index}
-                        item={item}
-                        index={index}
-                        onDragEnd={onDragEnd}
-                        commonData={commonData}
-                     />
-                  ))
+               {collectionState.length ? (
+                  <DragDropContext onDragEnd={onDragEnd}>
+                     <Droppable droppableId="droppable-0">
+                        {(provided) => (
+                           <tbody ref={provided.innerRef}>
+                              {collectionState.map((item, index) => (
+                                 <TableProductCategory
+                                    key={index}
+                                    item={item}
+                                    index={index}
+                                    commonData={commonData}
+                                    first
+                                 />
+                              ))}
+                              {provided.placeholder}
+                           </tbody>
+                        )}
+                     </Droppable>
+                  </DragDropContext>
                ) : (
                   <TableEmpty />
                )}

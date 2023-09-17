@@ -12,8 +12,8 @@ import { useState, useMemo } from "react";
 export default function TableProductCategory({
    item,
    index,
-   onDragEnd,
    commonData,
+   first = false,
 }) {
    const [openSubItems, setOpenSubItems] = useState(false);
 
@@ -24,23 +24,59 @@ export default function TableProductCategory({
    };
 
    return (
-      <DragDropContext onDragEnd={onDragEnd}>
-         <Droppable droppableId={`droppable-${item.id}`}>
-            {(provided) => (
-               <tbody ref={provided.innerRef}>
-                  <Draggable
-                     key={item.id}
-                     draggableId={`draggable-${item.id}`}
-                     index={index}
-                  >
-                     {(provided) => (
-                        <>
-                           <tr
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              className="bg-white border-b"
-                           >
+      <Draggable
+         key={item.id}
+         draggableId={`draggable-${item.id}`}
+         index={index}
+      >
+         {(provided) => (
+            <tr
+               ref={provided.innerRef}
+               {...provided.draggableProps}
+               {...provided.dragHandleProps}
+               className="bg-white border-b"
+            >
+               <TableTD colSpan="99" classes={!first ? "px-6 py-4" : ""}>
+                  <div className="flex">
+                     <TableSortable
+                        tableOnly
+                        ths={
+                           <>
+                              <TableTH
+                                 children="Ordem"
+                                 width="10%"
+                                 hidden={true}
+                              />
+                              <TableTH
+                                 children="Título"
+                                 width="20%"
+                                 hidden={true}
+                              />
+                              <TableTH
+                                 children="Cadastrado"
+                                 width="20%"
+                                 hidden={true}
+                              />
+                              <TableTH
+                                 children="Alterado"
+                                 width="20%"
+                                 hidden={true}
+                              />
+                              <TableTH
+                                 children="Status"
+                                 width="10%"
+                                 hidden={true}
+                              />
+                              <TableTH
+                                 children="Ações"
+                                 width="20%"
+                                 hidden={true}
+                              />
+                           </>
+                        }
+                     >
+                        <tbody>
+                           <tr>
                               <TableTD
                                  classes="ordemNumber cursor-grab px-6 py-4"
                                  children={
@@ -114,75 +150,73 @@ export default function TableProductCategory({
                                  )}
                               </TableTDActions>
                            </tr>
-                           {item.all_childs.length > 0 && (
-                              <tr
-                                 className={`${
-                                    !openSubItems ? "hidden" : ""
-                                 } bg-gray-100`}
-                              >
+                           {item.all_childs.length > 0 && openSubItems && (
+                              <tr className={`bg-gray-100`}>
                                  <TableTD colSpan="99" classes="py-1">
-                                    <div className="flex">
-                                       <i className="text-xl align-middle icon-[tabler--corner-down-right]"></i>
-                                       <TableSortable
-                                          tableOnly={true}
-                                          ths={
-                                             <>
-                                                <TableTH
-                                                   children="Ordem"
-                                                   width="10%"
-                                                   hidden={true}
-                                                />
-                                                <TableTH
-                                                   children="Título"
-                                                   width="20%"
-                                                   hidden={true}
-                                                />
-                                                <TableTH
-                                                   children="Cadastrado"
-                                                   width="20%"
-                                                   hidden={true}
-                                                />
-                                                <TableTH
-                                                   children="Alterado"
-                                                   width="20%"
-                                                   hidden={true}
-                                                />
-                                                <TableTH
-                                                   children="Status"
-                                                   width="10%"
-                                                   hidden={true}
-                                                />
-                                                <TableTH
-                                                   children="Ações"
-                                                   width="20%"
-                                                   hidden={true}
-                                                />
-                                             </>
-                                          }
-                                       >
-                                          {item.all_childs.map(
-                                             (subitem, subindex) => (
-                                                <TableProductCategory
-                                                   key={subindex}
-                                                   item={subitem}
-                                                   index={subindex}
-                                                   onDragEnd={onDragEnd}
-                                                   commonData={commonData}
-                                                />
-                                             )
+                                    <TableSortable
+                                       tableOnly
+                                       ths={
+                                          <>
+                                             <TableTH
+                                                children="Ordem"
+                                                width="10%"
+                                                hidden={true}
+                                             />
+                                             <TableTH
+                                                children="Título"
+                                                width="20%"
+                                                hidden={true}
+                                             />
+                                             <TableTH
+                                                children="Cadastrado"
+                                                width="20%"
+                                                hidden={true}
+                                             />
+                                             <TableTH
+                                                children="Alterado"
+                                                width="20%"
+                                                hidden={true}
+                                             />
+                                             <TableTH
+                                                children="Status"
+                                                width="10%"
+                                                hidden={true}
+                                             />
+                                             <TableTH
+                                                children="Ações"
+                                                width="20%"
+                                                hidden={true}
+                                             />
+                                          </>
+                                       }
+                                    >
+                                       <Droppable droppableId="droppable-0">
+                                          {(provided) => (
+                                             <tbody ref={provided.innerRef}>
+                                                {item.all_childs.map(
+                                                   (subitem, subindex) => (
+                                                      <TableProductCategory
+                                                         key={subindex}
+                                                         item={subitem}
+                                                         index={subindex}
+                                                         commonData={commonData}
+                                                      />
+                                                   )
+                                                )}
+                                                {provided.placeholder}
+                                             </tbody>
                                           )}
-                                       </TableSortable>
-                                    </div>
+                                       </Droppable>
+                                    </TableSortable>
                                  </TableTD>
                               </tr>
                            )}
-                        </>
-                     )}
-                  </Draggable>
-                  {provided.placeholder}
-               </tbody>
-            )}
-         </Droppable>
-      </DragDropContext>
+                        </tbody>
+                     </TableSortable>
+                  </div>
+               </TableTD>
+            </tr>
+         )}
+      </Draggable>
    );
 }
