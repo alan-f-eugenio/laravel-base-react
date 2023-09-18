@@ -33,10 +33,6 @@ class AdminBannerController extends Controller {
                 fn ($item) => [$item->local->title => $item]
             ), 'bannerLocals' => $bannerLocals]
         );
-
-        // return view('banner::admin.index', ['collection' => $query->get()->mapToGroups(function ($item) {
-        //     return [$item->local->title => $item];
-        // }), 'bannerLocals' => $bannerLocals]);
     }
 
     public function create() {
@@ -50,7 +46,6 @@ class AdminBannerController extends Controller {
     }
 
     public function store(AdminBannerRequest $request) {
-        //
         $attributes = $request->validated();
 
         $attributes['filename'] = request()->file('filename')->store('banners', 'public');

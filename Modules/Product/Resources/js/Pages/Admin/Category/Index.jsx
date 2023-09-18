@@ -1,55 +1,22 @@
 import PageButton from "@/Components/Admin/PageButton";
 import PageTitle from "@/Components/Admin/PageTitle";
 import Section from "@/Components/Admin/Section";
-import StatusBadge from "@/Components/Admin/StatusBadge";
-import TableAction from "@/Components/Admin/TableAction";
-import TableEmpty from "@/Components/Admin/TableEmpty";
-import TableProductCategory from "@/Components/Admin/TableProductCategory";
-import TableSortable from "@/Components/Admin/TableSortable";
-import TableTD from "@/Components/Admin/TableTD";
-import TableTDActions from "@/Components/Admin/TableTDActions";
-import TableTH from "@/Components/Admin/TableTH";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm, usePage, useRemember } from "@inertiajs/react";
-import axios from "axios";
-import dayjs from "dayjs";
-import { useEffect, useState } from "react";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import {
+   PointerSensor,
+   useSensor,
+   useSensors
+} from "@dnd-kit/core";
+import {
+   arrayMove
+} from "@dnd-kit/sortable";
+import { Head } from "@inertiajs/react";
+import { useState } from "react";
+import SortableTreeOriginal from "../../../Components/Admin/SortableOriginal/SortableTree";
+import SortableTree from "../../../Components/Admin/SortableCategory/SortableTree";
 
 export default function Index({ auth, commonData, collection }) {
    const [collectionState, setCollectionState] = useState(collection);
-
-   const { url } = usePage();
-   const params = new URLSearchParams(window.location.search);
-   const entries = Object.fromEntries(params.entries());
-   const { data, setData, get, transform, recentlySuccessful } =
-      useForm(entries);
-   const [formState] = useRemember(entries);
-
-   // console.log(collection);
-
-   useEffect(() => {
-      if (data != formState) {
-         get(url.substring(0, url.indexOf("?")), {
-            only: ["collection"],
-            preserveScroll: true,
-            preserveState: true,
-            replace: true,
-         });
-      }
-   }, [data]);
-
-   useEffect(() => {
-      setCollectionState(collection);
-   }, [recentlySuccessful]);
-
-   transform((data) =>
-      Object.fromEntries(
-         Object.entries(data).filter(
-            ([k, v]) => String(v).length && k != "page"
-         )
-      )
-   );
 
    const reorder = (list, startIndex, endIndex) => {
       const result = Array.from(list);
@@ -67,7 +34,7 @@ export default function Index({ auth, commonData, collection }) {
          return;
       }
 
-      console.log(result)
+      console.log(result);
 
       // let newList = reorder(
       //    collectionState,
@@ -82,6 +49,22 @@ export default function Index({ auth, commonData, collection }) {
 
       // setCollectionState(newList);
    };
+
+   const [items, setItems] = useState([1, 2, 3]);
+   const sensors = useSensors(useSensor(PointerSensor));
+
+   function handleDragEnd(event, list, setList) {
+      const { active, over } = event;
+
+      if (active.id !== over.id) {
+         setList((list) => {
+            const oldIndex = list.indexOf(active.id);
+            const newIndex = list.indexOf(over.id);
+
+            return arrayMove(list, oldIndex, newIndex);
+         });
+      }
+   }
 
    return (
       <AuthenticatedLayout
@@ -100,7 +83,7 @@ export default function Index({ auth, commonData, collection }) {
          <Head title="Categorias" />
 
          <Section>
-            <TableSortable
+            {/* <TableSortable
                ths={
                   <>
                      <TableTH children="Ordem" width="10%" />
@@ -134,7 +117,9 @@ export default function Index({ auth, commonData, collection }) {
                ) : (
                   <TableEmpty />
                )}
-            </TableSortable>
+               </TableSortable>
+               */}
+
          </Section>
       </AuthenticatedLayout>
    );

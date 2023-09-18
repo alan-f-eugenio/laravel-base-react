@@ -18,11 +18,7 @@ export default function TableSortable({
       <Structure tableOnly={tableOnly}>
          <table className="w-full text-sm text-left text-gray-500">
             {ths && (
-               <thead
-                  className={`${
-                     tableOnly && "hidden"
-                  } text-xs text-gray-700 uppercase bg-gray-50`}
-               >
+               <thead className={`text-xs text-gray-700 uppercase bg-gray-50`}>
                   <tr>{ths}</tr>
                </thead>
             )}

@@ -24,7 +24,11 @@ class AdminProductCategoryController extends Controller {
 
         return Inertia::render(
             'Product::Admin/Category/Index',
-            ['collection' => $collection]
+            ['collection' => $collection
+            // ->transform(
+            //     fn ($item) => ['id' => $item->name, 'children' => $item->allChilds, 'item' => $item]
+            // )
+            ]
         );
     }
 

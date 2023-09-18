@@ -1,13 +1,13 @@
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import TableTD from "./TableTD";
-import StatusBadge from "./StatusBadge";
-import TableTDActions from "./TableTDActions";
-import TableAction from "./TableAction";
 import dayjs from "dayjs";
-import TableActionDisabled from "./TableActionDisabled";
-import TableTH from "./TableTH";
-import TableSortable from "./TableSortable";
-import { useState, useMemo } from "react";
+import { useState } from "react";
+import { Draggable, Droppable } from "react-beautiful-dnd";
+import StatusBadge from "../../../../../../resources/js/Components/Admin/StatusBadge";
+import TableAction from "../../../../../../resources/js/Components/Admin/TableAction";
+import TableActionDisabled from "../../../../../../resources/js/Components/Admin/TableActionDisabled";
+import TableSortable from "../../../../../../resources/js/Components/Admin/TableSortable";
+import TableTD from "../../../../../../resources/js/Components/Admin/TableTD";
+import TableTDActions from "../../../../../../resources/js/Components/Admin/TableTDActions";
+import TableTH from "../../../../../../resources/js/Components/Admin/TableTH";
 
 export default function TableProductCategory({
    item,
@@ -139,7 +139,7 @@ export default function TableProductCategory({
                                  {item.all_childs.length ? (
                                     <TableAction
                                        title="Subcategorias"
-                                       onClick={(e) => handleSubItems(e)}
+                                       onClick={console.log('asd')}
                                     >
                                        <i className="text-base align-middle icon-[tabler--chevron-down]"></i>
                                     </TableAction>
@@ -190,7 +190,9 @@ export default function TableProductCategory({
                                           </>
                                        }
                                     >
-                                       <Droppable droppableId="droppable-0">
+                                       <Droppable
+                                          droppableId={`droppable-${item.id}`}
+                                       >
                                           {(provided) => (
                                              <tbody ref={provided.innerRef}>
                                                 {item.all_childs.map(
