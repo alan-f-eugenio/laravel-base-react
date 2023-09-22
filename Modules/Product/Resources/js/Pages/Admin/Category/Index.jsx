@@ -1,19 +1,13 @@
 import PageButton from "@/Components/Admin/PageButton";
 import PageTitle from "@/Components/Admin/PageTitle";
 import Section from "@/Components/Admin/Section";
+import TableSortable from "@/Components/Admin/TableSortable";
+import TableTH from "@/Components/Admin/TableTH";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import {
-   PointerSensor,
-   useSensor,
-   useSensors
-} from "@dnd-kit/core";
-import {
-   arrayMove
-} from "@dnd-kit/sortable";
 import { Head } from "@inertiajs/react";
 import { useState } from "react";
-import SortableTreeOriginal from "../../../Components/Admin/SortableOriginal/SortableTree";
-import SortableTree from "../../../Components/Admin/SortableCategory/SortableTree";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import TableProductCategory from "../../../Components/Admin/TableProductCategory";
 
 export default function Index({ auth, commonData, collection }) {
    const [collectionState, setCollectionState] = useState(collection);
@@ -50,8 +44,16 @@ export default function Index({ auth, commonData, collection }) {
       // setCollectionState(newList);
    };
 
-   const [items, setItems] = useState([1, 2, 3]);
-   const sensors = useSensors(useSensor(PointerSensor));
+   const [items, setItems] = useState([
+      {
+         id: 1,
+         children: [
+            { id: 2, children: [] },
+            { id: 3, children: [] },
+         ],
+      },
+      { id: 4, children: [] },
+   ]);
 
    function handleDragEnd(event, list, setList) {
       const { active, over } = event;
@@ -83,7 +85,7 @@ export default function Index({ auth, commonData, collection }) {
          <Head title="Categorias" />
 
          <Section>
-            {/* <TableSortable
+            <TableSortable
                ths={
                   <>
                      <TableTH children="Ordem" width="10%" />
@@ -117,9 +119,7 @@ export default function Index({ auth, commonData, collection }) {
                ) : (
                   <TableEmpty />
                )}
-               </TableSortable>
-               */}
-
+            </TableSortable>
          </Section>
       </AuthenticatedLayout>
    );

@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { useState } from "react";
-import { Draggable, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import StatusBadge from "../../../../../../resources/js/Components/Admin/StatusBadge";
 import TableAction from "../../../../../../resources/js/Components/Admin/TableAction";
 import TableActionDisabled from "../../../../../../resources/js/Components/Admin/TableActionDisabled";
@@ -28,6 +28,7 @@ export default function TableProductCategory({
          key={item.id}
          draggableId={`draggable-${item.id}`}
          index={index}
+         isDragDisabled={openSubItems}
       >
          {(provided) => (
             <tr
@@ -78,7 +79,7 @@ export default function TableProductCategory({
                         <tbody>
                            <tr>
                               <TableTD
-                                 classes="ordemNumber cursor-grab px-6 py-4"
+                                 classes="ordemNumber px-6 py-4"
                                  children={
                                     <>
                                        <i className="mr-3 text-base align-middle icon-[tabler--arrows-up-down]"></i>
@@ -139,7 +140,7 @@ export default function TableProductCategory({
                                  {item.all_childs.length ? (
                                     <TableAction
                                        title="Subcategorias"
-                                       onClick={console.log('asd')}
+                                       onClick={(e) => handleSubItems(e)}
                                     >
                                        <i className="text-base align-middle icon-[tabler--chevron-down]"></i>
                                     </TableAction>
@@ -190,25 +191,29 @@ export default function TableProductCategory({
                                           </>
                                        }
                                     >
-                                       <Droppable
-                                          droppableId={`droppable-${item.id}`}
-                                       >
-                                          {(provided) => (
-                                             <tbody ref={provided.innerRef}>
-                                                {item.all_childs.map(
-                                                   (subitem, subindex) => (
-                                                      <TableProductCategory
-                                                         key={subindex}
-                                                         item={subitem}
-                                                         index={subindex}
-                                                         commonData={commonData}
-                                                      />
-                                                   )
-                                                )}
-                                                {provided.placeholder}
-                                             </tbody>
-                                          )}
-                                       </Droppable>
+                                       <DragDropContext>
+                                          <Droppable
+                                             droppableId={`droppable-${item.id}`}
+                                          >
+                                             {(provided) => (
+                                                <tbody ref={provided.innerRef}>
+                                                   {item.all_childs.map(
+                                                      (subitem, subindex) => (
+                                                         <TableProductCategory
+                                                            key={subindex}
+                                                            item={subitem}
+                                                            index={subindex}
+                                                            commonData={
+                                                               commonData
+                                                            }
+                                                         />
+                                                      )
+                                                   )}
+                                                   {provided.placeholder}
+                                                </tbody>
+                                             )}
+                                          </Droppable>
+                                       </DragDropContext>
                                     </TableSortable>
                                  </TableTD>
                               </tr>
